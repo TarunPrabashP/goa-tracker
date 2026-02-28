@@ -3,12 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏖️ Goa Trip Expense Tracker - Live Sync Edition</title>
+  <title>🏖️ Goa Trip Tracker - Pro Edition</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
@@ -23,54 +32,30 @@
       --primary: #10b981; --danger: #ef4444; --warning: #f59e0b;
       --info: #3b82f6; --ocean: #0ea5e9;
       --bg-gradient: linear-gradient(135deg, #1e1e2f 0%, #0f172a 100%);
-      --surface: rgba(30, 30, 46, 0.95);
-      --card-bg: #27273a;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #3f3f5a;
+      --surface: rgba(30, 30, 46, 0.95); --card-bg: #27273a;
+      --text-main: #f8fafc; --text-muted: #94a3b8; --border: #3f3f5a;
     }
 
     body.light-mode {
       --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      --surface: rgba(255, 255, 255, 0.95);
-      --card-bg: #ffffff;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --border: #cbd5e1;
+      --surface: rgba(255, 255, 255, 0.95); --card-bg: #ffffff;
+      --text-main: #1e293b; --text-muted: #64748b; --border: #cbd5e1;
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-gradient); height: 100vh; overflow: hidden; 
-      color: var(--text-main); display: flex; flex-direction: column;
-      padding: 16px; gap: 16px; transition: background 0.4s ease;
-    }
-
+    body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); height: 100vh; overflow: hidden; color: var(--text-main); display: flex; flex-direction: column; padding: 16px; gap: 16px; transition: background 0.4s ease; }
     h1, h2, h3, .total-value, .budget-val, .exp-amt { font-family: 'Plus Jakarta Sans', sans-serif; }
-    
-    /* Clean Scrollbars */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 10px; }
-
-    /* Hide number input arrows */
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    input[type=number] { -moz-appearance: textfield; }
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
     /* ==========================================================================
        2. HEADER
        ========================================================================== */
-    .premium-header {
-      background: var(--surface); backdrop-filter: blur(12px); border-radius: 24px;
-      padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15); flex-shrink: 0; border: 1px solid var(--border); z-index: 10;
-    }
+    .premium-header { background: var(--surface); backdrop-filter: blur(12px); border-radius: 24px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); flex-shrink: 0; border: 1px solid var(--border); z-index: 10; }
     .ph-left { display: flex; align-items: center; gap: 16px; }
     .ph-title { font-size: 1.5rem; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px;}
-    .ph-weather { background: var(--card-bg); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid var(--border);}
     .ph-theme-btn { background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; color: var(--text-main); transition: 0.2s;}
-    .ph-theme-btn:hover { background: var(--border); }
     
     .ph-right { display: flex; align-items: center; gap: 32px; }
     .ph-stat { display: flex; flex-direction: column; align-items: flex-end; }
@@ -84,295 +69,132 @@
     .burn-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
     
     .sidebar-btn { background: var(--ocean); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); transition: 0.2s; }
-    .sidebar-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6); }
 
     /* ==========================================================================
        3. DASHBOARD GRID & SIDEBAR
        ========================================================================== */
-    .dashboard-grid { display: grid; grid-template-columns: 320px 1fr 380px; gap: 16px; flex: 1; overflow: hidden; }
+    .dashboard-grid { display: grid; grid-template-columns: 300px 1fr 380px; gap: 16px; flex: 1; overflow: hidden; }
     .col-left, .col-center, .col-right { display: flex; flex-direction: column; gap: 16px; height: 100%; overflow: hidden; }
-    
     .panel { background: var(--surface); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid var(--border); display: flex; flex-direction: column; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden; }
     .panel-header { padding: 16px 20px; font-weight: 800; font-size: 1.05rem; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;}
     .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
 
     .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 99998; backdrop-filter: blur(4px);}
-    .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border); backdrop-filter: blur(20px);}
+    .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
     .sidebar.open { right: 0; }
     .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
-    .sidebar-header h2 { font-size: 1.3rem; margin: 0; display: flex; align-items: center; gap: 8px;}
-    .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
-    .close-sidebar:hover { background: var(--danger); color: white; }
-
+    
     /* ==========================================================================
-       4. CRISPER NATIVE-STYLE CALENDAR
+       4. CALENDAR & BUDGET
        ========================================================================== */
-    .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 800; font-size: 1.1rem; }
-    .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
-    .calendar-nav button:hover { background: var(--card-bg); border-color: var(--ocean); }
-    
-    .calendar-grid { 
-        display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; 
-        background: var(--card-bg); padding: 8px; border-radius: 12px; border: 1px solid var(--border);
-    }
-    .cal-day-header { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; padding: 4px 0 8px 0; text-transform: uppercase;}
-    
-    .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; background: transparent; position: relative; transition: 0.2s ease;}
+    .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 800; }
+    .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; background: var(--card-bg); padding: 8px; border-radius: 12px; border: 1px solid var(--border);}
+    .cal-day-header { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; padding: 4px 0; text-transform: uppercase;}
+    .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; position: relative; }
     .cal-day:hover:not(.empty) { background: var(--surface); box-shadow: inset 0 0 0 1px var(--ocean); }
     .cal-day.empty { cursor: default; }
     .cal-day.today { font-weight: 800; color: var(--ocean); box-shadow: inset 0 -3px 0 0 var(--ocean); background: rgba(14, 165, 233, 0.05); }
-    .cal-day.selected { background: var(--ocean) !important; color: white !important; font-weight: 700; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);}
+    .cal-day.selected { background: var(--ocean) !important; color: white !important; font-weight: 700;}
     .cal-day.has-expense::after { content: ''; width: 4px; height: 4px; background: var(--danger); border-radius: 50%; position: absolute; bottom: 4px;}
-    .cal-day.selected.has-expense::after { background: white; }
 
-    .budget-item { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 14px; margin-bottom: 10px; background: var(--card-bg); border-radius: 14px; border-left: 4px solid var(--primary); border: 1px solid var(--border); cursor: pointer; transition: 0.2s;}
-    .budget-item:hover { transform: translateX(4px); border-color: var(--primary);}
+    .budget-item { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 14px; margin-bottom: 10px; background: var(--card-bg); border-radius: 14px; border-left: 4px solid var(--primary); border: 1px solid var(--border); cursor: pointer;}
     .budget-item.active-filter { background: var(--primary); color: white; }
-    .budget-item.active-filter .budget-val, .budget-item.active-filter .budget-percent { color: white; }
-    .budget-name { font-weight: 700; font-size: 0.9rem; }
-    .budget-val { font-weight: 800; font-family: 'JetBrains Mono'; color: var(--danger); font-size: 1.1rem;}
-    .budget-percent { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 2px;}
 
     /* ==========================================================================
-       5. MAP, GALLERY & ROUTING
+       5. MAP, GALLERY & HEATMAP
        ========================================================================== */
     .col-center .panel { display: flex; flex-direction: column; }
-    #map-wrapper { flex: 1 1 auto; position: relative; width: 100%; height: 100%; min-height: 300px; background: var(--card-bg); overflow: hidden; display: block; }
+    #map-wrapper { flex: 1 1 auto; position: relative; width: 100%; min-height: 300px; background: var(--card-bg); overflow: hidden; }
     #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     
     .view-toggle { display: flex; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
-    .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px;}
+    .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer;}
     .view-toggle button.active { background: var(--ocean); color: white; }
     
-    .replay-btn { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s;}
-    .replay-btn:hover { background: var(--danger); color: white; }
-    .map-pin-mode { cursor: crosshair !important; border: 3px solid var(--warning) !important; }
+    .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;}
 
-    .seq-marker { background: var(--ocean); color: white; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-    .seq-marker.origin { background: var(--primary); }
-    .seq-marker.end { background: var(--danger); }
-
-    /* Gallery Layout */
-    #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
-    .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
-    @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
-    .gallery-item { break-inside: avoid; margin-bottom: 16px; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); transition: 0.3s;}
-    .gallery-item:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 10;}
-    .gallery-img { width: 100%; display: block; border-radius: 12px; }
-    .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; padding: 24px 12px 12px; font-size: 0.85rem; pointer-events: none;}
-    .gallery-date-header { font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;}
-
-    /* Replay Card */
-    .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .replay-card.show { right: 20px; }
-    .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
-    .rc-step { background: var(--primary); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; }
-    .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
-    .rc-img-content { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: 0.3s;}
-    .rc-img-content:hover { transform: scale(1.05); }
-    .rc-body { padding: 16px; }
-    .rc-nav { display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); }
-    .rc-nav button { flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; transition: 0.2s;}
+    /* Custom Leaflet Tooltip for Dynamic Pins */
+    .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
 
     /* ==========================================================================
-       6. FORM & FEED (MULTIPLE IMAGES SUPPORT)
+       6. TABBED RIGHT PANEL (FORM VS OVERVIEW)
        ========================================================================== */
+    .tabs-header { display: flex; gap: 8px; width: 100%; }
+    .tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-muted); font-weight: 700; cursor: pointer; transition: 0.2s;}
+    .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary);}
+    .tab-content { display: none; flex-direction: column; height: 100%; }
+    .tab-content.active { display: flex; }
+
+    /* Form Styles */
     .form-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
     .input-row { display: flex; gap: 12px; }
-    .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
-    .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
+    .input, .select { padding: 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none;}
     
-    /* Amount Wrapper for "Free" Button Integration */
-    #amountWrapper { flex:1; display:flex; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden; transition: 0.2s; }
-    #amountWrapper:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
-    #amount { flex:1; border:none; padding:14px; font-size:0.95rem; font-family:'Inter'; background:transparent; color:var(--text-main); outline:none; min-width:0; }
-    #btn-free { background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border); transition: 0.2s; user-select: none; font-size: 0.9rem;}
+    #amountWrapper { flex:1; display:flex; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden;}
+    #amount { flex:1; border:none; padding:12px; background:transparent; color:var(--text-main); outline:none; min-width:0; }
+    #btn-free { background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border);}
+    #btn-ocr { background: var(--info); color: white; padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border);}
 
-    .dt-row { display: flex; gap: 10px; width: 100%; }
-    .dt-box { border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; cursor: pointer; transition: 0.2s; align-items: center;}
-    .dt-box:hover { border-color: var(--ocean); }
-    .dt-date { flex: 1.5; justify-content: space-between; }
-    .dt-date input[type="date"] { background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;}
-    .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
-    
-    .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
-    
-    .dt-cam { width: 50px; justify-content: center; font-size: 1.3rem; padding: 0;}
-    .dt-cam:hover { color: var(--ocean); }
+    /* Image Upload Type Selector */
+    .img-type-toggle { display: flex; gap: 8px; margin-bottom: 10px;}
+    .img-type-btn { flex:1; padding: 6px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; cursor: pointer; background: var(--card-bg); color: var(--text-muted); font-weight:bold;}
+    .img-type-btn.active { background: var(--ocean); color: white; }
 
-    .action-badge { padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
-    .action-badge:hover { filter: brightness(1.1); transform: translateY(-1px);}
-    .btn-gps { background: var(--info); color: white; }
-    .btn-pin { background: var(--warning); color: white; }
-    
-    .btn-save { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; width: 100%; font-family: 'Plus Jakarta Sans'; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); transition: 0.2s;}
-    .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
-    .btn-save:active { transform: scale(0.98); }
-
-    /* MULTIPLE PHOTOS PREVIEW CONTAINER */
     #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
+    
+    /* Data Overview Tab Styles */
+    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.85rem; }
+    .overview-table th { background: var(--card-bg); text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--text-muted); }
+    .overview-table td { padding: 10px; border-bottom: 1px solid var(--border); }
+    
+    .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 12px; padding-bottom: 10px; }
+    .carousel-item { flex: 0 0 120px; height: 120px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: pointer;}
+    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+    .carousel-label { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.8); color: white; font-size: 0.7rem; padding: 4px; text-align: center; }
 
     /* Feed Layout */
-    .expense-item { padding: 16px; background: var(--card-bg); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; transition: 0.2s;}
-    .expense-item:hover { transform: translateY(-2px); border-color: var(--ocean); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
-    .exp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;}
-    .exp-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); line-height: 1.3;}
-    .exp-amt { font-weight: 800; font-size: 1.3rem; color: var(--danger); font-family: 'JetBrains Mono'; text-align: right;}
-    .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
-    .exp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-weight: 500;}
-    
-    .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
-    .locate-btn:hover { background: var(--ocean); color: white; }
-    .feed-actions { display: flex; gap: 16px; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 12px;}
-    .action-btn { background: none; border: none; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; opacity: 0.8; transition: 0.2s;}
-    .action-btn:hover { opacity: 1; }
-    .btn-edit { color: var(--info); }
-    .btn-del { color: var(--danger); }
-    
-    .photo-thumb { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; cursor: pointer; border: 1px solid var(--border); flex-shrink: 0; transition: 0.2s;}
-    .photo-thumb:hover { border-color: var(--ocean); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
+    .expense-item { padding: 16px; background: var(--card-bg); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; cursor: pointer;}
+    .expense-item:hover { border-color: var(--ocean); }
 
-    /* Sidebar Actions Grid */
-    .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0;}
-    .btn-sm { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.2s;}
-    .btn-sm i { font-size: 1.4rem; }
-    .btn-sm:hover { background: var(--border); transform: translateY(-2px);}
-    .btn-sm.special { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; border: none; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
-    .btn-sm.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); }
-
-    /* ==========================================================================
-       7. MATERIAL UI CLOCK MODAL 
-       ========================================================================== */
-    .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(4px);}
-    .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
-    .mat-tp-label { font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;}
-    
-    .mat-tp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;}
-    .mat-tp-display { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center;}
-    .mat-tp-box { background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d; transition: 0.2s;}
-    .mat-tp-box.active { background: #7c3116; color: #ffdbd1; }
-    .mat-tp-colon { font-size: 3.5rem; color: #d7c2b9; padding-bottom: 8px;}
-    
-    .mat-tp-ampm { display: flex; flex-direction: column; border: 1px solid #4a3e39; border-radius: 12px; overflow: hidden; }
-    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: 0.2s;}
-    .mat-tp-ampm-btn:first-child { border-bottom: 1px solid #4a3e39; }
-    .mat-tp-ampm-btn.active { background: #4a3e39; color: #ffdbd1;}
-
-    .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;}
-    .mat-dial-center { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: #ffb59d; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; }
-    .mat-dial-hand { position: absolute; bottom: 50%; left: calc(50% - 2px); width: 4px; height: calc(50% - 20px); background: #ffb59d; transform-origin: bottom center; z-index: 5;}
-    .mat-dial-hand-circle { position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;}
-    .mat-dial-number { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; z-index: 15; color: #d7c2b9; pointer-events: none;}
-
-    .mat-tp-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 8px;}
-    .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
-    .mat-tp-action-btns { display: flex; gap: 16px; }
-    .mat-tp-action-btn { background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px; transition: 0.2s;}
-
-    /* Lightbox & Toast */
+    /* Lightbox & OCR Loading */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
-    #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
-    .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
-    .close-lb:hover { background: var(--danger); }
-    
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 14px 28px; border-radius: 30px; font-weight: 700; z-index: 999999; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; }
+    #ocrLoading { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 999999; justify-content: center; align-items: center; color: white; font-weight: bold; flex-direction: column; gap: 16px;}
+    .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* ==========================================================================
-       9. RESPONSIVE
-       ========================================================================== */
-    @media (max-width: 1024px) {
-      body { height: auto; overflow: auto; display: block; padding: 12px; }
-      .premium-header { flex-direction: column; gap: 16px; border-radius: 20px; padding: 20px; }
-      .ph-right { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 15px;}
-      .dashboard-grid { display: flex; flex-direction: column; height: auto; overflow: visible;}
-      .col-left, .col-center, .col-right { height: auto; overflow: visible; }
-      .col-center .panel { height: 450px; }
-      .scroll-area { overflow: visible; padding: 16px; }
-      .actions-grid { grid-template-columns: repeat(3, 1fr); }
-      .sidebar { width: 100vw; right: -100vw; }
-      .replay-card { right: 5%; left: 5%; width: auto; }
-      .replay-card.show { right: 5%; left: 5%; }
-    }
   </style>
 </head>
 <body class="dark-mode">
 
-  <div id="timeModal" class="mat-modal-overlay">
-      <div class="mat-time-picker">
-          <div class="mat-tp-label">Select time</div>
-          <div class="mat-tp-header">
-              <div class="mat-tp-display">
-                  <div id="tp-hr-disp" class="mat-tp-box active" onclick="setTpMode('hour')">06</div>
-                  <div class="mat-tp-colon">:</div>
-                  <div id="tp-min-disp" class="mat-tp-box" onclick="setTpMode('minute')">45</div>
-              </div>
-              <div class="mat-tp-ampm">
-                  <button id="tp-am-btn" class="mat-tp-ampm-btn active" onclick="setTpAmpm('AM')">a.m.</button>
-                  <button id="tp-pm-btn" class="mat-tp-ampm-btn" onclick="setTpAmpm('PM')">p.m.</button>
-              </div>
-          </div>
-          <div id="tp-dial-container" class="mat-dial-container">
-              <div class="mat-dial-center"></div>
-              <div id="tp-hand" class="mat-dial-hand"><div id="tp-hand-text" class="mat-dial-hand-circle">6</div></div>
-              <div id="tp-dial-numbers"></div>
-          </div>
-          <div class="mat-tp-actions">
-              <i class="ph-bold ph-keyboard mat-tp-keyboard"></i>
-              <div class="mat-tp-action-btns">
-                  <button class="mat-tp-action-btn" onclick="closeTimePicker()">Cancel</button>
-                  <button class="mat-tp-action-btn" onclick="saveTimePicker()">OK</button>
-              </div>
-          </div>
-      </div>
+  <div id="ocrLoading">
+      <div class="spinner"></div>
+      <div id="ocrStatus">AI Reading Receipt...</div>
   </div>
 
-  <div id="lightbox" onclick="this.style.display='none'"><div class="close-lb"><i class="ph-bold ph-x"></i></div><img id="lbImg" src=""></div>
-  <div id="toast" class="toast"><i class="ph-fill ph-info"></i> <span id="toastMsg">Message</span></div>
-
-  <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-  <div id="itinerarySidebar" class="sidebar">
-      <div class="sidebar-header">
-          <h2 style="margin:0; font-size:1.2rem; display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
-          <button class="close-sidebar" onclick="toggleSidebar()"><i class="ph-bold ph-x"></i></button>
-      </div>
-      
-      <div class="scroll-area" id="expenseList" style="padding-top: 12px;"></div>
-      
-      <div class="actions-grid">
-          <button class="btn-sm" onclick="exportData()"><i class="ph-bold ph-file-csv" style="color:var(--primary)"></i> CSV</button>
-          <button class="btn-sm" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="color:var(--info)"></i> HTML</button>
-          <button class="btn-sm" onclick="downloadPlacesList()"><i class="ph-bold ph-map-trifold" style="color:var(--warning)"></i> Places</button>
-          <button class="btn-sm special" style="grid-column: span 3;" onclick="exportStory()"><i class="ph-bold ph-instagram-logo"></i> Generate Story</button>
-      </div>
-  </div>
+  <div id="lightbox" onclick="this.style.display='none'"><div style="position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</div><img id="lbImg" src=""></div>
 
   <div class="premium-header">
     <div class="ph-left">
       <h1 class="ph-title"><i class="ph-fill ph-beach-tent" style="color:var(--ocean)"></i> Goa Trip</h1>
       <button class="ph-theme-btn" onclick="toggleTheme()" id="themeBtn"><i class="ph-fill ph-sun"></i></button>
     </div>
-    
     <div class="ph-right">
       <div class="ph-stat">
-        <div class="ph-label">Budget Burn <i class="ph-bold ph-pencil-simple budget-edit" onclick="setBudget()"></i></div>
+        <div class="ph-label">Budget Burn <i class="ph-bold ph-pencil-simple" style="cursor:pointer;" onclick="setBudget()"></i></div>
         <div style="font-size:0.8rem; font-weight:800; color:var(--text-main); margin-top:2px;" id="burnText">0%</div>
         <div class="burn-container"><div class="burn-bar"><div class="burn-fill" id="burnBar"></div></div></div>
       </div>
       <div class="ph-stat">
-        <div class="ph-label">Route Dist.</div>
-        <div class="ph-val dist" id="totalDistance">0 km</div>
-      </div>
-      <div class="ph-stat">
-        <div class="ph-label">Total Spent</div>
+        <div class="ph-label" id="filterLabel">Total Spent</div>
         <div class="ph-val total" id="totalSpent">₹0</div>
       </div>
-      <button class="sidebar-btn" onclick="toggleSidebar()"><i class="ph-bold ph-layout"></i> Options & Feed</button>
+      <button class="sidebar-btn" onclick="toggleSidebar()"><i class="ph-bold ph-layout"></i> Feed & Sync</button>
     </div>
   </div>
 
   <div class="dashboard-grid">
-    
     <div class="col-left">
       <div class="panel" style="flex: 0 0 auto;">
         <div class="panel-header">
@@ -391,9 +213,10 @@
       <div class="panel" style="flex: 1;">
         <div class="panel-header">
             <span><i class="ph-bold ph-chart-pie-slice"></i> Analytics</span>
-            <span style="font-size:0.75rem; color:var(--text-muted); cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)"><i class="ph-bold ph-arrows-clockwise"></i> Reset</span>
+            <span style="font-size:0.75rem; color:var(--text-muted); cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)"><i class="ph-bold ph-arrows-clockwise"></i> Reset Filters</span>
         </div>
         <div class="scroll-area" style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="font-size:0.7rem; text-align:center; color:var(--text-muted);">*Click a slice to filter map*</div>
             <div style="position: relative; height: 180px; width: 100%; flex-shrink: 0;">
                 <canvas id="expenseChart"></canvas>
             </div>
@@ -405,49 +228,28 @@
     <div class="col-center">
       <div class="panel" style="flex: 1; padding: 0;">
         <div class="panel-header">
-            <span style="display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-map-trifold"></i> Trip View</span>
+            <span style="display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-map-trifold"></i> Live View</span>
             <div style="display:flex; gap: 8px;">
-                <div class="view-toggle">
-                    <button id="btn-view-map" class="active" onclick="switchView('map')">Map</button>
-                    <button id="btn-view-gallery" onclick="switchView('gallery')">Gallery</button>
-                </div>
-                <button class="replay-btn" id="btn-replay" onclick="startReplay()"><i class="ph-fill ph-play-circle"></i> Story Replay</button>
+                <button class="btn-action-map" id="btn-heatmap" onclick="toggleHeatmap()"><i class="ph-bold ph-fire"></i> Heatmap</button>
+                <button class="btn-action-map" style="background:var(--info); color:white;" onclick="exportMap()"><i class="ph-bold ph-camera"></i> Snapshot</button>
             </div>
         </div>
         <div id="map-wrapper">
             <div id="map"></div>
-            <div id="gallery-container"></div>
-            
-            <div id="replayCard" class="replay-card">
-                <div class="rc-header">
-                    <span id="rc-step" class="rc-step">Step 1 of 5</span>
-                    <button class="ph-theme-btn" style="width:28px; height:28px; border:none; background:transparent;" onclick="exitReplay()"><i class="ph-bold ph-x"></i></button>
-                </div>
-                <div id="rc-img-container" class="rc-img-wrapper"></div>
-                <div class="rc-body">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap: 12px;">
-                        <h3 id="rc-title" style="margin:0; font-size:1.05rem; color:var(--text-main); line-height:1.3;">Title</h3>
-                        <div id="rc-amt" style="color:var(--danger); font-family:'JetBrains Mono'; font-weight:800; font-size:1.1rem; flex-shrink: 0;">₹0</div>
-                    </div>
-                    <div id="rc-meta" style="color:var(--text-muted); font-size:0.8rem; display:flex; align-items:center; gap:4px; margin-bottom:12px; font-weight: 500;"></div>
-                    <div style="font-size:0.75rem; color:var(--text-muted); background: rgba(148, 163, 184, 0.1); padding: 8px; border-radius: 8px;">
-                        Use <b>Arrow Keys</b> (<i class="ph-bold ph-arrow-left"></i> <i class="ph-bold ph-arrow-right"></i>) to navigate.
-                    </div>
-                </div>
-                <div class="rc-nav">
-                    <button id="rc-prev" style="background:var(--card-bg); color:var(--text-main); border:1px solid var(--border);" onclick="prevReplay()">Prev</button>
-                    <button id="rc-next" style="background:var(--primary); color:white;" onclick="nextReplay()">Next</button>
-                </div>
-            </div>
-
         </div>
       </div>
     </div>
 
     <div class="col-right">
-      <div class="panel" style="flex: 1;">
-        <div class="panel-header"><span><i class="ph-bold ph-plus-circle"></i> Add Memory</span></div>
-        <div class="scroll-area">
+      <div class="panel" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="panel-header" style="padding: 10px;">
+            <div class="tabs-header">
+                <button class="tab-btn active" id="btn-tab-add" onclick="switchRightTab('add')"><i class="ph-bold ph-plus-circle"></i> Log Event</button>
+                <button class="tab-btn" id="btn-tab-overview" onclick="switchRightTab('overview')"><i class="ph-bold ph-chart-bar"></i> Overview</button>
+            </div>
+        </div>
+        
+        <div class="scroll-area tab-content active" id="tab-add">
             <div class="form-grid">
               <input type="text" id="description" class="input" placeholder="Title (e.g. Fish Thali, Surfboard)">
               
@@ -455,58 +257,75 @@
                 <div id="amountWrapper">
                     <input type="number" id="amount" placeholder="Amount (₹)">
                     <div id="btn-free" onclick="toggleFree()">Free</div>
+                    <div id="btn-ocr" onclick="document.getElementById('ocrInput').click()" title="Scan Receipt"><i class="ph-bold ph-scan"></i></div>
+                    <input type="file" id="ocrInput" accept="image/*" style="display:none;" onchange="handleOCR(event)">
                 </div>
-                <select id="category" class="select" style="flex:1.5;">
+                <select id="category" class="select" style="flex:1;">
                   <option value="">Category...</option>
                   <option value="🏨 Accommodation">🏨 Accommodation</option>
                   <option value="🍔 Food & Drinks">🍔 Food & Drinks</option>
                   <option value="🚗 Transport">🚗 Transport</option>
                   <option value="🎢 Activities">🎢 Activities</option>
                   <option value="🛍️ Shopping">🛍️ Shopping</option>
-                  <option value="💊 Medical">💊 Medical</option>
                   <option value="📱 Other">📱 Other</option>
                 </select>
               </div>
 
               <div class="input-row" id="paidByRow">
                   <select id="paidBy" class="select" style="flex:1;"></select>
-                  <button class="action-badge" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text-main);" onclick="editPayers()" title="Add/Edit Names">
-                      <i class="ph-bold ph-pencil-simple"></i> Edit Names
-                  </button>
+                  <button class="action-badge" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text-main);" onclick="editPayers()">Edit Names</button>
               </div>
 
-              <div class="dt-row">
-                  <div class="dt-box dt-date" onclick="document.getElementById('dateInput').showPicker()">
-                      <input type="date" id="dateInput" required>
-                  </div>
-                  <div class="dt-box dt-time" onclick="openTimePicker()">
-                      <i class="ph-bold ph-clock" style="font-size:1.1rem; color:var(--text-muted);"></i>
-                      <div id="displayTimeText" style="display:flex; align-items:baseline; gap:4px;"></div>
-                  </div>
-                  <input type="hidden" id="timeInput" value="12:00">
-                  <button class="dt-box dt-cam" onclick="document.getElementById('photoInput').click()" title="Attach Photos">
-                      <i class="ph-bold ph-camera"></i>
-                  </button>
-                  <input type="file" id="photoInput" accept="image/*" multiple>
+              <div class="input-row" style="align-items:center;">
+                  <input type="date" id="dateInput" class="input" style="flex: 1;" required>
+                  <input type="time" id="timeInput" class="input" style="flex: 1;" value="12:00">
               </div>
+
+              <div class="img-type-toggle">
+                  <button class="img-type-btn active" id="type-memory" onclick="setPhotoType('memory')"><i class="ph-bold ph-camera"></i> Memory Photo</button>
+                  <button class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')"><i class="ph-bold ph-receipt"></i> Receipt/Bill</button>
+              </div>
+              <button class="action-badge" style="width:100%; justify-content:center; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main);" onclick="document.getElementById('photoInput').click()">
+                  <i class="ph-bold ph-plus"></i> Select Images
+              </button>
+              <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
 
               <div style="position: relative;">
                 <div class="input-row">
-                  <input type="text" id="place" class="input" placeholder="Search Location..." oninput="searchLocation(this.value)" style="flex:1;">
-                  <button class="action-badge btn-pin" onclick="enableManualPin()"><i class="ph-bold ph-map-pin"></i> Pin</button>
+                  <input type="text" id="place" class="input" placeholder="Location Name..." oninput="searchLocation(this.value)" style="flex:1;">
                   <button class="action-badge btn-gps" onclick="pinCurrentLocation()"><i class="ph-bold ph-crosshair"></i> GPS</button>
                 </div>
-                <div id="locationSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);"></div>
+                <div id="locationSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none;"></div>
               </div>
 
             </div>
             
             <div id="photoPreviewContainer"></div>
-            
             <button class="btn-save" id="saveBtn" onclick="addExpense()">Save to Itinerary</button>
         </div>
+
+        <div class="scroll-area tab-content" id="tab-overview" style="padding: 10px;">
+            <h3 style="margin-bottom: 10px; font-size: 1rem;"><i class="ph-bold ph-users"></i> Split & Payer Stats</h3>
+            <div id="overviewTableContainer"></div>
+
+            <h3 style="margin: 20px 0 10px 0; font-size: 1rem;"><i class="ph-bold ph-receipt"></i> Receipts Gallery</h3>
+            <div id="receiptCarousel" class="carousel-wrapper"></div>
+
+            <h3 style="margin: 20px 0 10px 0; font-size: 1rem;"><i class="ph-bold ph-image"></i> Memories Gallery</h3>
+            <div id="memoryCarousel" class="carousel-wrapper"></div>
+        </div>
+
       </div>
     </div>
+  </div>
+
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <div id="itinerarySidebar" class="sidebar">
+      <div class="sidebar-header">
+          <h2 style="margin:0; font-size:1.2rem;"><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
+          <button class="close-sidebar" onclick="toggleSidebar()"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="scroll-area" id="expenseList" style="padding-top: 12px;"></div>
   </div>
 
   <script>
@@ -536,31 +355,28 @@
     }
 
     // ==========================================================================
-    // GLOBAL STATE & DATA SANITIZER (Prevents Blank Screen Crash)
+    // GLOBAL STATE 
     // ==========================================================================
     let expenses = [];
     let tripBudget = 25000;
     
-    // Safely load payers
     let payers = ['Tarun', 'Neha', 'Ashok', 'Rupini', 'Tejas'];
     try {
         let p = localStorage.getItem('goaPayers');
-        if (p && p !== 'undefined') {
-            let parsed = JSON.parse(p);
-            if (Array.isArray(parsed) && parsed.length > 1) payers = parsed;
-        }
+        if (p && p !== 'undefined') { let parsed = JSON.parse(p); if (Array.isArray(parsed) && parsed.length > 1) payers = parsed; }
     } catch(e) {}
     localStorage.setItem('goaPayers', JSON.stringify(payers));
     
     let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear();
     let selectedDate = null; let activeCategoryFilter = null;
     let searchTimeout = null; let selectedLocation = null;
-    let editingId = null; let manualPinMode = false;
-    let map = null; let markers = []; let tempMarker = null; let routeLayer = null;
-    let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
-    let currentView = 'map';
+    let editingId = null; 
+    let map = null; let markersCluster = null; let heatLayer = null; let routeLayer = null;
+    let isHeatmap = false;
     
+    // Arrays for multiple photos: array of objects {url: b64, type: 'receipt'|'memory'}
     let currentPhotos = []; 
+    let currentPhotoUploadType = 'memory'; 
     let isFree = false; 
 
     if (useFirebase) {
@@ -574,13 +390,9 @@
             } else { renderPayers(); renderAll(); }
         });
     } else {
-        // Offline Failsafe
         try {
             let saved = localStorage.getItem('goaExpenses');
-            if(saved && saved !== 'undefined') {
-                let parsed = JSON.parse(saved);
-                if(Array.isArray(parsed)) expenses = parsed;
-            }
+            if(saved && saved !== 'undefined') expenses = JSON.parse(saved);
             tripBudget = parseFloat(localStorage.getItem('goaBudget')) || 25000;
         } catch(e) { console.warn("Local storage reset."); }
     }
@@ -606,24 +418,18 @@
       }
 
       const now = new Date();
-      let h = now.getHours(); let m = String(now.getMinutes()).padStart(2, '0');
-      let ampm = h >= 12 ? 'PM' : 'AM'; let h12 = h % 12 || 12;
-      
-      document.getElementById('timeInput').value = `${String(h).padStart(2,'0')}:${m}`;
-      document.getElementById('displayTimeText').innerHTML = `<div style="font-size:1.05rem;font-weight:700;">${String(h12).padStart(2,'0')}:${m}</div><div style="font-size:0.75rem;font-weight:600;opacity:0.8;">${ampm}</div>`;
+      let h = String(now.getHours()).padStart(2, '0'); let m = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('timeInput').value = `${h}:${m}`;
       
       const offset = now.getTimezoneOffset() * 60000;
       document.getElementById('dateInput').value = (new Date(now.getTime() - offset)).toISOString().split('T')[0];
 
       renderPayers();
-      renderAll(); 
       initMap(); 
-      updateMap(); 
       setupPhotoHandler();
+      renderAll(); 
       
-      // Ultimate MAP RENDERING Failsafe 
-      // (Forces map to calculate its size properly to prevent blank grey box)
-      [100, 500, 1500].forEach(t => setTimeout(() => { if(map) { map.invalidateSize(true); updateMap(); } }, t));
+      [100, 500, 1000].forEach(t => setTimeout(() => { if(map) { map.invalidateSize(true); updateMap(); } }, t));
     }
     
     function toggleTheme() {
@@ -651,13 +457,20 @@
             sidebar.classList.remove('open'); overlay.style.display = 'none';
         } else {
             sidebar.classList.add('open'); overlay.style.display = 'block';
-            setTimeout(() => { if(map) map.invalidateSize(); }, 300);
         }
     }
 
     // ==========================================================================
-    // FREE BUTTON TOGGLE LOGIC
+    // TABS & FORM LOGIC
     // ==========================================================================
+    function switchRightTab(tab) {
+        document.getElementById('btn-tab-add').classList.toggle('active', tab === 'add');
+        document.getElementById('btn-tab-overview').classList.toggle('active', tab === 'overview');
+        document.getElementById('tab-add').classList.toggle('active', tab === 'add');
+        document.getElementById('tab-overview').classList.toggle('active', tab === 'overview');
+        if(tab === 'overview') renderOverview();
+    }
+
     function toggleFree() {
         isFree = !isFree;
         const amtInput = document.getElementById('amount');
@@ -665,33 +478,23 @@
         const paidByRow = document.getElementById('paidByRow');
         
         if (isFree) {
-            amtInput.value = '';
-            amtInput.disabled = true;
-            amtInput.placeholder = 'Free';
-            amtInput.style.opacity = '0.5';
-            freeBtn.style.background = 'var(--primary)';
-            freeBtn.style.color = 'white';
+            amtInput.value = ''; amtInput.disabled = true; amtInput.placeholder = 'Free';
+            amtInput.style.opacity = '0.5'; freeBtn.style.background = 'var(--primary)'; freeBtn.style.color = 'white';
             paidByRow.style.display = 'none';
         } else {
-            amtInput.disabled = false;
-            amtInput.placeholder = 'Amount (₹)';
-            amtInput.style.opacity = '1';
-            freeBtn.style.background = 'rgba(16, 185, 129, 0.1)';
-            freeBtn.style.color = 'var(--primary)';
+            amtInput.disabled = false; amtInput.placeholder = 'Amount (₹)';
+            amtInput.style.opacity = '1'; freeBtn.style.background = 'rgba(16, 185, 129, 0.1)'; freeBtn.style.color = 'var(--primary)';
             paidByRow.style.display = 'flex';
         }
     }
 
-    // ==========================================================================
-    // PAYER NAMES LOGIC
-    // ==========================================================================
     function renderPayers() {
         const select = document.getElementById('paidBy');
         select.innerHTML = payers.map(p => `<option value="${escapeHtml(p)}">Paid by: ${escapeHtml(p)}</option>`).join('');
     }
 
     function editPayers() {
-        let input = prompt("Enter names separated by commas (e.g. Tarun, Neha, Ashok):", payers.join(', '));
+        let input = prompt("Enter names separated by commas:", payers.join(', '));
         if(input !== null) {
             payers = input.split(',').map(n => n.trim()).filter(n => n !== '');
             if(payers.length === 0) payers = ['Tarun']; 
@@ -700,73 +503,14 @@
     }
 
     // ==========================================================================
-    // VIEW SWITCHER (MAP vs GALLERY)
+    // MULTIPLE IMAGE & OCR LOGIC
     // ==========================================================================
-    function switchView(view) {
-        currentView = view;
-        document.getElementById('btn-view-map').classList.toggle('active', view === 'map');
-        document.getElementById('btn-view-gallery').classList.toggle('active', view === 'gallery');
-        
-        if (view === 'map') {
-            document.getElementById('map').style.display = 'block';
-            document.getElementById('gallery-container').style.display = 'none';
-            document.getElementById('btn-replay').style.display = 'flex';
-            if(map) map.invalidateSize();
-        } else {
-            document.getElementById('map').style.display = 'none';
-            document.getElementById('gallery-container').style.display = 'block';
-            document.getElementById('btn-replay').style.display = 'none';
-            if(isReplaying) exitReplay();
-            renderGallery();
-        }
+    function setPhotoType(type) {
+        currentPhotoUploadType = type;
+        document.getElementById('type-memory').classList.toggle('active', type === 'memory');
+        document.getElementById('type-receipt').classList.toggle('active', type === 'receipt');
     }
 
-    function renderGallery() {
-        const container = document.getElementById('gallery-container');
-        let filtered = expenses.filter(e => e.photo && (Array.isArray(e.photo) ? e.photo.length > 0 : e.photo));
-        if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
-        if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
-        
-        if(filtered.length === 0) {
-            container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:40px; font-size:0.9rem;">No photos attached to memories yet.</div>';
-            return;
-        }
-
-        const grouped = {};
-        filtered.forEach(e => {
-            const dateStr = formatDate(e.date);
-            if(!grouped[dateStr]) grouped[dateStr] = [];
-            grouped[dateStr].push(e);
-        });
-
-        const sortedDates = Object.keys(grouped).sort((a, b) => new Date(grouped[b][0].date) - new Date(grouped[a][0].date));
-
-        let html = '';
-        sortedDates.forEach(date => {
-            html += `<div class="gallery-date-header"><i class="ph-bold ph-calendar-blank" style="color:var(--ocean)"></i> ${date}</div>`;
-            html += `<div class="gallery-grid">`;
-            grouped[date].forEach(exp => {
-                let photosArray = Array.isArray(exp.photo) ? exp.photo : [exp.photo];
-                photosArray.forEach(p => {
-                    html += `
-                    <div class="gallery-item" onclick="viewImage('${p}')">
-                        <img src="${p}" class="gallery-img">
-                        <div class="gallery-overlay">
-                            <div style="font-weight:800; font-family:'Plus Jakarta Sans'; margin-bottom:2px;">${escapeHtml(exp.description)}</div>
-                            <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(exp.place || 'Unknown Location')}</div>
-                        </div>
-                    </div>`;
-                });
-            });
-            html += `</div>`;
-        });
-
-        container.innerHTML = html;
-    }
-
-    // ==========================================================================
-    // MULTIPLE PHOTO ATTACHMENT
-    // ==========================================================================
     function setupPhotoHandler() {
         document.getElementById('photoInput').addEventListener('change', function(e) {
             const files = Array.from(e.target.files);
@@ -781,7 +525,7 @@
                         const scale = Math.min(MAX / img.width, MAX / img.height);
                         canvas.width = img.width * scale; canvas.height = img.height * scale;
                         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                        currentPhotos.push(canvas.toDataURL('image/jpeg', 0.6));
+                        currentPhotos.push({ url: canvas.toDataURL('image/jpeg', 0.6), type: currentPhotoUploadType });
                         renderPhotoPreviews();
                     }
                     img.src = event.target.result;
@@ -796,110 +540,53 @@
         const container = document.getElementById('photoPreviewContainer');
         if(currentPhotos.length === 0) { container.style.display = 'none'; return; }
         container.style.display = 'flex';
-        container.innerHTML = currentPhotos.map((src, index) => `
+        container.innerHTML = currentPhotos.map((photo, index) => `
             <div style="position:relative; flex-shrink:0;">
-                <img src="${src}" style="height:70px; width:70px; border-radius:10px; object-fit:cover; border:1px solid var(--border);">
-                <div onclick="removePhoto(${index})" style="position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.3);">✕</div>
+                <img src="${photo.url}" style="height:70px; width:70px; border-radius:10px; object-fit:cover; border:2px solid ${photo.type==='receipt'?'var(--warning)':'var(--border)'};">
+                <div onclick="removePhoto(${index})" style="position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer;">✕</div>
             </div>
         `).join('');
     }
 
-    function removePhoto(index) {
-        currentPhotos.splice(index, 1);
-        renderPhotoPreviews();
-    }
-    
+    function removePhoto(index) { currentPhotos.splice(index, 1); renderPhotoPreviews(); }
     function viewImage(src) { document.getElementById('lbImg').src = src; document.getElementById('lightbox').style.display = 'flex'; }
 
-    // ==========================================================================
-    // MATERIAL UI CLOCK
-    // ==========================================================================
-    let tp_hr = 12, tp_min = 0, tp_ampm = 'AM', tp_mode = 'hour';
-    
-    function openTimePicker() {
-        const currentVal = document.getElementById('timeInput').value || '12:00'; 
-        let [h, m] = currentVal.split(':'); h = parseInt(h);
-        tp_ampm = h >= 12 ? 'PM' : 'AM'; tp_hr = h % 12 || 12; tp_min = parseInt(m); tp_mode = 'hour';
-        updateTimePickerUI();
-        document.getElementById('timeModal').style.display = 'flex';
-        initDialInteraction();
-    }
-    function closeTimePicker() { document.getElementById('timeModal').style.display = 'none'; }
-    function setTpMode(mode) { tp_mode = mode; updateTimePickerUI(); }
-    function setTpAmpm(ampm) { tp_ampm = ampm; updateTimePickerUI(); }
-
-    function updateTimePickerUI() {
-        document.getElementById('tp-hr-disp').textContent = String(tp_hr).padStart(2, '0');
-        document.getElementById('tp-min-disp').textContent = String(tp_min).padStart(2, '0');
-        document.getElementById('tp-hr-disp').className = `mat-tp-box ${tp_mode === 'hour' ? 'active' : ''}`;
-        document.getElementById('tp-min-disp').className = `mat-tp-box ${tp_mode === 'minute' ? 'active' : ''}`;
-        document.getElementById('tp-am-btn').className = `mat-tp-ampm-btn ${tp_ampm === 'AM' ? 'active' : ''}`;
-        document.getElementById('tp-pm-btn').className = `mat-tp-ampm-btn ${tp_ampm === 'PM' ? 'active' : ''}`;
-        renderDial();
-    }
-
-    function renderDial() {
-        const container = document.getElementById('tp-dial-numbers');
-        container.innerHTML = '';
-        const radius = 95, center = 125; 
-        let activeVal = tp_mode === 'hour' ? tp_hr : tp_min;
-        let angle = tp_mode === 'hour' ? (tp_hr === 12 ? 0 : tp_hr * 30) : tp_min * 6;
+    // AI OCR IMPLEMENTATION (Tesseract.js)
+    function handleOCR(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+        document.getElementById('ocrLoading').style.display = 'flex';
         
-        document.getElementById('tp-hand').style.transform = `rotate(${angle}deg)`;
-        document.getElementById('tp-hand-text').textContent = tp_mode === 'hour' ? tp_hr : String(tp_min).padStart(2, '0');
-        
-        for(let i = 1; i <= 12; i++) {
-            let num = tp_mode === 'hour' ? i : (i === 12 ? 0 : i * 5);
-            let angleRad = ((i * 30) - 90) * (Math.PI / 180);
-            let x = center + radius * Math.cos(angleRad), y = center + radius * Math.sin(angleRad);
+        Tesseract.recognize(file, 'eng', { logger: m => {
+            if(m.status === 'recognizing text') document.getElementById('ocrStatus').textContent = `Reading Receipt: ${Math.round(m.progress * 100)}%`;
+        }}).then(({ data: { text } }) => {
+            // Very basic regex to find the largest currency number (Total)
+            const amounts = text.match(/\b\d+(\.\d{2})?\b/g);
+            if(amounts) {
+                const numbers = amounts.map(Number).filter(n => n > 0);
+                if(numbers.length > 0) {
+                    const maxAmt = Math.max(...numbers);
+                    document.getElementById('amount').value = maxAmt;
+                    if(isFree) toggleFree();
+                    showToast(`Found Amount: ₹${maxAmt}`);
+                }
+            } else { showToast("Could not detect amount."); }
             
-            let numEl = document.createElement('div');
-            numEl.className = 'mat-dial-number';
-            numEl.style.left = `${x}px`; numEl.style.top = `${y}px`;
-            if (num === activeVal) numEl.style.color = 'transparent';
-            else numEl.textContent = tp_mode === 'hour' ? num : String(num).padStart(2, '0');
-            container.appendChild(numEl);
-        }
-    }
-
-    function initDialInteraction() {
-        const dial = document.getElementById('tp-dial-container');
-        const updateFromEvent = (e) => {
-            const rect = dial.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            const x = clientX - rect.left - 125, y = clientY - rect.top - 125;
-            let angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
-            if (angle < 0) angle += 360;
+            // Auto attach as receipt
+            const reader = new FileReader();
+            reader.onload = e => { currentPhotos.push({ url: e.target.result, type: 'receipt' }); renderPhotoPreviews(); };
+            reader.readAsDataURL(file);
             
-            if (tp_mode === 'hour') {
-                let hr = Math.round(angle / 30); if (hr === 0) hr = 12; tp_hr = hr;
-            } else {
-                let min = Math.round(angle / 6); if (min === 60) min = 0; tp_min = min;
-            }
-            updateTimePickerUI();
-        };
-
-        let isDragging = false;
-        dial.onmousedown = dial.ontouchstart = (e) => { isDragging = true; updateFromEvent(e); };
-        document.onmousemove = document.ontouchmove = (e) => { if(isDragging) updateFromEvent(e); e.preventDefault();};
-        document.onmouseup = document.ontouchend = () => {
-            if(isDragging && tp_mode === 'hour') setTimeout(() => setTpMode('minute'), 250);
-            isDragging = false;
-        };
-    }
-
-    function saveTimePicker() {
-        let h24 = tp_hr;
-        if(tp_ampm === 'PM' && tp_hr !== 12) h24 += 12;
-        if(tp_ampm === 'AM' && tp_hr === 12) h24 = 0;
-        document.getElementById('timeInput').value = `${String(h24).padStart(2,'0')}:${String(tp_min).padStart(2,'0')}`;
-        document.getElementById('displayTimeText').innerHTML = `<div style="font-size:1.05rem;font-weight:700;">${String(tp_hr).padStart(2, '0')}:${String(tp_min).padStart(2,'0')}</div><div style="font-size:0.75rem;font-weight:600;opacity:0.8;">${tp_ampm}</div>`;
-        closeTimePicker();
+            document.getElementById('ocrLoading').style.display = 'none';
+        }).catch(err => {
+            console.error(err);
+            document.getElementById('ocrLoading').style.display = 'none';
+            showToast("OCR Failed.");
+        });
     }
 
     // ==========================================================================
-    // UI RENDERING & CHART.JS
+    // UI RENDERING (Calendar, Chart, Overview, List)
     // ==========================================================================
     function renderCalendar() {
       const cal = document.getElementById('calendar');
@@ -921,8 +608,16 @@
       cal.innerHTML = html;
     }
     function changeMonth(delta) { currentMonth += delta; if (currentMonth === 12) { currentYear++; currentMonth = 0; } else if (currentMonth === -1) { currentYear--; currentMonth = 11; } renderCalendar(); }
-    function selectDate(dateStr) { selectedDate = selectedDate === dateStr ? null : dateStr; renderAll(); }
-    function toggleCategoryFilter(cat) { activeCategoryFilter = (activeCategoryFilter === cat) ? null : cat; renderAll(); }
+    
+    function selectDate(dateStr) { 
+        selectedDate = selectedDate === dateStr ? null : dateStr; 
+        updateHeaderTotal(); renderExpenseList(); updateMap(); renderCalendar();
+    }
+    
+    function toggleCategoryFilter(cat) { 
+        activeCategoryFilter = (activeCategoryFilter === cat) ? null : cat; 
+        updateHeaderTotal(); renderExpenseList(); updateMap(); renderBudgetBreakdown();
+    }
 
     function renderBudgetBreakdown() {
       const breakdown = {}; expenses.forEach(e => { breakdown[e.category] = (breakdown[e.category] || 0) + Number(e.amount); });
@@ -935,6 +630,7 @@
       if(window.expenseChartInst) window.expenseChartInst.destroy();
       
       const labels = Object.keys(breakdown).map(k => k.split(' ')[1] || k);
+      const originalLabels = Object.keys(breakdown);
       const data = Object.values(breakdown);
       const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444', '#0ea5e9'];
 
@@ -942,7 +638,13 @@
           window.expenseChartInst = new Chart(ctx, {
               type: 'doughnut',
               data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, hoverOffset: 4 }] },
-              options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { color: textColor, font: { family: 'Inter', size: 11 } } } } }
+              options: { 
+                  responsive: true, maintainAspectRatio: false, cutout: '70%', 
+                  plugins: { legend: { position: 'right', labels: { color: textColor, font: { family: 'Inter', size: 11 } } } },
+                  onClick: (evt, elements) => {
+                      if(elements.length > 0) toggleCategoryFilter(originalLabels[elements[0].index]);
+                  }
+              }
           });
       }
 
@@ -951,257 +653,186 @@
           const isActive = activeCategoryFilter === cat ? 'active-filter' : '';
           return `<div class="budget-item ${isActive}" onclick="toggleCategoryFilter('${cat}')"><div><div class="budget-name">${cat}</div><div class="budget-percent">${percent}% of total</div></div><div class="budget-val">₹${amt.toLocaleString('en-IN')}</div></div>`;
         }).join('');
-      document.getElementById('budgetBreakdownList').innerHTML = html || '<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:20px;">Add expenses to see analytics!</div>';
+      document.getElementById('budgetBreakdownList').innerHTML = html || '<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:20px;">No expenses yet.</div>';
     }
 
-    function updateTotal() {
-      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-      document.getElementById('totalSpent').textContent = `₹${total.toLocaleString('en-IN')}`;
-      const pct = Math.min((total / tripBudget) * 100, 100).toFixed(1);
-      document.getElementById('burnText').textContent = `${pct}% of ₹${tripBudget.toLocaleString('en-IN')}`;
-      const bar = document.getElementById('burnBar'); bar.style.width = `${pct}%`;
-      if(pct > 90) bar.style.background = '#ef4444'; else if(pct > 75) bar.style.background = '#f59e0b'; else bar.style.background = '#10b981';
+    function updateHeaderTotal() {
+        let filtered = expenses;
+        if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
+        if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
+        
+        const total = filtered.reduce((sum, e) => sum + Number(e.amount), 0);
+        document.getElementById('totalSpent').textContent = `₹${total.toLocaleString('en-IN')}`;
+        
+        if (activeCategoryFilter || selectedDate) document.getElementById('filterLabel').innerHTML = `<span style="color:var(--warning)">Filtered Total</span>`;
+        else document.getElementById('filterLabel').textContent = "Total Spent";
+
+        // Global Budget Burn (Always total)
+        const globalTotal = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+        const pct = Math.min((globalTotal / tripBudget) * 100, 100).toFixed(1);
+        document.getElementById('burnText').textContent = `${pct}% of ₹${tripBudget.toLocaleString('en-IN')}`;
+        const bar = document.getElementById('burnBar'); bar.style.width = `${pct}%`;
+        if(pct > 90) bar.style.background = '#ef4444'; else if(pct > 75) bar.style.background = '#f59e0b'; else bar.style.background = '#10b981';
+    }
+
+    function renderOverview() {
+        let pStats = {};
+        let rImgs = [];
+        let mImgs = [];
+
+        expenses.forEach(e => {
+            if(!e.isFree && e.paidBy) {
+                if(!pStats[e.paidBy]) pStats[e.paidBy] = { t:0, locs:0, cats:{} };
+                pStats[e.paidBy].t += e.amount;
+                pStats[e.paidBy].locs += e.place ? 1 : 0;
+                pStats[e.paidBy].cats[e.category] = (pStats[e.paidBy].cats[e.category]||0) + e.amount;
+            }
+            if(e.photo) {
+                let pArr = Array.isArray(e.photo) ? e.photo : [{url: e.photo, type: 'memory'}];
+                pArr.forEach(p => {
+                    if(p.type === 'receipt') rImgs.push(p.url);
+                    else mImgs.push(p.url);
+                });
+            }
+        });
+
+        // Table
+        let tableHTML = `<table class="overview-table"><tr><th>Payer</th><th>Spent</th><th>Top Category</th></tr>`;
+        Object.entries(pStats).sort((a,b)=>b[1].t-a[1].t).forEach(([p, d]) => {
+            let topC = Object.entries(d.cats).sort((a,b)=>b[1]-a[1])[0][0].split(' ')[1];
+            tableHTML += `<tr><td><strong>${p}</strong></td><td style="color:var(--danger);font-weight:bold;">₹${d.t.toLocaleString()}</td><td>${topC}</td></tr>`;
+        });
+        tableHTML += `</table>`;
+        document.getElementById('overviewTableContainer').innerHTML = tableHTML;
+
+        // Carousels
+        const buildC = (arr) => arr.map(u => `<div class="carousel-item" onclick="viewImage('${u}')"><img src="${u}"></div>`).join('');
+        document.getElementById('receiptCarousel').innerHTML = rImgs.length ? buildC(rImgs) : `<div style="color:var(--text-muted);font-size:0.8rem;">No receipts scanned.</div>`;
+        document.getElementById('memoryCarousel').innerHTML = mImgs.length ? buildC(mImgs) : `<div style="color:var(--text-muted);font-size:0.8rem;">No memories attached.</div>`;
     }
 
     function renderAll() { 
         try { 
-            renderCalendar(); renderBudgetBreakdown(); renderExpenseList(); updateTotal(); 
-            if(currentView === 'gallery') renderGallery(); else updateMap(); 
+            renderCalendar(); renderBudgetBreakdown(); renderExpenseList(); updateHeaderTotal(); updateMap();
+            if(document.getElementById('tab-overview').classList.contains('active')) renderOverview();
         } 
         catch (e) { console.error("Render error", e); }
     }
 
     // ==========================================================================
-    // MAP SYSTEM & OSRM ROUTING
+    // MAP SYSTEM: CIRCLE PINS, CLUSTERS, HEATMAP
     // ==========================================================================
     function initMap() {
       map = L.map('map', { zoomControl: false }).setView([15.2993, 74.1240], 10);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM', maxZoom: 19 }).addTo(map);
       L.control.zoom({ position: 'bottomright' }).addTo(map);
+      markersCluster = L.markerClusterGroup({
+          iconCreateFunction: function(cluster) {
+              return L.divIcon({ html: `<div style="background:var(--ocean); color:white; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:bold; box-shadow: 0 0 10px rgba(0,0,0,0.5);">${cluster.getChildCount()}</div>`, className: '', iconSize: [30, 30] });
+          }
+      });
+      map.addLayer(markersCluster);
+    }
+
+    function toggleHeatmap() {
+        isHeatmap = !isHeatmap;
+        document.getElementById('btn-heatmap').classList.toggle('active', isHeatmap);
+        updateMap();
     }
 
     function updateMap() {
       if (!map) return;
-      markers.forEach(m => map.removeLayer(m)); markers = [];
+      markersCluster.clearLayers();
+      if(heatLayer) { map.removeLayer(heatLayer); heatLayer = null; }
       if(routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
       
       let filtered = expenses;
       if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
       if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
 
-      const placesLoc = filtered.filter(e => e.locationData && typeof e.locationData.lat === 'number').sort((a, b) => {
-          try {
-              let tA = a.time && a.time.includes(':') ? a.time.substring(0,5) : '00:00';
-              let tB = b.time && b.time.includes(':') ? b.time.substring(0,5) : '00:00';
-              let dA = a.date || '1970-01-01'; let dB = b.date || '1970-01-01';
-              return new Date(`${dA}T${tA}`) - new Date(`${dB}T${tB}`);
-          } catch(err) { return 0; }
-      });
+      const placesLoc = filtered.filter(e => e.locationData && typeof e.locationData.lat === 'number').sort((a, b) => new Date(`${a.date}T${a.time||'00:00'}`) - new Date(`${b.date}T${b.time||'00:00'}`));
       
+      if(isHeatmap && placesLoc.length > 0) {
+          let heatPoints = placesLoc.map(p => [p.locationData.lat, p.locationData.lon, (p.amount || 100) / 100]);
+          heatLayer = L.heatLayer(heatPoints, {radius: 25, blur: 15, maxZoom: 17}).addTo(map);
+          document.getElementById('totalDistance').textContent = "Heatmap View";
+          return; // Skip drawing pins and lines in heatmap mode
+      }
+
       let latlngs = [];
 
       placesLoc.forEach((exp, index) => {
         latlngs.push([exp.locationData.lat, exp.locationData.lon]);
-        let extraClass = index === 0 ? 'origin' : (index === placesLoc.length - 1 ? 'end' : '');
         
-        const numIcon = L.divIcon({
-            className: 'custom-icon',
-            html: `<div class="seq-marker ${extraClass}" style="width:28px;height:28px;">${index + 1}</div>`,
-            iconSize: [28, 28], iconAnchor: [14, 14]
+        // Dynamic Pin Styling based on Spends
+        let color = '#10b981'; // Green < 500
+        if(exp.amount >= 500 && exp.amount <= 1500) color = '#f59e0b'; // Yellow
+        if(exp.amount > 1500) color = '#ef4444'; // Red
+        if(exp.isFree) color = '#3b82f6'; // Blue for free
+        
+        let radius = 8 + (Math.min(exp.amount, 5000) / 1000); // Scale size
+
+        const marker = L.circleMarker([exp.locationData.lat, exp.locationData.lon], {
+            radius: radius, fillColor: color, color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.9
         });
 
-        let photoUrl = '';
-        if(exp.photo) { photoUrl = Array.isArray(exp.photo) ? exp.photo[0] : exp.photo; }
-
-        const pHTML = photoUrl ? `<img src="${photoUrl}" style="width:100%; height:80px; object-fit:cover; border-radius:8px; margin-bottom:8px;">` : '';
-        const badgeAmt = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary);font-size:1.2rem;font-weight:900;">FREE</span>' : `₹${Number(exp.amount).toLocaleString('en-IN')}`;
+        // Popup logic
+        let pHTML = '';
+        if(exp.photo) {
+            let pArr = Array.isArray(exp.photo) ? exp.photo : [{url: exp.photo}];
+            pHTML = `<img src="${pArr[0].url}" style="width:100%; height:80px; object-fit:cover; border-radius:8px; margin-bottom:8px;">`;
+        }
+        const badgeAmt = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary);font-weight:900;">FREE</span>' : `₹${Number(exp.amount).toLocaleString()}`;
         
-        const marker = L.marker([exp.locationData.lat, exp.locationData.lon], {icon: numIcon}).addTo(map).bindPopup(`
+        marker.bindPopup(`
             <div style="min-width:180px; font-family:'Inter';">
               ${pHTML}
-              <div style="font-size:0.75rem; font-weight:800; color:#0ea5e9; text-transform:uppercase; margin-bottom:4px;">Stop ${index + 1}</div>
+              <div style="font-size:0.7rem; font-weight:800; color:#0ea5e9; text-transform:uppercase;">Stop ${index + 1}</div>
               <b style="color:#1e293b; font-size:1rem;">${escapeHtml(exp.description)}</b><br>
-              <span style="color:#ef4444; font-weight:800; font-family:'JetBrains Mono';">${badgeAmt}</span><br>
-              <span style="color:#64748b; font-size:0.8rem;">${(exp.category||'').split(' ')[0]}</span>
+              <span style="color:#ef4444; font-weight:800; font-family:'JetBrains Mono'; font-size:1.1rem;">${badgeAmt}</span><br>
+              <span style="color:#64748b; font-size:0.75rem;">${(exp.category||'').split(' ')[0]}</span>
             </div>
-          `);
-        markers.push(marker);
+        `);
+        marker.bindTooltip(`<b>${escapeHtml(exp.description)}</b>`, {className: 'custom-tooltip'});
+        markersCluster.addLayer(marker);
       });
 
+      // Draw dashed route line
       if (placesLoc.length > 1) {
-          const coordsStr = placesLoc.map(p => `${p.locationData.lon},${p.locationData.lat}`).join(';');
-          fetch(`https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`)
-          .then(r => r.json()).then(data => {
-              if(data.code === "Ok") {
-                  routeLayer = L.geoJSON(data.routes[0].geometry, { style: { color: 'var(--ocean)', weight: 4, opacity: 0.8, dashArray: '5, 10' } }).addTo(map);
-                  document.getElementById('totalDistance').textContent = (data.routes[0].distance / 1000).toFixed(1) + ' km';
-              } else throw new Error("OSRM Failed");
-          }).catch(err => {
-              routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 4, dashArray: '8, 8'}).addTo(map);
-              let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
-              document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km';
-          });
+          routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 3, dashArray: '6, 8', opacity: 0.6}).addTo(map);
+          let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
+          document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km';
       } else {
           document.getElementById('totalDistance').textContent = '0 km';
       }
 
-      // PREVENT ZOOM GLITCH FOR SINGLE PINS
-      if (markers.length > 1 && !isReplaying) {
-          try { map.fitBounds(L.featureGroup(markers).getBounds().pad(0.2), { maxZoom: 16 }); } catch(e){}
-      } else if (markers.length === 1 && !isReplaying) {
-          map.setView(markers[0].getLatLng(), 15);
+      if (placesLoc.length > 1 && !isReplaying) {
+          try { map.fitBounds(L.featureGroup(latlngs.map(ll => L.marker(ll))).getBounds().pad(0.2), { maxZoom: 16 }); } catch(e){}
+      } else if (placesLoc.length === 1 && !isReplaying) {
+          map.setView(latlngs[0], 15);
       }
     }
 
     function flyToMap(lat, lng) { 
         if(!map) return;
         if(window.innerWidth <= 1024) toggleSidebar();
-        map.flyTo([lat, lng], 16, { animate: true, duration: 1.5 }); 
-        setTimeout(() => L.popup().setLatLng([lat, lng]).setContent("<b style='font-family:Inter;'>📍 Selected Location</b>").openOn(map), 1500);
+        map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); 
     }
 
-    // ==========================================================================
-    // MANUAL STORY REPLAY
-    // ==========================================================================
-    function startReplay() {
-        replayRoute = expenses.filter(e => e.locationData && typeof e.locationData.lat === 'number').sort((a, b) => {
-            try {
-                let tA = a.time && a.time.includes(':') ? a.time.substring(0,5) : '00:00';
-                let tB = b.time && b.time.includes(':') ? b.time.substring(0,5) : '00:00';
-                let dA = a.date || '1970-01-01'; let dB = b.date || '1970-01-01';
-                return new Date(`${dA}T${tA}`) - new Date(`${dB}T${tB}`);
-            } catch(err) { return 0; }
+    function exportMap() {
+        showToast("📸 Capturing Map Snapshot...");
+        html2canvas(document.getElementById("map-wrapper"), {useCORS: true}).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Goa-Map-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast("✅ Snapshot Saved!");
         });
-
-        if(replayRoute.length === 0) return showToast("No locations saved to replay!");
-        
-        isReplaying = true;
-        currentReplayIndex = 0;
-        document.getElementById('replayCard').classList.add('show');
-        if(document.getElementById('itinerarySidebar').classList.contains('open')) toggleSidebar();
-        
-        document.addEventListener('keydown', handleReplayKey);
-        renderReplayStep();
-        showToast("Started Story Mode! Use Arrow Keys.");
-    }
-
-    function renderReplayStep() {
-        if(!isReplaying || replayRoute.length === 0) return;
-        let exp = replayRoute[currentReplayIndex];
-        map.flyTo([exp.locationData.lat, exp.locationData.lon], 16, { animate: true, duration: 1.2 });
-        
-        document.getElementById('rc-step').textContent = `Stop ${currentReplayIndex + 1} of ${replayRoute.length}`;
-        document.getElementById('rc-title').innerHTML = escapeHtml(exp.description);
-        
-        const badgeAmt = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary); font-size:1.3rem;">FREE</span>' : `₹${Number(exp.amount).toLocaleString('en-IN')}`;
-        document.getElementById('rc-amt').innerHTML = badgeAmt;
-        
-        document.getElementById('rc-meta').innerHTML = `<span style="background:var(--primary); color:white; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:4px;">${(exp.category||'').split(' ')[0]}</span> <i class="ph-bold ph-calendar-blank"></i> ${formatDate(exp.date)} ${exp.time ? `• ${tConvert(exp.time)}` : ''}`;
-        
-        let imgContainer = document.getElementById('rc-img-container');
-        if(exp.photo && (Array.isArray(exp.photo) ? exp.photo.length > 0 : true)) {
-            let photosArray = Array.isArray(exp.photo) ? exp.photo : [exp.photo];
-            if(photosArray.length > 1) {
-                imgContainer.innerHTML = `<div style="display:flex; overflow-x:auto; width:100%; height:100%; scroll-snap-type: x mandatory;">` + 
-                    photosArray.map(p => `<img src="${p}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0; scroll-snap-align: start;" onclick="viewImage('${p}')">`).join('') +
-                    `</div>`;
-            } else {
-                imgContainer.innerHTML = `<img src="${photosArray[0]}" class="rc-img-content" onclick="viewImage('${photosArray[0]}')">`;
-            }
-        } else {
-            imgContainer.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; color:var(--text-muted); opacity:0.5;"><i class="ph-bold ph-image" style="font-size:3.5rem; margin-bottom:8px;"></i> No photo attached</div>`;
-        }
-
-        document.getElementById('rc-prev').style.opacity = currentReplayIndex === 0 ? '0.5' : '1';
-        document.getElementById('rc-prev').style.pointerEvents = currentReplayIndex === 0 ? 'none' : 'auto';
-        document.getElementById('rc-next').innerHTML = currentReplayIndex === replayRoute.length - 1 ? `Finish` : `Next`;
-    }
-
-    function nextReplay() {
-        if(currentReplayIndex < replayRoute.length - 1) { currentReplayIndex++; renderReplayStep(); } 
-        else { exitReplay(); showToast("Story Complete! 🎉"); }
-    }
-    function prevReplay() { if(currentReplayIndex > 0) { currentReplayIndex--; renderReplayStep(); } }
-    function exitReplay() {
-        isReplaying = false;
-        document.getElementById('replayCard').classList.remove('show');
-        document.removeEventListener('keydown', handleReplayKey);
-        updateMap();
-    }
-    function handleReplayKey(e) {
-        if(!isReplaying) return;
-        if(e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextReplay(); }
-        if(e.key === 'ArrowLeft') { e.preventDefault(); prevReplay(); }
-        if(e.key === 'Escape') { e.preventDefault(); exitReplay(); }
-    }
-
-    // --- MANUAL PINNING ---
-    function enableManualPin() {
-        manualPinMode = true; showToast("📍 Click map to pin!");
-        document.getElementById('map').classList.add('map-pin-mode');
-        map.off('click', handleMapClick); map.once('click', handleMapClick);
-    }
-    function handleMapClick(e) {
-        if(!manualPinMode) return;
-        const lat = e.latlng.lat; const lon = e.latlng.lng;
-        if(tempMarker) map.removeLayer(tempMarker);
-        tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned!</b>").openPopup();
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
-        .then(r => r.json()).then(data => selectLocation(data.display_name ? data.display_name.split(',')[0] : `Map Pin`, lat, lon, null))
-        .catch(() => selectLocation(`Map Pin`, lat, lon, null));
-        manualPinMode = false; document.getElementById('map').classList.remove('map-pin-mode');
-    }
-
-    // --- LIVE GPS ---
-    function pinCurrentLocation() {
-        showToast("Requesting GPS...");
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                const lat = pos.coords.latitude, lon = pos.coords.longitude;
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
-                .then(r => r.json()).then(data => {
-                    selectLocation(data.display_name ? data.display_name.split(',')[0] : `Live GPS Pin`, lat, lon, null);
-                    if(tempMarker) map.removeLayer(tempMarker);
-                    tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 You are here</b>").openPopup();
-                    map.flyTo([lat, lon], 16);
-                }).catch(() => selectLocation(`Live Pin`, lat, lon, null));
-            }, () => showToast("GPS Error: You must click 'Allow'."));
-        } else { showToast("GPS not supported."); }
-    }
-
-    // --- LOCATION SEARCH ---
-    function searchLocation(query) {
-      clearTimeout(searchTimeout); const sug = document.getElementById('locationSuggestions');
-      if (!query || query.length < 2) { sug.style.display = 'none'; return; }
-      sug.innerHTML = '<div style="padding: 12px; color: var(--text-muted); font-size:0.85rem;">🔍 Searching...</div>'; sug.style.display = 'block';
-      searchTimeout = setTimeout(() => {
-        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ', Goa, India')}&format=json&limit=5`)
-          .then(r => r.json()).then(results => {
-            if (results.length === 0) { sug.innerHTML = '<div style="padding: 12px; font-size:0.85rem;">No locations found.</div>'; return; }
-            sug.innerHTML = results.map(place => {
-              const shortName = place.display_name.split(',')[0];
-              const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lon}`;
-              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${escapeHtml(place.display_name)}', ${place.lat}, ${place.lon}, '${mapsUrl.replace(/'/g, "\\'")}')"><div style="font-weight: 700; font-size: 0.9rem;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
-            }).join('');
-          }).catch(() => { sug.innerHTML = '<div style="padding: 12px; color: var(--danger); font-size:0.85rem;">Error searching.</div>'; });
-      }, 400);
-    }
-    function selectLocation(name, lat, lon, mapsUrl) {
-      const shortName = name.split(',')[0]; document.getElementById('place').value = shortName;
-      selectedLocation = { name: shortName, fullName: name, lat: lat, lon: lon, mapsUrl: mapsUrl || `https://www.google.com/maps/search/?api=1&query=${lat},${lon}` };
-      document.getElementById('locationSuggestions').style.display = 'none'; showToast(`📍 Selected: ${shortName}`);
     }
 
     // ==========================================================================
     // CRUD: FORM & FEED
     // ==========================================================================
-    function tConvert(time) {
-        if(!time || !time.includes(':')) return '';
-        let timeParts = time.split(':'); let h = parseInt(timeParts[0]); let m = timeParts[1];
-        let ampm = h >= 12 ? ' PM' : ' AM'; h = h % 12 || 12;
-        return `${String(h).padStart(2,'0')}:${m}${ampm}`;
-    }
-
     function addExpense() {
       let desc = document.getElementById('description').value.trim();
       let amtRaw = document.getElementById('amount').value;
@@ -1233,8 +864,6 @@
       if (isFree) toggleFree();
       document.getElementById('description').value = ''; document.getElementById('amount').value = ''; document.getElementById('category').value = ''; document.getElementById('place').value = ''; 
       
-      const offset = new Date().getTimezoneOffset() * 60000;
-      document.getElementById('dateInput').value = (new Date(new Date().getTime() - offset)).toISOString().split('T')[0];
       selectedLocation = null; 
       currentPhotos = []; renderPhotoPreviews(); document.getElementById('photoInput').value = '';
       if(tempMarker) { map.removeLayer(tempMarker); tempMarker = null; }
@@ -1247,23 +876,18 @@
         else { if (isFree) toggleFree(); document.getElementById('amount').value = exp.amount; }
 
         document.getElementById('description').value = exp.description; document.getElementById('category').value = exp.category; document.getElementById('place').value = exp.place || ''; 
-        
         if(exp.paidBy && !payers.includes(exp.paidBy)) { payers.push(exp.paidBy); renderPayers(); }
         document.getElementById('paidBy').value = exp.paidBy || 'Tarun';
-
-        if(exp.time) {
-            document.getElementById('timeInput').value = exp.time;
-            let [h, m] = exp.time.split(':'); let ampm = h >= 12 ? 'PM' : 'AM'; let h12 = h % 12 || 12;
-            document.getElementById('displayTimeText').innerHTML = `<div style="font-size:1.05rem;font-weight:700;">${String(h12).padStart(2,'0')}:${m}</div><div style="font-size:0.75rem;font-weight:600;opacity:0.8;">${ampm}</div>`;
-        }
+        if(exp.time) document.getElementById('timeInput').value = exp.time;
         if(exp.date) document.getElementById('dateInput').value = exp.date;
         
         selectedLocation = exp.locationData || null; 
-        currentPhotos = exp.photo ? (Array.isArray(exp.photo) ? [...exp.photo] : [exp.photo]) : [];
+        currentPhotos = exp.photo ? (Array.isArray(exp.photo) ? [...exp.photo] : [{url: exp.photo, type: 'memory'}]) : [];
         renderPhotoPreviews();
 
         editingId = id; document.getElementById('saveBtn').textContent = 'Update Memory'; showToast('Editing mode active');
         if(document.getElementById('itinerarySidebar').classList.contains('open')) toggleSidebar();
+        switchRightTab('add');
     }
 
     function renderExpenseList() {
@@ -1272,23 +896,19 @@
       if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
 
       const html = filtered.map(e => {
-        let locHTML = '';
-        if(e.locationData && e.locationData.lat) locHTML = `<button onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn"><i class="ph-bold ph-map-pin"></i> Locate Map</button>`; 
-        else if(e.place) locHTML = `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(e.place)}</span>`; 
+        let locHTML = (e.locationData && e.locationData.lat) ? `<button onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn"><i class="ph-bold ph-map-pin"></i> Locate Map</button>` : `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(e.place)}</span>`; 
         
         let photoHTML = '';
         if (e.photo) {
-            let photosArray = Array.isArray(e.photo) ? e.photo : [e.photo];
-            if(photosArray.length > 0) {
+            let pArr = Array.isArray(e.photo) ? e.photo : [{url: e.photo, type: 'memory'}];
+            if(pArr.length > 0) {
                 photoHTML = `<div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">` + 
-                    photosArray.map(p => `<img src="${p}" class="photo-thumb" onclick="viewImage('${p}')">`).join('') + 
-                    `</div>`;
+                    pArr.map(p => `<img src="${p.url}" class="photo-thumb" style="border-color:${p.type==='receipt'?'var(--warning)':'var(--border)'};" onclick="viewImage('${p.url}')">`).join('') + `</div>`;
             }
         }
-
         const badgeAmt = (e.isFree || e.amount === 0) ? '<span style="color:var(--primary); font-size:1.1rem; font-weight:900;">FREE</span>' : `₹${Number(e.amount).toLocaleString('en-IN')}`;
 
-        return `<div class="expense-item" id="item-${e.id}">
+        return `<div class="expense-item" id="item-${e.id}" onclick="if(event.target.tagName !== 'BUTTON' && event.target.tagName !== 'IMG') { flyToMap(${e.locationData?.lat||0}, ${e.locationData?.lon||0}); }">
           <div class="exp-top">
              <div style="flex:1; min-width:0;">
                  ${photoHTML}
@@ -1303,27 +923,73 @@
                  <div><div class="exp-cat">${(e.category||'').split(' ')[0]}</div></div>
              </div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button class="action-btn btn-edit" onclick="triggerEdit(${e.id})"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="action-btn btn-del" onclick="deleteExpense(${e.id})"><i class="ph-bold ph-trash"></i> Delete</button></div></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button class="action-btn btn-edit" onclick="triggerEdit(${e.id})"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="action-btn btn-del" onclick="deleteExpense(${e.id})"><i class="ph-bold ph-trash"></i></button></div></div>
         </div>`;
       }).join('');
-      document.getElementById('expenseList').innerHTML = html || '<p style="text-align:center;color:var(--text-muted);padding:40px;font-size:0.9rem;">No items match criteria.</p>';
+      document.getElementById('expenseList').innerHTML = html || '<p style="text-align:center;color:var(--text-muted);padding:40px;font-size:0.9rem;">No memories logged yet.</p>';
     }
 
     function deleteExpense(id) { 
         if (confirm('Delete this memory?')) { 
             expenses = expenses.filter(e => e.id !== id); 
-            if(editingId === id) { 
-                editingId = null; 
-                document.getElementById('saveBtn').textContent = 'Save to Itinerary'; 
-                if(isFree) toggleFree();
-            } 
-            saveData(); 
-            showToast('Deleted & Synced.'); 
+            if(editingId === id) { editingId = null; document.getElementById('saveBtn').textContent = 'Save to Itinerary'; if(isFree) toggleFree(); } 
+            saveData(); showToast('Deleted & Synced.'); 
         } 
     }
 
     // ==========================================================================
-    // EXPORTS 
+    // MANUAL PINNING & LOCATION
+    // ==========================================================================
+    function enableManualPin() {
+        manualPinMode = true; showToast("📍 Click map to pin!");
+        document.getElementById('map').classList.add('map-pin-mode');
+        map.off('click', handleMapClick); map.once('click', handleMapClick);
+    }
+    function handleMapClick(e) {
+        if(!manualPinMode) return;
+        const lat = e.latlng.lat; const lon = e.latlng.lng;
+        if(tempMarker) map.removeLayer(tempMarker);
+        tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned!</b>").openPopup();
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => selectLocation(data.display_name ? data.display_name.split(',')[0] : `Map Pin`, lat, lon, null)).catch(() => selectLocation(`Map Pin`, lat, lon, null));
+        manualPinMode = false; document.getElementById('map').classList.remove('map-pin-mode');
+    }
+    function pinCurrentLocation() {
+        showToast("Requesting GPS...");
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                const lat = pos.coords.latitude, lon = pos.coords.longitude;
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
+                    selectLocation(data.display_name ? data.display_name.split(',')[0] : `Live GPS Pin`, lat, lon, null);
+                    if(tempMarker) map.removeLayer(tempMarker);
+                    tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 You are here</b>").openPopup();
+                    map.flyTo([lat, lon], 16);
+                }).catch(() => selectLocation(`Live Pin`, lat, lon, null));
+            }, () => showToast("GPS Error: You must click 'Allow'."));
+        } else { showToast("GPS not supported."); }
+    }
+    function searchLocation(query) {
+      clearTimeout(searchTimeout); const sug = document.getElementById('locationSuggestions');
+      if (!query || query.length < 2) { sug.style.display = 'none'; return; }
+      sug.innerHTML = '<div style="padding: 12px; color: var(--text-muted); font-size:0.85rem;">🔍 Searching...</div>'; sug.style.display = 'block';
+      searchTimeout = setTimeout(() => {
+        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ', Goa, India')}&format=json&limit=5`).then(r => r.json()).then(results => {
+            if (results.length === 0) { sug.innerHTML = '<div style="padding: 12px; font-size:0.85rem;">No locations found.</div>'; return; }
+            sug.innerHTML = results.map(place => {
+              const shortName = place.display_name.split(',')[0];
+              const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lon}`;
+              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${escapeHtml(place.display_name)}', ${place.lat}, ${place.lon}, '${mapsUrl.replace(/'/g, "\\'")}')"><div style="font-weight: 700; font-size: 0.9rem;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
+            }).join('');
+          }).catch(() => { sug.innerHTML = '<div style="padding: 12px; color: var(--danger); font-size:0.85rem;">Error searching.</div>'; });
+      }, 400);
+    }
+    function selectLocation(name, lat, lon, mapsUrl) {
+      const shortName = name.split(',')[0]; document.getElementById('place').value = shortName;
+      selectedLocation = { name: shortName, fullName: name, lat: lat, lon: lon, mapsUrl: mapsUrl || `https://www.google.com/maps/search/?api=1&query=${lat},${lon}` };
+      document.getElementById('locationSuggestions').style.display = 'none'; showToast(`📍 Selected: ${shortName}`);
+    }
+
+    // ==========================================================================
+    // EXPORTS & UTILS
     // ==========================================================================
     function escapeHtml(t) { if(!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
     function formatDate(d) { return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
@@ -1337,7 +1003,19 @@
       const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-expenses.csv`; a.click(); showToast('CSV exported!');
     }
-
+    function downloadPlacesList() {
+      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
+      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? stats.locationData.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
+    }
+    function exportHTML() {
+      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
+    }
     function exportStory() {
         if(expenses.length === 0) return showToast("Add expenses first!");
         const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
@@ -1347,26 +1025,7 @@
         a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
     }
 
-    function exportHTML() {
-      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
-      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
-    }
-
-    function downloadPlacesList() {
-      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
-      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? stats.locationData.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
-      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
-    }
-
-    document.addEventListener('click', (e) => {
-      const sug = document.getElementById('locationSuggestions');
-      if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none';
-    });
-
+    document.addEventListener('click', (e) => { const sug = document.getElementById('locationSuggestions'); if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none'; });
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
