@@ -56,19 +56,22 @@
     .ph-left { display: flex; align-items: center; gap: 16px; }
     .ph-title { font-size: 1.5rem; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px;}
     .ph-theme-btn { background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; color: var(--text-main); transition: 0.2s;}
-    .ph-right { display: flex; align-items: center; gap: 32px; }
+    
+    .ph-right { display: flex; align-items: center; gap: 24px; }
     .ph-stat { display: flex; flex-direction: column; align-items: flex-end; }
     .ph-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap:4px; }
     .ph-val { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 800; color: var(--info); margin-top: 2px; }
     .ph-val.total { color: var(--danger); }
-    .ph-val.dist { color: var(--warning); }
+    
     .burn-container { width: 150px; text-align: right; margin-top: 4px;}
     .burn-bar { width: 100%; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
     .burn-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
-    .sidebar-btn { background: var(--ocean); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); transition: 0.2s; }
+    
+    .sidebar-btn { background: var(--ocean); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
 
     /* ==========================================================================
-       3. DASHBOARD GRID & SIDEBAR
+       3. DASHBOARD GRID & SIDEBARS
        ========================================================================== */
     .dashboard-grid { display: grid; grid-template-columns: 300px 1fr 380px; gap: 16px; flex: 1; overflow: hidden; }
     .col-left, .col-center, .col-right { display: flex; flex-direction: column; gap: 16px; height: 100%; overflow: hidden; }
@@ -76,11 +79,22 @@
     .panel-header { padding: 16px 20px; font-weight: 800; font-size: 1.05rem; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;}
     .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
 
-    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 99998; backdrop-filter: blur(4px);}
-    .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s ease; box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
+    /* Overlay & Sidebars */
+    .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 99998; backdrop-filter: blur(4px);}
+    .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
     .sidebar.open { right: 0; }
     .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
+    .sidebar-header h2 { font-size: 1.3rem; margin: 0; display: flex; align-items: center; gap: 8px;}
+    .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
     
+    /* Overview Sidebar Specifics */
+    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.9rem; }
+    .overview-table th { background: var(--card-bg); text-align: left; padding: 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); }
+    .overview-table td { padding: 12px; border-bottom: 1px solid var(--border); }
+    .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 12px; padding-bottom: 10px; margin-bottom: 24px;}
+    .carousel-item { flex: 0 0 140px; height: 140px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: pointer;}
+    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+
     /* ==========================================================================
        4. CALENDAR & BUDGET
        ========================================================================== */
@@ -106,59 +120,119 @@
     #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     
     .view-toggle { display: flex; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
-    .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer;}
+    .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px;}
     .view-toggle button.active { background: var(--ocean); color: white; }
     
     .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;}
+
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
 
-    /* ==========================================================================
-       6. TABBED RIGHT PANEL (FORM VS OVERVIEW)
-       ========================================================================== */
-    .tabs-header { display: flex; gap: 8px; width: 100%; }
-    .tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-muted); font-weight: 700; cursor: pointer; transition: 0.2s;}
-    .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary);}
-    .tab-content { display: none; flex-direction: column; height: 100%; }
-    .tab-content.active { display: flex; }
+    /* Gallery */
+    #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
+    .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
+    @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
+    .gallery-item { break-inside: avoid; margin-bottom: 16px; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); transition: 0.3s;}
+    .gallery-img { width: 100%; display: block; border-radius: 12px; }
+    .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; padding: 24px 12px 12px; font-size: 0.85rem; pointer-events: none;}
+    .gallery-date-header { font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;}
 
-    /* Form Styles */
+    /* Replay Card */
+    .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
+    .rc-img-wrapper { width: 100%; height: 180px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
+
+    /* ==========================================================================
+       6. FORM & FEED
+       ========================================================================== */
     .form-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
     .input-row { display: flex; gap: 12px; }
-    .input, .select { padding: 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none;}
+    .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
+    .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
-    #amountWrapper { flex:1; display:flex; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden;}
-    #amount { flex:1; border:none; padding:12px; background:transparent; color:var(--text-main); outline:none; min-width:0; }
-    #btn-free { background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border);}
+    #amountWrapper { flex:1; display:flex; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden; transition: 0.2s; }
+    #amountWrapper:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
+    #amount { flex:1; border:none; padding:14px; font-size:0.95rem; font-family:'Inter'; background:transparent; color:var(--text-main); outline:none; min-width:0; }
+    #btn-free { background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border); transition: 0.2s; user-select: none; font-size: 0.9rem;}
     #btn-ocr { background: var(--info); color: white; padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border);}
 
-    .img-type-toggle { display: flex; gap: 8px; margin-bottom: 10px;}
-    .img-type-btn { flex:1; padding: 6px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; cursor: pointer; background: var(--card-bg); color: var(--text-muted); font-weight:bold;}
-    .img-type-btn.active { background: var(--ocean); color: white; }
+    /* RESTORED DATE/TIME ROW FORMAT */
+    .dt-row { display: flex; gap: 10px; width: 100%; }
+    .dt-box { border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; cursor: pointer; transition: 0.2s; align-items: center;}
+    .dt-box:hover { border-color: var(--ocean); }
+    .dt-date { flex: 1.5; justify-content: space-between; }
+    .dt-date input[type="date"] { background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;}
+    .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
+    .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
+    .dt-cam { width: 50px; justify-content: center; font-size: 1.3rem; padding: 0;}
+    .dt-cam:hover { color: var(--ocean); }
+
+    .action-badge { padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
+    .action-badge:hover { filter: brightness(1.1); transform: translateY(-1px);}
+    .btn-gps { background: var(--info); color: white; }
+    .btn-pin { background: var(--warning); color: white; }
+    .btn-save { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; width: 100%; font-family: 'Plus Jakarta Sans'; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); transition: 0.2s;}
 
     #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
-    
-    /* Overview Tab Styles */
-    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.85rem; }
-    .overview-table th { background: var(--card-bg); text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: var(--text-muted); }
-    .overview-table td { padding: 10px; border-bottom: 1px solid var(--border); }
-    .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 12px; padding-bottom: 10px; }
-    .carousel-item { flex: 0 0 120px; height: 120px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: pointer;}
-    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
 
     /* Feed Layout */
-    .expense-item { padding: 16px; background: var(--card-bg); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; cursor: pointer;}
-    .expense-item:hover { border-color: var(--ocean); }
+    .expense-item { padding: 16px; background: var(--card-bg); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; transition: 0.2s;}
+    .exp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;}
+    .exp-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); line-height: 1.3;}
+    .exp-amt { font-weight: 800; font-size: 1.3rem; color: var(--danger); font-family: 'JetBrains Mono'; text-align: right;}
+    .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
     .split-badge { background: rgba(14, 165, 233, 0.15); color: var(--ocean); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; margin-left: 6px;}
 
-    /* Lightbox, OCR Loading & Settlement Modal */
+    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; cursor: pointer; border: 1px solid var(--border); flex-shrink: 0;}
+
+    /* ==========================================================================
+       7. MATERIAL UI CLOCK MODAL 
+       ========================================================================== */
+    .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(4px);}
+    .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
+    .mat-tp-label { font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;}
+    .mat-tp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;}
+    .mat-tp-display { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center;}
+    .mat-tp-box { background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d; transition: 0.2s;}
+    .mat-tp-box.active { background: #7c3116; color: #ffdbd1; }
+    .mat-tp-colon { font-size: 3.5rem; color: #d7c2b9; padding-bottom: 8px;}
+    .mat-tp-ampm { display: flex; flex-direction: column; border: 1px solid #4a3e39; border-radius: 12px; overflow: hidden; }
+    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: 0.2s;}
+    .mat-tp-ampm-btn:first-child { border-bottom: 1px solid #4a3e39; }
+    .mat-tp-ampm-btn.active { background: #4a3e39; color: #ffdbd1;}
+    .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;}
+    .mat-dial-center { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: #ffb59d; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; }
+    .mat-dial-hand { position: absolute; bottom: 50%; left: calc(50% - 2px); width: 4px; height: calc(50% - 20px); background: #ffb59d; transform-origin: bottom center; z-index: 5;}
+    .mat-dial-hand-circle { position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;}
+    .mat-dial-number { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; z-index: 15; color: #d7c2b9; pointer-events: none;}
+    .mat-tp-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 8px;}
+    .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
+    .mat-tp-action-btns { display: flex; gap: 16px; }
+    .mat-tp-action-btn { background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px; transition: 0.2s;}
+
+    /* Lightbox & Toast & OCR Loader */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
-    #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; }
-    #ocrLoading { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 999999; justify-content: center; align-items: center; color: white; font-weight: bold; flex-direction: column; gap: 16px;}
+    #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
+    .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
+    
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 14px 28px; border-radius: 30px; font-weight: 700; z-index: 999999; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    #ocrLoading { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 999999; justify-content: center; align-items: center; color: white; font-weight: bold; flex-direction: column; gap: 16px;}
     .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(4px);}
-    .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
+    /* ==========================================================================
+       8. RESPONSIVE
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      body { height: auto; overflow: auto; display: block; padding: 12px; }
+      .premium-header { flex-direction: column; gap: 16px; border-radius: 20px; padding: 20px; }
+      .ph-right { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 15px;}
+      .dashboard-grid { display: flex; flex-direction: column; height: auto; overflow: visible;}
+      .col-left, .col-center, .col-right { height: auto; overflow: visible; }
+      .col-center .panel { height: 450px; }
+      .sidebar { width: 100vw; right: -100vw; }
+    }
   </style>
 </head>
 <body class="dark-mode">
@@ -168,46 +242,71 @@
       <div id="ocrStatus">AI Reading Receipt...</div>
   </div>
 
-  <div id="lightbox" onclick="this.style.display='none'"><div style="position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</div><img id="lbImg" src=""></div>
-
-  <div id="settlementModal" class="mat-modal-overlay">
-      <div class="mat-time-picker" style="width: 380px; background: var(--surface); border: 1px solid var(--border); padding: 24px; color: var(--text-main);">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-              <h2 style="margin:0; font-size:1.3rem; display:flex; align-items:center; gap:8px;"><i class="ph-fill ph-users-three" style="color:var(--primary)"></i> Settlements</h2>
-              <button style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;" onclick="document.getElementById('settlementModal').style.display='none'">✕</button>
-          </div>
-          <div id="settlementContent" style="max-height: 400px; overflow-y: auto; padding-right: 4px;"></div>
-      </div>
-  </div>
+  <div id="lightbox" onclick="this.style.display='none'"><div class="close-lb">✕</div><img id="lbImg" src=""></div>
+  <div id="toast" class="toast"><i class="ph-fill ph-info"></i> <span id="toastMsg">Message</span></div>
 
   <div id="timeModal" class="mat-modal-overlay">
       <div class="mat-time-picker">
-          <div style="font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;">Select time</div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;">
-              <div style="display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center;">
-                  <div id="tp-hr-disp" style="background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d;" onclick="setTpMode('hour')">06</div>
-                  <div style="font-size: 3.5rem; color: #d7c2b9; padding-bottom: 8px;">:</div>
-                  <div id="tp-min-disp" style="background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d;" onclick="setTpMode('minute')">45</div>
+          <div class="mat-tp-label">Select time</div>
+          <div class="mat-tp-header">
+              <div class="mat-tp-display">
+                  <div id="tp-hr-disp" class="mat-tp-box active" onclick="setTpMode('hour')">06</div>
+                  <div class="mat-tp-colon">:</div>
+                  <div id="tp-min-disp" class="mat-tp-box" onclick="setTpMode('minute')">45</div>
               </div>
-              <div style="display: flex; flex-direction: column; border: 1px solid #4a3e39; border-radius: 12px; overflow: hidden;">
-                  <button id="tp-am-btn" style="background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; border-bottom: 1px solid #4a3e39;" onclick="setTpAmpm('AM')">AM</button>
-                  <button id="tp-pm-btn" style="background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem;" onclick="setTpAmpm('PM')">PM</button>
+              <div class="mat-tp-ampm">
+                  <button id="tp-am-btn" class="mat-tp-ampm-btn active" onclick="setTpAmpm('AM')">AM</button>
+                  <button id="tp-pm-btn" class="mat-tp-ampm-btn" onclick="setTpAmpm('PM')">PM</button>
               </div>
           </div>
-          <div id="tp-dial-container" style="position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;">
-              <div style="position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: #ffb59d; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10;"></div>
-              <div id="tp-hand" style="position: absolute; bottom: 50%; left: calc(50% - 2px); width: 4px; height: calc(50% - 20px); background: #ffb59d; transform-origin: bottom center; z-index: 5;">
-                  <div id="tp-hand-text" style="position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;">6</div>
-              </div>
+          <div id="tp-dial-container" class="mat-dial-container">
+              <div class="mat-dial-center"></div>
+              <div id="tp-hand" class="mat-dial-hand"><div id="tp-hand-text" class="mat-dial-hand-circle">6</div></div>
               <div id="tp-dial-numbers"></div>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 8px;">
-              <i class="ph-bold ph-keyboard" style="color: #d7c2b9; font-size: 1.6rem; cursor: pointer;"></i>
-              <div style="display: flex; gap: 16px;">
-                  <button style="background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px;" onclick="closeTimePicker()">Cancel</button>
-                  <button style="background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px;" onclick="saveTimePicker()">OK</button>
+          <div class="mat-tp-actions">
+              <i class="ph-bold ph-keyboard mat-tp-keyboard"></i>
+              <div class="mat-tp-action-btns">
+                  <button class="mat-tp-action-btn" onclick="closeTimePicker()">Cancel</button>
+                  <button class="mat-tp-action-btn" onclick="saveTimePicker()">OK</button>
               </div>
           </div>
+      </div>
+  </div>
+
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeAllSidebars()"></div>
+  <div id="itinerarySidebar" class="sidebar">
+      <div class="sidebar-header">
+          <h2><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
+          <button class="close-sidebar" onclick="closeAllSidebars()">✕</button>
+      </div>
+      <div class="scroll-area" id="expenseList"></div>
+      
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0;">
+          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportData()"><i class="ph-bold ph-file-csv" style="font-size:1.4rem; color:var(--primary)"></i> CSV</button>
+          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="font-size:1.4rem; color:var(--info)"></i> HTML</button>
+          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportSync()"><i class="ph-bold ph-export" style="font-size:1.4rem; color:var(--ocean)"></i> Backup</button>
+      </div>
+  </div>
+
+  <div id="overviewSidebar" class="sidebar" style="width: 450px; right: -480px;">
+      <div class="sidebar-header">
+          <h2><i class="ph-bold ph-chart-bar" style="color:var(--primary)"></i> Trip Overview</h2>
+          <button class="close-sidebar" onclick="closeAllSidebars()">✕</button>
+      </div>
+      <div class="scroll-area" style="padding: 20px;">
+          
+          <h3 style="margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px;"><i class="ph-bold ph-users"></i> Payer Breakdown</h3>
+          <div id="overviewTableContainer"></div>
+
+          <h3 style="margin: 25px 0 15px 0; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px;"><i class="ph-bold ph-hand-coins"></i> Settlements (Who owes whom)</h3>
+          <div id="settlementContent"></div>
+
+          <h3 style="margin: 25px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-receipt"></i> Receipts Gallery</h3>
+          <div id="receiptCarousel" class="carousel-wrapper"></div>
+
+          <h3 style="margin: 20px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-image"></i> Memories Gallery</h3>
+          <div id="memoryCarousel" class="carousel-wrapper"></div>
       </div>
   </div>
 
@@ -218,7 +317,7 @@
     </div>
     <div class="ph-right">
       <div class="ph-stat">
-        <div class="ph-label">Budget Burn <i class="ph-bold ph-pencil-simple" style="cursor:pointer;" onclick="setBudget()"></i></div>
+        <div class="ph-label">Budget Burn <i class="ph-bold ph-pencil-simple budget-edit" onclick="setBudget()"></i></div>
         <div style="font-size:0.8rem; font-weight:800; color:var(--text-main); margin-top:2px;" id="burnText">0%</div>
         <div class="burn-container"><div class="burn-bar"><div class="burn-fill" id="burnBar"></div></div></div>
       </div>
@@ -226,11 +325,13 @@
         <div class="ph-label" id="filterLabel">Total Spent</div>
         <div class="ph-val total" id="totalSpent">₹0</div>
       </div>
-      <button class="sidebar-btn" onclick="toggleSidebar()"><i class="ph-bold ph-layout"></i> Feed & Sync</button>
+      <button class="sidebar-btn" onclick="toggleSidebar('feed')"><i class="ph-bold ph-list-dashes"></i> Feed</button>
+      <button class="overview-btn" onclick="toggleSidebar('overview')"><i class="ph-bold ph-chart-pie-slice"></i> Overview</button>
     </div>
   </div>
 
   <div class="dashboard-grid">
+    
     <div class="col-left">
       <div class="panel" style="flex: 0 0 auto;">
         <div class="panel-header">
@@ -266,19 +367,25 @@
         <div class="panel-header">
             <span style="display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-map-trifold"></i> Live View</span>
             <div style="display:flex; gap: 8px;">
+                <div class="view-toggle">
+                    <button id="btn-view-map" class="active" onclick="switchView('map')">Map</button>
+                    <button id="btn-view-gallery" onclick="switchView('gallery')">Gallery</button>
+                </div>
                 <button class="btn-action-map" id="btn-heatmap" onclick="toggleHeatmap()"><i class="ph-bold ph-fire"></i> Heatmap</button>
-                <button class="btn-action-map" style="background:var(--info); color:white;" onclick="exportMap()"><i class="ph-bold ph-camera"></i> Snapshot</button>
+                <button class="btn-action-map" style="background:var(--ocean); color:white; border:none;" onclick="startReplay()"><i class="ph-bold ph-play-circle"></i></button>
             </div>
         </div>
         <div id="map-wrapper">
             <div id="map"></div>
-            <div id="replayCard" style="position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s ease;">
-                <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);">
-                    <span id="rc-step" style="background: var(--primary); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; font-family: 'Plus Jakarta Sans';">Step 1 of 5</span>
+            <div id="gallery-container"></div>
+            
+            <div id="replayCard" class="replay-card">
+                <div class="rc-header">
+                    <span id="rc-step" class="rc-step">Step 1 of 5</span>
                     <button style="width:28px; height:28px; border:none; background:transparent; color:var(--text-main); font-size:1rem; cursor:pointer;" onclick="exitReplay()">✕</button>
                 </div>
-                <div id="rc-img-container" style="width: 100%; height: 180px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;"></div>
-                <div style="padding: 16px;">
+                <div id="rc-img-container" class="rc-img-wrapper"></div>
+                <div class="rc-body">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap: 12px;">
                         <h3 id="rc-title" style="margin:0; font-size:1.05rem; color:var(--text-main); line-height:1.3;">Title</h3>
                         <div id="rc-amt" style="color:var(--danger); font-family:'JetBrains Mono'; font-weight:800; font-size:1.1rem; flex-shrink: 0;">₹0</div>
@@ -288,25 +395,20 @@
                         Use <b>Arrow Keys</b> (← →) to navigate.
                     </div>
                 </div>
-                <div style="display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border);">
-                    <button id="rc-prev" style="flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-main);" onclick="prevReplay()">Prev</button>
-                    <button id="rc-next" style="flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; background: var(--primary); color: white;" onclick="nextReplay()">Next</button>
+                <div class="rc-nav">
+                    <button id="rc-prev" style="background:var(--card-bg); color:var(--text-main); border:1px solid var(--border);" onclick="prevReplay()">Prev</button>
+                    <button id="rc-next" style="background:var(--primary); color:white;" onclick="nextReplay()">Next</button>
                 </div>
             </div>
+
         </div>
       </div>
     </div>
 
     <div class="col-right">
-      <div class="panel" style="flex: 1; display: flex; flex-direction: column;">
-        <div class="panel-header" style="padding: 10px;">
-            <div class="tabs-header">
-                <button class="tab-btn active" id="btn-tab-add" onclick="switchRightTab('add')"><i class="ph-bold ph-plus-circle"></i> Log Event</button>
-                <button class="tab-btn" id="btn-tab-overview" onclick="switchRightTab('overview')"><i class="ph-bold ph-chart-bar"></i> Overview</button>
-            </div>
-        </div>
-        
-        <div class="scroll-area tab-content active" id="tab-add">
+      <div class="panel" style="flex: 1;">
+        <div class="panel-header"><span><i class="ph-bold ph-plus-circle"></i> Add Memory</span></div>
+        <div class="scroll-area">
             <div class="form-grid">
               
               <div class="input-row">
@@ -341,73 +443,41 @@
 
               <div style="position: relative;">
                 <div class="input-row">
-                  <input type="text" id="place" class="input" placeholder="Location Name..." oninput="searchLocation(this.value)" style="flex:1;">
-                  <button style="background:var(--info); color:white; border:none; padding: 0 12px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;" onclick="pinCurrentLocation()"><i class="ph-bold ph-crosshair"></i> GPS</button>
+                  <input type="text" id="place" class="input" placeholder="Search Location..." oninput="searchLocation(this.value)" style="flex:1;">
+                  <button class="action-badge btn-pin" onclick="enableManualPin()"><i class="ph-bold ph-map-pin"></i> Pin</button>
+                  <button class="action-badge btn-gps" onclick="pinCurrentLocation()"><i class="ph-bold ph-crosshair"></i> GPS</button>
                 </div>
-                <div id="locationSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none;"></div>
+                <div id="locationSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);"></div>
               </div>
 
               <div class="dt-row" id="dtRow">
                   <div class="dt-box dt-date" onclick="document.getElementById('dateInput').showPicker()">
                       <input type="date" id="dateInput" required>
                   </div>
-                  <div class="dt-box" style="flex:1; justify-content:center; gap:8px; padding: 8px 12px;" onclick="openTimePicker()">
+                  <div class="dt-box dt-time" onclick="openTimePicker()">
                       <i class="ph-bold ph-clock" style="font-size:1.1rem; color:var(--text-muted);"></i>
                       <div id="displayTimeText" style="display:flex; align-items:baseline; gap:4px;"></div>
                   </div>
                   <input type="hidden" id="timeInput" value="12:00">
+                  <button class="dt-box dt-cam" onclick="document.getElementById('photoInput').click()" title="Attach Photos">
+                      <i class="ph-bold ph-camera"></i>
+                  </button>
+                  <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
               </div>
 
-              <div class="img-type-toggle" id="imgToggleRow">
+              <div class="img-type-toggle" id="imgToggleRow" style="margin-top: -6px;">
                   <button class="img-type-btn active" id="type-memory" onclick="setPhotoType('memory')"><i class="ph-bold ph-camera"></i> Memory Photo</button>
                   <button class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')"><i class="ph-bold ph-receipt"></i> Receipt/Bill</button>
               </div>
-              <button id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="document.getElementById('photoInput').click()">
-                  <i class="ph-bold ph-plus"></i> Select Images
-              </button>
-              <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
 
             </div>
             
             <div id="photoPreviewContainer"></div>
-            <button style="background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 800; font-size: 1rem; cursor: pointer; width: 100%; font-family: 'Plus Jakarta Sans';" id="saveBtn" onclick="addExpense()">Save to Itinerary</button>
+            
+            <button class="btn-save" id="saveBtn" onclick="addExpense()">Save to Itinerary</button>
         </div>
-
-        <div class="scroll-area tab-content" id="tab-overview" style="padding: 10px;">
-            <h3 style="margin-bottom: 10px; font-size: 1rem;"><i class="ph-bold ph-users"></i> Split & Payer Stats</h3>
-            <div id="overviewTableContainer"></div>
-
-            <h3 style="margin: 20px 0 10px 0; font-size: 1rem;"><i class="ph-bold ph-receipt"></i> Receipts Gallery</h3>
-            <div id="receiptCarousel" class="carousel-wrapper"></div>
-
-            <h3 style="margin: 20px 0 10px 0; font-size: 1rem;"><i class="ph-bold ph-image"></i> Memories Gallery</h3>
-            <div id="memoryCarousel" class="carousel-wrapper"></div>
-        </div>
-
       </div>
     </div>
-  </div>
-
-  <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-  <div id="itinerarySidebar" class="sidebar">
-      <div class="sidebar-header">
-          <h2 style="margin:0; font-size:1.2rem;"><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
-          <button class="close-sidebar" onclick="toggleSidebar()"><i class="ph-bold ph-x"></i></button>
-      </div>
-      <div class="scroll-area" id="expenseList" style="padding-top: 12px;"></div>
-      
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0;">
-          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportData()"><i class="ph-bold ph-file-csv" style="font-size:1.4rem; color:var(--primary)"></i> CSV</button>
-          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="font-size:1.4rem; color:var(--info)"></i> HTML</button>
-          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="downloadPlacesList()"><i class="ph-bold ph-map-trifold" style="font-size:1.4rem; color:var(--warning)"></i> Places</button>
-          
-          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="showSettlements()"><i class="ph-bold ph-users-three" style="font-size:1.4rem; color:#10b981"></i> Split Tab</button>
-          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportSync()"><i class="ph-bold ph-export" style="font-size:1.4rem; color:var(--info)"></i> JSON Save</button>
-          <button style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="document.getElementById('importInput').click()"><i class="ph-bold ph-download-simple" style="font-size:1.4rem; color:var(--ocean)"></i> JSON Load</button>
-          <input type="file" id="importInput" style="display:none;" accept=".json" onchange="importSync(event)">
-          
-          <button style="grid-column: span 3; background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; border: none; padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content:center; gap: 6px;" onclick="startReplay()"><i class="ph-bold ph-play-circle" style="font-size:1.4rem;"></i> Play Story Replay</button>
-      </div>
   </div>
 
   <script>
@@ -452,6 +522,7 @@
     let map = null; let markersCluster = null; let heatLayer = null; let routeLayer = null;
     let isHeatmap = false; let currentPhotos = []; let currentPhotoUploadType = 'memory'; 
     let isFree = false; let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
+    let currentView = 'map';
 
     if (useFirebase) {
         tripRef.on('value', (snapshot) => {
@@ -484,7 +555,7 @@
 
       const now = new Date();
       let h = String(now.getHours()).padStart(2, '0'); let m = String(now.getMinutes()).padStart(2, '0');
-      let ampm = h >= 12 ? 'PM' : 'AM'; let h12 = h % 12 || 12;
+      let ampm = now.getHours() >= 12 ? 'PM' : 'AM'; let h12 = now.getHours() % 12 || 12;
       document.getElementById('timeInput').value = `${h}:${m}`;
       document.getElementById('displayTimeText').innerHTML = `<div style="font-size:1.05rem;font-weight:700;">${String(h12).padStart(2,'0')}:${m}</div><div style="font-size:0.75rem;font-weight:600;opacity:0.8;">${ampm}</div>`;
       
@@ -504,23 +575,33 @@
         renderBudgetBreakdown();
     }
     function setBudget() { let b = prompt("Enter total trip budget (₹):", tripBudget); if(b && !isNaN(b)) { tripBudget = parseFloat(b); saveData(); } }
-    function toggleSidebar() {
-        const sidebar = document.getElementById('itinerarySidebar'); const overlay = document.getElementById('sidebarOverlay');
-        if(sidebar.classList.contains('open')) { sidebar.classList.remove('open'); overlay.style.display = 'none'; } 
-        else { sidebar.classList.add('open'); overlay.style.display = 'block'; setTimeout(() => { if(map) map.invalidateSize(); }, 300); }
+    
+    function toggleSidebar(type) {
+        const feed = document.getElementById('itinerarySidebar');
+        const overview = document.getElementById('overviewSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        feed.classList.remove('open');
+        overview.classList.remove('open');
+        
+        if (type === 'feed') {
+            feed.classList.add('open'); overlay.style.display = 'block';
+        } else if (type === 'overview') {
+            renderOverview(); // build the stats
+            overview.classList.add('open'); overlay.style.display = 'block';
+        }
+        setTimeout(() => { if(map) map.invalidateSize(); }, 300);
+    }
+    function closeAllSidebars() {
+        document.getElementById('itinerarySidebar').classList.remove('open');
+        document.getElementById('overviewSidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').style.display = 'none';
+        setTimeout(() => { if(map) map.invalidateSize(); }, 300);
     }
 
     // ==========================================================================
     // TABS, FREE TOGGLE & ACCOMMODATION LOGIC
     // ==========================================================================
-    function switchRightTab(tab) {
-        document.getElementById('btn-tab-add').classList.toggle('active', tab === 'add');
-        document.getElementById('btn-tab-overview').classList.toggle('active', tab === 'overview');
-        document.getElementById('tab-add').classList.toggle('active', tab === 'add');
-        document.getElementById('tab-overview').classList.toggle('active', tab === 'overview');
-        if(tab === 'overview') renderOverview();
-    }
-
     function handleCategoryChange() {
         const cat = document.getElementById('category').value;
         const isAcc = cat === '🏨 Accommodation';
@@ -528,18 +609,17 @@
         const descInput = document.getElementById('description');
         const dtRow = document.getElementById('dtRow');
         const imgToggleRow = document.getElementById('imgToggleRow');
-        const photoBtnRow = document.getElementById('photoBtnRow');
         const freeBtn = document.getElementById('btn-free');
         const ocrBtn = document.getElementById('btn-ocr');
 
         if (isAcc) {
             descInput.style.display = 'none'; descInput.value = 'Pre-booked Accommodation';
-            dtRow.style.display = 'none'; imgToggleRow.style.display = 'none'; photoBtnRow.style.display = 'none'; freeBtn.style.display = 'none'; ocrBtn.style.display = 'none';
+            dtRow.style.display = 'none'; imgToggleRow.style.display = 'none'; freeBtn.style.display = 'none'; ocrBtn.style.display = 'none';
             document.getElementById('photoPreviewContainer').style.display = 'none';
             if (isFree) toggleFree(); 
         } else {
             descInput.style.display = 'block'; if (descInput.value === 'Pre-booked Accommodation') descInput.value = '';
-            dtRow.style.display = 'flex'; imgToggleRow.style.display = 'flex'; photoBtnRow.style.display = 'flex'; freeBtn.style.display = 'flex'; ocrBtn.style.display = 'flex';
+            dtRow.style.display = 'flex'; imgToggleRow.style.display = 'flex'; freeBtn.style.display = 'flex'; ocrBtn.style.display = 'flex';
             if(currentPhotos.length > 0) document.getElementById('photoPreviewContainer').style.display = 'flex';
         }
     }
@@ -550,15 +630,17 @@
         if (isFree) {
             amtInput.value = ''; amtInput.disabled = true; amtInput.placeholder = 'Free'; amtInput.style.opacity = '0.5';
             freeBtn.style.background = 'var(--primary)'; freeBtn.style.color = 'white'; paidByRow.style.display = 'none';
+            document.getElementById('editNamesRow').style.display = 'none';
         } else {
             amtInput.disabled = false; amtInput.placeholder = 'Amount (₹)'; amtInput.style.opacity = '1';
             freeBtn.style.background = 'rgba(16, 185, 129, 0.1)'; freeBtn.style.color = 'var(--primary)'; paidByRow.style.display = 'flex';
+            document.getElementById('editNamesRow').style.display = 'block';
         }
     }
 
     function renderPayers() { document.getElementById('paidBy').innerHTML = payers.map(p => `<option value="${escapeHtml(p)}">Paid by: ${escapeHtml(p)}</option>`).join(''); }
     function editPayers() {
-        let input = prompt("Enter names separated by commas:", payers.join(', '));
+        let input = prompt("Enter names separated by commas (e.g. Tarun, Neha, Ashok):", payers.join(', '));
         if(input !== null) { payers = input.split(',').map(n => n.trim()).filter(n => n !== ''); if(payers.length === 0) payers = ['Tarun']; saveData(); renderPayers(); showToast("Names updated!"); }
     }
 
@@ -568,7 +650,7 @@
     function calculateSettlements() {
         let balances = {};
         expenses.forEach(e => {
-            if(e.splitWith && e.splitWith.trim() !== '') {
+            if(e.splitWith && e.splitWith.trim() !== '' && !e.isFree) {
                 let payer = (e.paidBy && e.paidBy.trim() !== '') ? e.paidBy.trim() : payers[0];
                 let splitters = e.splitWith.split(',').map(s => s.trim()).filter(s => s !== '');
                 
@@ -615,8 +697,6 @@
             }).join('');
         }
         document.getElementById('settlementContent').innerHTML = html;
-        document.getElementById('settlementModal').style.display = 'flex';
-        if(document.getElementById('itinerarySidebar').classList.contains('open')) toggleSidebar();
     }
 
     // ==========================================================================
@@ -777,11 +857,14 @@
 
         let tableHTML = `<table class="overview-table"><tr><th>Payer</th><th>Spent</th><th>Top Category</th></tr>`;
         Object.entries(pStats).sort((a,b)=>b[1].t-a[1].t).forEach(([p, d]) => {
-            let topC = Object.entries(d.cats).sort((a,b)=>b[1]-a[1])[0][0].split(' ')[1];
+            let topC = Object.entries(d.cats).sort((a,b)=>b[1]-a[1])[0][0].split(' ')[1] || 'Misc';
             tableHTML += `<tr><td><strong>${p}</strong></td><td style="color:var(--danger);font-weight:bold;">₹${d.t.toLocaleString()}</td><td>${topC}</td></tr>`;
         });
         tableHTML += `</table>`;
-        document.getElementById('overviewTableContainer').innerHTML = tableHTML;
+        document.getElementById('overviewTableContainer').innerHTML = tableHTML || '<div style="color:var(--text-muted);font-size:0.85rem;">No spending data yet.</div>';
+
+        // Update Settlements section inside the Overview tab
+        showSettlements();
 
         const buildC = (arr) => arr.map(u => `<div class="carousel-item" onclick="viewImage('${u}')"><img src="${u}"></div>`).join('');
         document.getElementById('receiptCarousel').innerHTML = rImgs.length ? buildC(rImgs) : `<div style="color:var(--text-muted);font-size:0.8rem;">No receipts scanned.</div>`;
@@ -789,7 +872,7 @@
     }
 
     function renderAll() { 
-        try { renderCalendar(); renderBudgetBreakdown(); renderExpenseList(); updateHeaderTotal(); updateMap(); if(document.getElementById('tab-overview').classList.contains('active')) renderOverview(); } 
+        try { renderCalendar(); renderBudgetBreakdown(); renderExpenseList(); updateHeaderTotal(); updateMap(); } 
         catch (e) { console.error("Render error", e); }
     }
 
@@ -810,6 +893,52 @@
         isHeatmap = !isHeatmap;
         document.getElementById('btn-heatmap').classList.toggle('active', isHeatmap);
         updateMap();
+    }
+
+    function switchView(view) {
+        currentView = view;
+        document.getElementById('btn-view-map').classList.toggle('active', view === 'map');
+        document.getElementById('btn-view-gallery').classList.toggle('active', view === 'gallery');
+        if (view === 'map') {
+            document.getElementById('map').style.display = 'block'; document.getElementById('gallery-container').style.display = 'none';
+            setTimeout(() => { if(map) map.invalidateSize(); }, 100);
+        } else {
+            document.getElementById('map').style.display = 'none'; document.getElementById('gallery-container').style.display = 'block';
+            if(isReplaying) exitReplay(); renderGallery();
+        }
+    }
+
+    function renderGallery() {
+        const container = document.getElementById('gallery-container');
+        let filtered = expenses.filter(e => e.photo && (Array.isArray(e.photo) ? e.photo.length > 0 : e.photo));
+        if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
+        if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
+        
+        if(filtered.length === 0) { container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:40px; font-size:0.9rem;">No photos attached to memories yet.</div>'; return; }
+
+        const grouped = {};
+        filtered.forEach(e => { const dateStr = formatDate(e.date); if(!grouped[dateStr]) grouped[dateStr] = []; grouped[dateStr].push(e); });
+        const sortedDates = Object.keys(grouped).sort((a, b) => new Date(grouped[b][0].date) - new Date(grouped[a][0].date));
+
+        let html = '';
+        sortedDates.forEach(date => {
+            html += `<div class="gallery-date-header"><i class="ph-bold ph-calendar-blank" style="color:var(--ocean)"></i> ${date}</div><div class="gallery-grid">`;
+            grouped[date].forEach(exp => {
+                let photosArray = Array.isArray(exp.photo) ? exp.photo : [exp.photo];
+                photosArray.forEach(p => {
+                    html += `
+                    <div class="gallery-item" onclick="viewImage('${p.url}')">
+                        <img src="${p.url}" class="gallery-img">
+                        <div class="gallery-overlay">
+                            <div style="font-weight:800; font-family:'Plus Jakarta Sans'; margin-bottom:2px;">${escapeHtml(exp.description)}</div>
+                            <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(exp.place || 'Unknown Location')}</div>
+                        </div>
+                    </div>`;
+                });
+            });
+            html += `</div>`;
+        });
+        container.innerHTML = html;
     }
 
     function updateMap() {
@@ -837,19 +966,18 @@
         latlngs.push([exp.locationData.lat, exp.locationData.lon]);
         
         let isAcc = exp.category === '🏨 Accommodation';
-        let color = '#10b981'; // Green
+        let color = '#10b981'; // Green < 500
         if(exp.amount >= 500 && exp.amount <= 1500) color = '#f59e0b'; // Yellow
         if(exp.amount > 1500) color = '#ef4444'; // Red
         if(exp.isFree) color = '#3b82f6'; // Blue
         
-        let radius = 12 + (Math.min(exp.amount, 5000) / 1000) * 2; // Scaled pixel radius
+        let radius = 12 + (Math.min(exp.amount, 5000) / 1000) * 2; // Scale size
 
         let htmlIcon = '';
         if(isAcc) {
             htmlIcon = `<div style="font-size: 20px; background: white; border-radius: 50%; width: 34px; height: 34px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 2px solid #8b5cf6;">🏨</div>`;
             radius = 17;
         } else {
-            // Circle colored by Spend, with Sequence Number inside
             htmlIcon = `<div style="width:${radius*2}px; height:${radius*2}px; background:${color}; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: ${Math.max(10, radius-2)}px; color: white; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">${index + 1}</div>`;
         }
 
@@ -891,16 +1019,16 @@
       }
     }
 
-    function flyToMap(lat, lng) { if(!map) return; if(window.innerWidth <= 1024) toggleSidebar(); map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); }
+    function flyToMap(lat, lng) { 
+        if(!map) return;
+        closeAllSidebars();
+        map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); 
+    }
 
     function exportMap() {
-        showToast("📸 Capturing Map Snapshot...");
+        showToast("📸 Capturing Map...");
         html2canvas(document.getElementById("map-wrapper"), {useCORS: true}).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `Goa-Map-${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            showToast("✅ Snapshot Saved!");
+            const link = document.createElement('a'); link.download = `Goa-Map-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); showToast("✅ Snapshot Saved!");
         });
     }
 
@@ -908,11 +1036,12 @@
     // MANUAL STORY REPLAY
     // ==========================================================================
     function startReplay() {
+        if(currentView === 'gallery') switchView('map');
         replayRoute = expenses.filter(e => e.locationData && typeof e.locationData.lat === 'number').sort((a, b) => new Date(`${a.date}T${a.time||'00:00'}`) - new Date(`${b.date}T${b.time||'00:00'}`));
         if(replayRoute.length === 0) return showToast("No locations saved to replay!");
         isReplaying = true; currentReplayIndex = 0;
-        document.getElementById('replayCard').style.right = '20px'; // Show card
-        if(document.getElementById('itinerarySidebar').classList.contains('open')) toggleSidebar();
+        document.getElementById('replayCard').style.right = '20px'; 
+        closeAllSidebars();
         document.addEventListener('keydown', handleReplayKey);
         renderReplayStep();
         showToast("Started Story Mode! Use Arrow Keys.");
@@ -933,14 +1062,15 @@
             let photosArray = Array.isArray(exp.photo) ? exp.photo : [{url: exp.photo}];
             if(photosArray.length > 1) {
                 imgContainer.innerHTML = `<div style="display:flex; overflow-x:auto; width:100%; height:100%; scroll-snap-type: x mandatory;">` + 
-                    photosArray.map(p => `<img src="${p.url}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0; scroll-snap-align: start;">`).join('') + `</div>`;
-            } else { imgContainer.innerHTML = `<img src="${photosArray[0].url}" style="width:100%; height:100%; object-fit:cover;">`; }
+                    photosArray.map(p => `<img src="${p.url}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0; scroll-snap-align: start;" onclick="viewImage('${p.url}')">`).join('') + `</div>`;
+            } else { imgContainer.innerHTML = `<img src="${photosArray[0].url}" style="width:100%; height:100%; object-fit:cover;" onclick="viewImage('${photosArray[0].url}')">`; }
         } else {
             imgContainer.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; color:var(--text-muted); opacity:0.5;"><i class="ph-bold ph-image" style="font-size:3.5rem; margin-bottom:8px;"></i> No photo</div>`;
         }
 
         document.getElementById('rc-prev').style.opacity = currentReplayIndex === 0 ? '0.5' : '1';
         document.getElementById('rc-prev').style.pointerEvents = currentReplayIndex === 0 ? 'none' : 'auto';
+        document.getElementById('rc-next').innerHTML = currentReplayIndex === replayRoute.length - 1 ? `Finish` : `Next`;
     }
 
     function nextReplay() { if(currentReplayIndex < replayRoute.length - 1) { currentReplayIndex++; renderReplayStep(); } else { exitReplay(); showToast("Story Complete! 🎉"); } }
@@ -961,7 +1091,11 @@
         const lat = e.latlng.lat; const lon = e.latlng.lng;
         if(tempMarker) map.removeLayer(tempMarker);
         tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned!</b>").openPopup();
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => selectLocation(data.display_name ? data.display_name.split(',')[0] : `Map Pin`, lat, lon, null)).catch(() => selectLocation(`Map Pin`, lat, lon, null));
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
+            let shortName = data.display_name ? data.display_name.split(',')[0] : `Map Pin`;
+            document.getElementById('place').value = shortName;
+            selectLocation(shortName, lat, lon);
+        }).catch(() => selectLocation(`Map Pin`, lat, lon));
         manualPinMode = false; document.getElementById('map').classList.remove('map-pin-mode');
     }
     function pinCurrentLocation() {
@@ -970,12 +1104,17 @@
             navigator.geolocation.getCurrentPosition(pos => {
                 const lat = pos.coords.latitude, lon = pos.coords.longitude;
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
-                    selectLocation(data.display_name ? data.display_name.split(',')[0] : `Live GPS Pin`, lat, lon, null);
+                    let shortName = data.display_name ? data.display_name.split(',')[0] : `Live GPS Pin`;
+                    document.getElementById('place').value = shortName;
+                    selectLocation(shortName, lat, lon);
                     if(tempMarker) map.removeLayer(tempMarker);
                     tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 You are here</b>").openPopup();
                     map.flyTo([lat, lon], 16);
-                }).catch(() => selectLocation(`Live Pin`, lat, lon, null));
-            }, () => showToast("GPS Error: You must click 'Allow'."));
+                }).catch(() => {
+                    document.getElementById('place').value = "Live Pin";
+                    selectLocation(`Live Pin`, lat, lon);
+                });
+            }, () => showToast("GPS Error: You must click 'Allow'."), { timeout: 10000 });
         } else { showToast("GPS not supported."); }
     }
     function searchLocation(query) {
@@ -986,27 +1125,108 @@
         fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ', Goa, India')}&format=json&limit=5`).then(r => r.json()).then(results => {
             if (results.length === 0) { sug.innerHTML = '<div style="padding: 12px; font-size:0.85rem;">No locations found.</div>'; return; }
             sug.innerHTML = results.map(place => {
-              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onclick="selectLocation('${escapeHtml(place.display_name)}', ${place.lat}, ${place.lon}, '')"><div style="font-weight: 700; font-size: 0.9rem;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(place.display_name.split(',')[0])}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
+              const shortName = place.display_name.split(',')[0];
+              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${escapeHtml(shortName)}', ${place.lat}, ${place.lon})"><div style="font-weight: 700; font-size: 0.9rem;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
             }).join('');
           }).catch(() => { sug.innerHTML = '<div style="padding: 12px; color: var(--danger); font-size:0.85rem;">Error searching.</div>'; });
       }, 400);
     }
-    function selectLocation(name, lat, lon, mapsUrl) {
-      const shortName = name.split(',')[0]; document.getElementById('place').value = shortName;
-      selectedLocation = { name: shortName, fullName: name, lat: lat, lon: lon };
-      document.getElementById('locationSuggestions').style.display = 'none'; showToast(`📍 Selected: ${shortName}`);
+    function selectLocation(name, lat, lon) {
+      document.getElementById('place').value = name;
+      selectedLocation = { name: name, lat: lat, lon: lon };
+      document.getElementById('locationSuggestions').style.display = 'none'; showToast(`📍 Selected: ${name}`);
+    }
+
+    // ==========================================================================
+    // MATERIAL UI CLOCK
+    // ==========================================================================
+    let tp_hr = 12, tp_min = 0, tp_ampm = 'AM', tp_mode = 'hour';
+    
+    function openTimePicker() {
+        const currentVal = document.getElementById('timeInput').value || '12:00'; 
+        let [h, m] = currentVal.split(':'); h = parseInt(h);
+        tp_ampm = h >= 12 ? 'PM' : 'AM'; tp_hr = h % 12 || 12; tp_min = parseInt(m); tp_mode = 'hour';
+        updateTimePickerUI();
+        document.getElementById('timeModal').style.display = 'flex';
+        initDialInteraction();
+    }
+    function closeTimePicker() { document.getElementById('timeModal').style.display = 'none'; }
+    function setTpMode(mode) { tp_mode = mode; updateTimePickerUI(); }
+    function setTpAmpm(ampm) { tp_ampm = ampm; updateTimePickerUI(); }
+
+    function updateTimePickerUI() {
+        document.getElementById('tp-hr-disp').textContent = String(tp_hr).padStart(2, '0');
+        document.getElementById('tp-min-disp').textContent = String(tp_min).padStart(2, '0');
+        document.getElementById('tp-hr-disp').className = `mat-tp-box ${tp_mode === 'hour' ? 'active' : ''}`;
+        document.getElementById('tp-min-disp').className = `mat-tp-box ${tp_mode === 'minute' ? 'active' : ''}`;
+        document.getElementById('tp-am-btn').className = `mat-tp-ampm-btn ${tp_ampm === 'AM' ? 'active' : ''}`;
+        document.getElementById('tp-pm-btn').className = `mat-tp-ampm-btn ${tp_ampm === 'PM' ? 'active' : ''}`;
+        renderDial();
+    }
+
+    function renderDial() {
+        const container = document.getElementById('tp-dial-numbers');
+        container.innerHTML = '';
+        const radius = 95, center = 125; 
+        let activeVal = tp_mode === 'hour' ? tp_hr : tp_min;
+        let angle = tp_mode === 'hour' ? (tp_hr === 12 ? 0 : tp_hr * 30) : tp_min * 6;
+        
+        document.getElementById('tp-hand').style.transform = `rotate(${angle}deg)`;
+        document.getElementById('tp-hand-text').textContent = tp_mode === 'hour' ? tp_hr : String(tp_min).padStart(2, '0');
+        
+        for(let i = 1; i <= 12; i++) {
+            let num = tp_mode === 'hour' ? i : (i === 12 ? 0 : i * 5);
+            let angleRad = ((i * 30) - 90) * (Math.PI / 180);
+            let x = center + radius * Math.cos(angleRad), y = center + radius * Math.sin(angleRad);
+            
+            let numEl = document.createElement('div');
+            numEl.className = 'mat-dial-number';
+            numEl.style.left = `${x}px`; numEl.style.top = `${y}px`;
+            if (num === activeVal) numEl.style.color = 'transparent';
+            else numEl.textContent = tp_mode === 'hour' ? num : String(num).padStart(2, '0');
+            container.appendChild(numEl);
+        }
+    }
+
+    function initDialInteraction() {
+        const dial = document.getElementById('tp-dial-container');
+        const updateFromEvent = (e) => {
+            const rect = dial.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const x = clientX - rect.left - 125, y = clientY - rect.top - 125;
+            let angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
+            if (angle < 0) angle += 360;
+            
+            if (tp_mode === 'hour') {
+                let hr = Math.round(angle / 30); if (hr === 0) hr = 12; tp_hr = hr;
+            } else {
+                let min = Math.round(angle / 6); if (min === 60) min = 0; tp_min = min;
+            }
+            updateTimePickerUI();
+        };
+
+        let isDragging = false;
+        dial.onmousedown = dial.ontouchstart = (e) => { isDragging = true; updateFromEvent(e); };
+        document.onmousemove = document.ontouchmove = (e) => { if(isDragging) updateFromEvent(e); e.preventDefault();};
+        document.onmouseup = document.ontouchend = () => {
+            if(isDragging && tp_mode === 'hour') setTimeout(() => setTpMode('minute'), 250);
+            isDragging = false;
+        };
+    }
+
+    function saveTimePicker() {
+        let h24 = tp_hr;
+        if(tp_ampm === 'PM' && tp_hr !== 12) h24 += 12;
+        if(tp_ampm === 'AM' && tp_hr === 12) h24 = 0;
+        document.getElementById('timeInput').value = `${String(h24).padStart(2,'0')}:${String(tp_min).padStart(2,'0')}`;
+        document.getElementById('displayTimeText').innerHTML = `<div style="font-size:1.05rem;font-weight:700;">${String(tp_hr).padStart(2, '0')}:${String(tp_min).padStart(2,'0')}</div><div style="font-size:0.75rem;font-weight:600;opacity:0.8;">${tp_ampm}</div>`;
+        closeTimePicker();
     }
 
     // ==========================================================================
     // CRUD: FORM & FEED
     // ==========================================================================
-    function tConvert(time) {
-        if(!time || !time.includes(':')) return '';
-        let timeParts = time.split(':'); let h = parseInt(timeParts[0]); let m = timeParts[1];
-        let ampm = h >= 12 ? ' PM' : ' AM'; h = h % 12 || 12;
-        return `${String(h).padStart(2,'0')}:${m}${ampm}`;
-    }
-
     function addExpense() {
       let desc = document.getElementById('description').value.trim();
       let amtRaw = document.getElementById('amount').value;
@@ -1021,10 +1241,10 @@
       const isAcc = category === '🏨 Accommodation';
 
       if (!isAcc && !isFree && amtRaw === '') return showToast('Please fill Amount!');
-      if (isAcc && amtRaw === '') return showToast('Please fill Amount!'); // Acc requires amount even if free is hidden
+      if (isAcc && amtRaw === '') return showToast('Please fill Amount!'); 
       if (!category) return showToast('Please select a Category!');
       if (!desc && !isAcc) { let cleanCat = category.split(' ').slice(1).join(' '); desc = `${cleanCat}${timeVal ? ` at ${tConvert(timeVal)}` : ''}`; }
-      if (isAcc) desc = "Pre-booked Accommodation"; // Force description for Acc
+      if (isAcc) desc = "Pre-booked Accommodation"; 
 
       const expData = { 
           date: dateVal, time: timeVal, description: desc, amount: amount, 
@@ -1040,7 +1260,6 @@
 
       saveData();
       
-      // Reset Form
       if (isFree && !isAcc) toggleFree();
       document.getElementById('description').value = ''; document.getElementById('amount').value = ''; document.getElementById('category').value = ''; document.getElementById('place').value = ''; document.getElementById('splitWith').value = ''; 
       
@@ -1050,7 +1269,6 @@
       currentPhotos = []; renderPhotoPreviews(); document.getElementById('photoInput').value = '';
       if(tempMarker) { map.removeLayer(tempMarker); tempMarker = null; }
       
-      // Trigger Category Change to reset view logic
       handleCategoryChange();
     }
 
@@ -1058,7 +1276,7 @@
         const exp = expenses.find(e => e.id === id); if(!exp) return;
         
         document.getElementById('category').value = exp.category;
-        handleCategoryChange(); // Triggers UI show/hide based on category
+        handleCategoryChange(); 
 
         if (exp.isFree) { if (!isFree) toggleFree(); } 
         else { if (isFree) toggleFree(); document.getElementById('amount').value = exp.amount; }
@@ -1080,7 +1298,7 @@
         renderPhotoPreviews();
 
         editingId = id; document.getElementById('saveBtn').textContent = 'Update Memory'; showToast('Editing mode active');
-        if(document.getElementById('itinerarySidebar').classList.contains('open')) toggleSidebar();
+        closeAllSidebars();
         switchRightTab('add');
     }
 
@@ -1133,7 +1351,7 @@
     }
 
     // ==========================================================================
-    // EXPORTS & JSON BACKUPS (RESTORED)
+    // EXPORTS 
     // ==========================================================================
     function escapeHtml(t) { if(!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
     function formatDate(d) { return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
@@ -1148,47 +1366,27 @@
       a.download = `goa-expenses.csv`; a.click(); showToast('CSV exported!');
     }
 
-    // RESTORED JSON BACKUP & LOAD
     function exportSync() {
         const backup = { version: "v_master_ultimate", date: new Date().toISOString(), data: expenses, budget: tripBudget, payers: payers };
         const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
         a.download = `Goa-Sync-${new Date().toISOString().slice(0,10)}.json`; a.click(); showToast('JSON Backup Saved!');
     }
 
-    function importSync(event) {
-        const file = event.target.files[0]; if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const imp = JSON.parse(e.target.result);
-                if(imp.data && Array.isArray(imp.data)) {
-                    if(confirm("Merge this backup with your current data?")) {
-                        const existingIds = new Set(expenses.map(ex => ex.id));
-                        imp.data.forEach(item => { if(!existingIds.has(item.id)) expenses.push(item); });
-                        if(imp.budget) tripBudget = imp.budget;
-                        if(imp.payers) payers = imp.payers;
-                        saveData(); renderPayers(); init(); showToast("Sync Successful! 🚀");
-                    }
-                } else throw new Error();
-            } catch(err) { showToast("Error loading file."); }
-        };
-        reader.readAsText(file);
-    }
-
-    // EXPORT HTML / PLACES / STORY
     function exportHTML() {
       const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
       const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
       const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
     }
+    
     function downloadPlacesList() {
       const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
       if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? stats.locationData.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? `http://maps.google.com/?q=${stats.locationData.lat},${stats.locationData.lon}` : `http://maps.google.com/?q=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
       const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
     }
+    
     function exportStory() {
         if(expenses.length === 0) return showToast("Add expenses first!");
         const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
@@ -1198,6 +1396,7 @@
         a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
     }
 
+    document.addEventListener('click', (e) => { const sug = document.getElementById('locationSuggestions'); if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none'; });
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
