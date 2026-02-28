@@ -201,6 +201,7 @@
     .exp-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); line-height: 1.3;}
     .exp-amt { font-weight: 800; font-size: 1.3rem; color: var(--danger); font-family: 'JetBrains Mono'; text-align: right;}
     .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
+    .split-badge { background: rgba(14, 165, 233, 0.15); color: var(--ocean); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; margin-left: 6px;}
     .exp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-weight: 500;}
     
     .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
@@ -313,7 +314,7 @@
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
   <div id="itinerarySidebar" class="sidebar">
       <div class="sidebar-header">
-          <h2 style="margin:0; font-size:1.2rem; display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary & Options</h2>
+          <h2 style="margin:0; font-size:1.2rem; display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
           <button class="close-sidebar" onclick="toggleSidebar()"><i class="ph-bold ph-x"></i></button>
       </div>
       
@@ -486,40 +487,36 @@
     </div>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
   <script>
     // ==========================================================================
     // 🔴 FIREBASE CLOUD SYNC LOGIC 🔴 
-    // Paste your config block below!
     // ==========================================================================
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+    const firebaseConfig = {
+      apiKey: "AIzaSyAaYy-wZcb3GIGKGK-hj8y9_A2O4Pzw3bM",
+      authDomain: "goa-34b5f.firebaseapp.com",
+      databaseURL: "https://goa-34b5f-default-rtdb.firebaseio.com",
+      projectId: "goa-34b5f",
+      storageBucket: "goa-34b5f.firebasestorage.app",
+      messagingSenderId: "931865940606",
+      appId: "1:931865940606:web:2a58c8221ce26fc744be2f"
+    };
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAaYy-wZcb3GIGKGK-hj8y9_A2O4Pzw3bM",
-  authDomain: "goa-34b5f.firebaseapp.com",
-  databaseURL: "https://goa-34b5f-default-rtdb.firebaseio.com",
-  projectId: "goa-34b5f",
-  storageBucket: "goa-34b5f.firebasestorage.app",
-  messagingSenderId: "931865940606",
-  appId: "1:931865940606:web:ea4aaec0ccb54e1144be2f",
-  measurementId: "G-VTY51YM4V2"
-};
+    let useFirebase = false;
+    let tripRef = null;
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-        firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const tripRef = db.ref('goaTripData');
+    if (Object.keys(firebaseConfig).length > 0 && firebaseConfig.apiKey) {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+            tripRef = db.ref('goaTripData');
+            useFirebase = true;
+        } catch(e) { console.error("Firebase init failed", e); }
+    }
 
     // ==========================================================================
-    // GLOBAL STATE
+    // GLOBAL STATE & DATA SANITIZER
     // ==========================================================================
     let expenses = [];
     let tripBudget = 25000;
@@ -533,30 +530,44 @@ const analytics = getAnalytics(app);
     let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
     let currentView = 'map';
 
-    // ==========================================================================
-    // LIVE LISTENER (FIRES WHEN ANYONE ADDS AN EXPENSE)
-    // ==========================================================================
-    tripRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-            expenses = data.expenses || [];
-            tripBudget = data.budget || 25000;
-            payers = data.payers || ['Me'];
-            renderPayers();
-            renderAll();
-        } else {
-            renderPayers();
-            renderAll();
-        }
-    });
-
-    // Replace old localStorage function with Firebase push
-    function saveData() { 
-        tripRef.set({
-            expenses: expenses,
-            budget: tripBudget,
-            payers: payers
+    if (useFirebase) {
+        tripRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                expenses = data.expenses || [];
+                tripBudget = data.budget || 25000;
+                payers = data.payers || ['Me'];
+                renderPayers();
+                renderAll();
+            }
         });
+    } else {
+        try {
+            let saved = localStorage.getItem('goaExpenses');
+            if(saved) {
+                let parsed = JSON.parse(saved);
+                if(Array.isArray(parsed)) {
+                    expenses = parsed.map(e => ({
+                        ...e,
+                        amount: parseFloat(e.amount) || 0,
+                        date: e.date || new Date().toISOString().split('T')[0]
+                    }));
+                }
+            }
+            tripBudget = parseFloat(localStorage.getItem('goaBudget')) || 25000;
+            payers = JSON.parse(localStorage.getItem('goaPayers')) || ['Me'];
+        } catch(e) { console.warn("Local storage reset."); }
+    }
+
+    function saveData() { 
+        if (useFirebase && tripRef) {
+            tripRef.set({ expenses: expenses, budget: tripBudget, payers: payers });
+        } else {
+            localStorage.setItem('goaExpenses', JSON.stringify(expenses));
+            localStorage.setItem('goaBudget', tripBudget);
+            localStorage.setItem('goaPayers', JSON.stringify(payers));
+            renderAll(); 
+        }
     }
 
     // ==========================================================================
@@ -578,7 +589,10 @@ const analytics = getAnalytics(app);
       const offset = now.getTimezoneOffset() * 60000;
       document.getElementById('dateInput').value = (new Date(now.getTime() - offset)).toISOString().split('T')[0];
 
+      renderPayers();
+      renderAll(); 
       initMap(); 
+      updateMap(); 
       setupPhotoHandler();
       setTimeout(() => { if(map) map.invalidateSize(); }, 500);
     }
@@ -626,7 +640,8 @@ const analytics = getAnalytics(app);
             payers = input.split(',').map(n => n.trim()).filter(n => n !== '');
             if(payers.length === 0) payers = ['Me']; 
             saveData();
-            showToast("Names updated & synced!");
+            renderPayers();
+            showToast("Names updated!");
         }
     }
 
@@ -1172,7 +1187,34 @@ const analytics = getAnalytics(app);
     // ==========================================================================
     function escapeHtml(t) { if(!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
     function formatDate(d) { return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
+    function clearAll() { if (confirm('⚠️ Delete ALL data? Cannot be undone!')) { expenses = []; saveData(); init(); showToast('Cleared!'); } }
     function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
+
+    function exportSync() {
+        const backup = { version: "v_master", date: new Date().toISOString(), data: expenses, budget: tripBudget, payers: payers };
+        const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `Goa-Sync-${new Date().toISOString().slice(0,10)}.json`; a.click(); showToast('Backup File Saved!');
+    }
+
+    function importSync(event) {
+        const file = event.target.files[0]; if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imp = JSON.parse(e.target.result);
+                if(imp.data && Array.isArray(imp.data)) {
+                    if(confirm("Merge this backup with your current data?")) {
+                        const existingIds = new Set(expenses.map(ex => ex.id));
+                        imp.data.forEach(item => { if(!existingIds.has(item.id)) expenses.push(item); });
+                        if(imp.budget) tripBudget = imp.budget;
+                        if(imp.payers) payers = imp.payers;
+                        saveData(); renderPayers(); init(); showToast("Sync Successful! 🚀");
+                    }
+                } else throw new Error();
+            } catch(err) { showToast("Error loading file."); }
+        };
+        reader.readAsText(file);
+    }
 
     function exportData() {
       const csv = [['Date', 'Time', 'Description', 'Amount', 'Category', 'Place', 'Paid By'],
@@ -1182,8 +1224,36 @@ const analytics = getAnalytics(app);
       a.download = `goa-expenses.csv`; a.click(); showToast('CSV exported!');
     }
 
+    function exportStory() {
+        if(expenses.length === 0) return showToast("Add expenses first!");
+        const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
+        const topCat = Object.entries(expenses.reduce((acc, e) => { acc[e.category] = (acc[e.category]||0) + Number(e.amount); return acc; }, {})).sort((a,b)=>b[1]-a[1])[0][0];
+        const storyHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans';background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;}.card{background:linear-gradient(135deg,#0ea5e9,#f43f5e);width:350px;padding:40px 30px;border-radius:30px;color:white;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;overflow:hidden;}.card::before{content:'🌴';font-size:150px;position:absolute;opacity:0.1;top:-20px;left:-20px;}h1{font-size:2.5rem;margin:0 0 10px 0;line-height:1.1;font-weight:800;}p{font-size:1rem;opacity:0.9;margin-bottom:30px;}.metric{background:rgba(0,0,0,0.2);padding:15px;border-radius:15px;margin-bottom:15px;text-align:left;display:flex;justify-content:space-between;align-items:center;}.m-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;opacity:0.8;}.m-val{font-size:1.4rem;font-weight:800;}</style></head><body><div class="card"><h1>My Goa<br>Journey</h1><p>Trip Summary.</p><div class="metric"><div class="m-label">Total Splurge</div><div class="m-val">₹${total.toLocaleString('en-IN')}</div></div><div class="metric"><div class="m-label">Top Category</div><div class="m-val">${topCat.substring(topCat.indexOf(' ')+1)}</div></div></div></body></html>`;
+        const blob = new Blob([storyHTML], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
+    }
+
+    function exportHTML() {
+      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
+    }
+
+    function downloadPlacesList() {
+      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
+      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? stats.locationData.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
+    }
+
+    document.addEventListener('click', (e) => {
+      const sug = document.getElementById('locationSuggestions');
+      if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none';
+    });
+
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
-
