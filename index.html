@@ -82,23 +82,13 @@
     .panel-header { padding: 16px 20px; font-weight: 800; font-size: 1.05rem; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;}
     .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
 
-    /* Overlay & Sidebars */
+    /* Hidden Sidebar */
     .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 99998; backdrop-filter: blur(4px);}
     .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
-    .sidebar.open { right: 0 !important; }
-    #overviewSidebar { width: 450px; right: -450px; } /* Clean CSS based control */
-
+    .sidebar.open { right: 0; }
     .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .sidebar-header h2 { font-size: 1.3rem; margin: 0; display: flex; align-items: center; gap: 8px;}
     .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
-    
-    /* Overview Sidebar Specifics */
-    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.9rem; }
-    .overview-table th { background: var(--card-bg); text-align: left; padding: 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); }
-    .overview-table td { padding: 12px; border-bottom: 1px solid var(--border); }
-    .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 12px; padding-bottom: 10px; margin-bottom: 24px;}
-    .carousel-item { flex: 0 0 140px; height: 140px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: pointer;}
-    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
 
     /* ==========================================================================
        4. CALENDAR & BUDGET
@@ -130,7 +120,6 @@
     .view-toggle button.active { background: var(--ocean); color: white; }
     
     .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;}
-
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
 
     /* Gallery */
@@ -145,9 +134,15 @@
 
     /* Replay Card */
     .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .replay-card.show { right: 20px; }
     .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
-    .rc-img-wrapper { width: 100%; height: 180px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
+    .rc-step { background: var(--primary); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; }
+    .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
     .rc-img-content { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: 0.3s;}
+    .rc-body { padding: 16px; }
+    .rc-nav { display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); }
+    
+    .btn-replay-nav { flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;}
 
     /* ==========================================================================
        6. FORM & FEED
@@ -157,15 +152,16 @@
     .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
     .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
-    #amountWrapper { flex:1; display:flex; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden; transition: 0.2s; }
+    /* RECTIFIED AMOUNT BOX */
+    #amountWrapper { flex:1; display:flex; align-items:stretch; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden; transition: 0.2s; }
     #amountWrapper:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     #amount { flex:1; border:none; padding:14px; font-size:0.95rem; font-family:'Inter'; background:transparent; color:var(--text-main); outline:none; min-width:0; }
-    #btn-free { background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border); transition: 0.2s; user-select: none; font-size: 0.9rem;}
-    #btn-ocr { background: var(--info); color: white; padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border);}
+    #btn-free { background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 0 16px; display: flex; align-items: center; justify-content: center; font-weight: 800; cursor: pointer; border: none; border-left: 1px solid var(--border); transition: 0.2s; font-size: 0.9rem;}
+    #btn-ocr { background: var(--info); color: white; padding: 0 16px; display: flex; align-items: center; justify-content: center; font-weight: 800; cursor: pointer; border: none; border-left: 1px solid var(--border); font-size: 1.1rem;}
 
-    /* RESTORED: Creative Toggle Buttons */
-    .img-type-toggle { display: flex; gap: 8px; margin-bottom: 10px; background: var(--card-bg); border: 1px solid var(--border); padding: 6px; border-radius: 12px;}
-    .img-type-btn { flex: 1; padding: 8px 12px; border: none; border-radius: 8px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-muted); font-weight: bold; transition: 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 6px;}
+    /* CREATIVE PHOTO TOGGLES (NON-RECTANGULAR) */
+    .img-type-toggle { display: flex; gap: 8px; margin-bottom: 10px; background: var(--card-bg); border: 1px solid var(--border); padding: 6px; border-radius: 14px;}
+    .img-type-btn { flex: 1; padding: 10px 12px; border: none; border-radius: 10px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-muted); font-weight: bold; transition: 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 6px;}
     .img-type-btn.active { background: var(--ocean); color: white; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); }
 
     .dt-row { display: flex; gap: 10px; width: 100%; }
@@ -186,7 +182,6 @@
     .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
     .btn-save:active { transform: scale(0.98); }
 
-    /* MULTIPLE PHOTOS PREVIEW CONTAINER */
     #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
     #photoInput, #ocrInput { display: none; }
 
@@ -209,9 +204,21 @@
     .photo-thumb:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
 
     /* ==========================================================================
-       7. CLOCK MODAL, LIGHTBOX & SPINNERS
+       7. CENTERED OVERVIEW MODAL, CLOCK, LIGHTBOX
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(4px);}
+    
+    /* RECTIFIED: Overview is now a Centered Modal Pop-up */
+    .overview-modal-content { width: 90%; max-width: 650px; max-height: 85vh; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); color: var(--text-main); }
+    
+    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.9rem; }
+    .overview-table th { background: var(--card-bg); text-align: left; padding: 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); }
+    .overview-table td { padding: 12px; border-bottom: 1px solid var(--border); }
+    .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 12px; padding-bottom: 10px; margin-bottom: 24px;}
+    .carousel-item { flex: 0 0 140px; height: 140px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: pointer;}
+    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Clock Picker */
     .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
     .mat-tp-label { font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;}
     .mat-tp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;}
@@ -223,17 +230,13 @@
     .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: 0.2s;}
     .mat-tp-ampm-btn:first-child { border-bottom: 1px solid #4a3e39; }
     .mat-tp-ampm-btn.active { background: #4a3e39; color: #ffdbd1;}
-
     .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;}
     .mat-dial-center { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: #ffb59d; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; }
     .mat-dial-hand { position: absolute; bottom: 50%; left: calc(50% - 2px); width: 4px; height: calc(50% - 20px); background: #ffb59d; transform-origin: bottom center; z-index: 5;}
     .mat-dial-hand-circle { position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;}
     .mat-dial-number { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; z-index: 15; color: #d7c2b9; pointer-events: none;}
-    .mat-tp-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 8px;}
-    .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
-    .mat-tp-action-btns { display: flex; gap: 16px; }
-    .mat-tp-action-btn { background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px; transition: 0.2s;}
 
+    /* Lightbox & Toast */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
     #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
     .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
@@ -242,6 +245,7 @@
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 14px 28px; border-radius: 30px; font-weight: 700; z-index: 999999; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* OCR Loading */
     #ocrLoading { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 999999; justify-content: center; align-items: center; color: white; font-weight: bold; flex-direction: column; gap: 16px;}
     .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -257,7 +261,7 @@
       .col-left, .col-center, .col-right { height: auto; overflow: visible; }
       .col-center .panel { height: 450px; }
       .scroll-area { overflow: visible; padding: 16px; }
-      .sidebar, #overviewSidebar { width: 100vw; right: -100vw; }
+      .sidebar { width: 100vw; right: -100vw; }
       .replay-card { right: 5%; left: 5%; width: auto; }
     }
   </style>
@@ -316,25 +320,26 @@
       </div>
   </div>
 
-  <div id="overviewSidebar" class="sidebar">
-      <div class="sidebar-header">
-          <h2><i class="ph-bold ph-chart-bar" style="color:var(--primary)"></i> Trip Overview</h2>
-          <button type="button" class="close-sidebar" onclick="closeAllSidebars()">✕</button>
-      </div>
-      <div class="scroll-area" style="padding: 20px;">
-          
-          <h3 style="margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px;"><i class="ph-bold ph-users"></i> Payer Breakdown</h3>
-          <div id="overviewTableContainer"></div>
+  <div id="overviewModal" class="mat-modal-overlay">
+      <div class="overview-modal-content">
+          <div style="padding: 20px; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center;">
+              <h2 style="margin:0; font-size:1.3rem; display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-chart-pie-slice" style="color:var(--primary)"></i> Trip Overview</h2>
+              <button type="button" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('overviewModal').style.display='none'">✕</button>
+          </div>
+          <div class="scroll-area" style="padding: 20px; overflow-y: auto;">
+              <h3 style="margin-bottom: 15px; font-size: 1.1rem;"><i class="ph-bold ph-users"></i> Payer Breakdown</h3>
+              <div id="overviewTableContainer"></div>
 
-          <h3 style="margin: 25px 0 15px 0; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px;"><i class="ph-bold ph-hand-coins"></i> Fair Share Settlements</h3>
-          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:-10px; margin-bottom:10px;">Calculated equally among all group members.</div>
-          <div id="settlementContent"></div>
+              <h3 style="margin: 25px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-hand-coins"></i> Fair Share Settlements</h3>
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:15px;">Calculated equally among all group members.</div>
+              <div id="settlementContent"></div>
 
-          <h3 style="margin: 25px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-receipt"></i> Receipts Gallery</h3>
-          <div id="receiptCarousel" class="carousel-wrapper"></div>
+              <h3 style="margin: 25px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-receipt"></i> Receipts Gallery</h3>
+              <div id="receiptCarousel" class="carousel-wrapper"></div>
 
-          <h3 style="margin: 20px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-image"></i> Memories Gallery</h3>
-          <div id="memoryCarousel" class="carousel-wrapper"></div>
+              <h3 style="margin: 20px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-image"></i> Memories Gallery</h3>
+              <div id="memoryCarousel" class="carousel-wrapper"></div>
+          </div>
       </div>
   </div>
 
@@ -354,7 +359,7 @@
         <div class="ph-val total" id="totalSpent">₹0</div>
       </div>
       <button type="button" class="sidebar-btn" onclick="toggleSidebar('feed')"><i class="ph-bold ph-list-dashes"></i> Feed</button>
-      <button type="button" class="overview-btn" onclick="toggleSidebar('overview')"><i class="ph-bold ph-chart-pie-slice"></i> Overview</button>
+      <button type="button" class="overview-btn" onclick="openOverviewModal()"><i class="ph-bold ph-chart-bar"></i> Overview</button>
     </div>
   </div>
 
@@ -418,11 +423,14 @@
                         <h3 id="rc-title" style="margin:0; font-size:1.05rem; color:var(--text-main); line-height:1.3;">Title</h3>
                         <div id="rc-amt" style="color:var(--danger); font-family:'JetBrains Mono'; font-weight:800; font-size:1.1rem; flex-shrink: 0;">₹0</div>
                     </div>
-                    <div id="rc-meta" style="color:var(--text-muted); font-size:0.8rem; display:flex; align-items:center; gap:4px; margin-bottom:12px; font-weight: 500;"></div>
+                    <div style="font-size:0.75rem; color:var(--text-muted); background: rgba(148, 163, 184, 0.1); padding: 8px; border-radius: 8px; margin-bottom: 12px;">
+                        Use <b>Arrow Keys</b> (<i class="ph-bold ph-arrow-left"></i> <i class="ph-bold ph-arrow-right"></i>) to navigate.
+                    </div>
+                    <div id="rc-meta" style="color:var(--text-muted); font-size:0.8rem; display:flex; align-items:center; gap:4px; font-weight: 500;"></div>
                 </div>
                 <div class="rc-nav">
-                    <button type="button" id="rc-prev" class="btn-replay-nav" style="border:1px solid var(--border); background:var(--card-bg); color:var(--text-main);" onclick="prevReplay()"><i class="ph-bold ph-caret-left"></i> Prev</button>
-                    <button type="button" id="rc-next" class="btn-replay-nav" style="border:none; background:var(--primary); color:white;" onclick="nextReplay()">Next <i class="ph-bold ph-caret-right"></i></button>
+                    <button type="button" id="rc-prev" style="background:var(--card-bg); color:var(--text-main); border:1px solid var(--border); flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;" onclick="prevReplay()">Prev</button>
+                    <button type="button" id="rc-next" style="background:var(--primary); color:white; border:none; flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;" onclick="nextReplay()">Next</button>
                 </div>
             </div>
 
@@ -490,7 +498,7 @@
                   <button type="button" class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')"><i class="ph-bold ph-receipt"></i> Receipt/Bill</button>
               </div>
 
-              <button type="button" id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="document.getElementById('photoInput').click()">
+              <button type="button" id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s;" onclick="document.getElementById('photoInput').click()">
                   <i class="ph-bold ph-plus"></i> Select Images to Upload
               </button>
               <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
@@ -569,7 +577,8 @@
 
     function saveData() { 
         if (useFirebase && tripRef) { tripRef.set({ expenses: expenses, budget: tripBudget, payers: payers });
-        } else { localStorage.setItem('goaExpenses', JSON.stringify(expenses)); localStorage.setItem('goaBudget', tripBudget); localStorage.setItem('goaPayers', JSON.stringify(payers)); renderAll(); }
+        } else { localStorage.setItem('goaExpenses', JSON.stringify(expenses)); localStorage.setItem('goaBudget', tripBudget); localStorage.setItem('goaPayers', JSON.stringify(payers)); }
+        renderAll(); 
     }
 
     // ==========================================================================
@@ -603,23 +612,18 @@
     
     function toggleSidebar(type) {
         const feed = document.getElementById('itinerarySidebar');
-        const overview = document.getElementById('overviewSidebar');
         const overlay = document.getElementById('sidebarOverlay');
-        
-        feed.classList.remove('open');
-        overview.classList.remove('open');
-        
-        if (type === 'feed') {
-            feed.classList.add('open'); overlay.style.display = 'block';
-        } else if (type === 'overview') {
-            renderOverview(); 
-            overview.classList.add('open'); overlay.style.display = 'block';
-        }
+        feed.classList.add('open'); overlay.style.display = 'block';
         setTimeout(() => { if(map) map.invalidateSize(); }, 300);
     }
+    
+    function openOverviewModal() {
+        renderOverview();
+        document.getElementById('overviewModal').style.display = 'flex';
+    }
+    
     function closeAllSidebars() {
         document.getElementById('itinerarySidebar').classList.remove('open');
-        document.getElementById('overviewSidebar').classList.remove('open');
         document.getElementById('sidebarOverlay').style.display = 'none';
         setTimeout(() => { if(map) map.invalidateSize(); }, 300);
     }
@@ -783,7 +787,7 @@
         container.innerHTML = currentPhotos.map((photo, index) => `
             <div style="position:relative; flex-shrink:0;">
                 <img src="${photo.url}" style="height:70px; width:70px; border-radius:10px; object-fit:cover; border:2px solid ${photo.type==='receipt'?'var(--warning)':'var(--border)'};">
-                <div onclick="removePhoto(${index})" style="position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer;">✕</div>
+                <div onclick="removePhoto(${index})" style="position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.5);">✕</div>
             </div>
         `).join('');
     }
@@ -907,7 +911,7 @@
         tableHTML += `</table>`;
         document.getElementById('overviewTableContainer').innerHTML = tableHTML || '<div style="color:var(--text-muted);font-size:0.85rem;">No spending data yet.</div>';
 
-        showSettlements(); // Recalculate automatic fair-share settlements
+        showSettlements(); // Calculate fair share math
 
         const buildC = (arr) => arr.map(u => `<div class="carousel-item" onclick="viewImage('${u}')"><img src="${u}"></div>`).join('');
         document.getElementById('receiptCarousel').innerHTML = rImgs.length ? buildC(rImgs) : `<div style="color:var(--text-muted);font-size:0.8rem;">No receipts scanned.</div>`;
@@ -915,8 +919,12 @@
     }
 
     function renderAll() { 
-        try { renderCalendar(); renderBudgetBreakdown(); renderExpenseList(); updateHeaderTotal(); updateMap(); } 
-        catch (e) { console.error("Render error", e); }
+        try { renderCalendar(); } catch (e) {}
+        try { renderBudgetBreakdown(); } catch (e) {}
+        try { renderExpenseList(); } catch (e) {}
+        try { updateHeaderTotal(); } catch (e) {}
+        try { updateMap(); } catch (e) {}
+        try { if(document.getElementById('overviewModal').style.display === 'flex') renderOverview(); } catch(e) {}
     }
 
     // ==========================================================================
@@ -1065,6 +1073,7 @@
     function flyToMap(lat, lng) { 
         if(!map) return;
         closeAllSidebars();
+        switchView('map');
         map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); 
     }
 
@@ -1127,7 +1136,12 @@
         manualPinMode = true; 
         showToast("📍 Click map to pin!");
         switchView('map');
-        closeAllSidebars();
+        
+        // On mobile, scroll to map to make it visible
+        if (window.innerWidth <= 1024) {
+            document.getElementById('map-wrapper').scrollIntoView({behavior: 'smooth'});
+        }
+        
         document.getElementById('map').classList.add('map-pin-mode');
         map.off('click', handleMapClick); map.once('click', handleMapClick);
     }
@@ -1138,24 +1152,30 @@
         tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned!</b>").openPopup();
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
             let shortName = data.display_name ? data.display_name.split(',')[0] : `Map Pin`;
-            document.getElementById('place').value = shortName; selectLocation(shortName, lat, lon);
-        }).catch(() => { document.getElementById('place').value = "Map Pin"; selectLocation(`Map Pin`, lat, lon); });
+            selectLocation(shortName, lat, lon);
+        }).catch(() => selectLocation(`Map Pin`, lat, lon));
         manualPinMode = false; document.getElementById('map').classList.remove('map-pin-mode');
+        
+        // Scroll back to input form on mobile after pinning
+        if (window.innerWidth <= 1024) {
+            document.getElementById('place').scrollIntoView({behavior: 'smooth'});
+        }
     }
+    
     function pinCurrentLocation() {
         showToast("Requesting GPS...");
         switchView('map');
-        closeAllSidebars();
+        
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(pos => {
                 const lat = pos.coords.latitude, lon = pos.coords.longitude;
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
                     let shortName = data.display_name ? data.display_name.split(',')[0] : `Live GPS Pin`;
-                    document.getElementById('place').value = shortName; selectLocation(shortName, lat, lon);
+                    selectLocation(shortName, lat, lon);
                     if(tempMarker) map.removeLayer(tempMarker);
                     tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 You are here</b>").openPopup();
                     map.flyTo([lat, lon], 16);
-                }).catch(() => { document.getElementById('place').value = "Live Pin"; selectLocation(`Live Pin`, lat, lon); });
+                }).catch(() => { selectLocation(`Live Pin`, lat, lon); });
             }, () => showToast("GPS Error: You must click 'Allow'."), { timeout: 10000 });
         } else { showToast("GPS not supported."); }
     }
@@ -1367,6 +1387,15 @@
       a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
     }
     
+    function exportStory() {
+        if(expenses.length === 0) return showToast("Add expenses first!");
+        const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
+        const topCat = Object.entries(expenses.reduce((acc, e) => { acc[e.category] = (acc[e.category]||0) + Number(e.amount); return acc; }, {})).sort((a,b)=>b[1]-a[1])[0][0];
+        const storyHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans';background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;}.card{background:linear-gradient(135deg,#0ea5e9,#f43f5e);width:350px;padding:40px 30px;border-radius:30px;color:white;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;overflow:hidden;}.card::before{content:'🌴';font-size:150px;position:absolute;opacity:0.1;top:-20px;left:-20px;}h1{font-size:2.5rem;margin:0 0 10px 0;line-height:1.1;font-weight:800;}p{font-size:1rem;opacity:0.9;margin-bottom:30px;}.metric{background:rgba(0,0,0,0.2);padding:15px;border-radius:15px;margin-bottom:15px;text-align:left;display:flex;justify-content:space-between;align-items:center;}.m-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;opacity:0.8;}.m-val{font-size:1.4rem;font-weight:800;}</style></head><body><div class="card"><h1>My Goa<br>Journey</h1><p>Trip Summary.</p><div class="metric"><div class="m-label">Total Splurge</div><div class="m-val">₹${total.toLocaleString('en-IN')}</div></div><div class="metric"><div class="m-label">Top Category</div><div class="m-val">${topCat.substring(topCat.indexOf(' ')+1)}</div></div></div></body></html>`;
+        const blob = new Blob([storyHTML], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
+    }
+
     document.addEventListener('click', (e) => { const sug = document.getElementById('locationSuggestions'); if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none'; });
     window.addEventListener('DOMContentLoaded', init);
   </script>
