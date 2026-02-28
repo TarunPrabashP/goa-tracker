@@ -47,9 +47,16 @@
     }
 
     h1, h2, h3, .total-value, .budget-val, .exp-amt { font-family: 'Plus Jakarta Sans', sans-serif; }
-    ::-webkit-scrollbar { width: 6px; }
+    
+    /* Clean Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 10px; }
+
+    /* Hide number input arrows */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
 
     /* ==========================================================================
        2. HEADER
@@ -89,7 +96,6 @@
     .panel-header { padding: 16px 20px; font-weight: 800; font-size: 1.05rem; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;}
     .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
 
-    /* Hidden Sidebar */
     .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 99998; backdrop-filter: blur(4px);}
     .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border); backdrop-filter: blur(20px);}
     .sidebar.open { right: 0; }
@@ -99,21 +105,24 @@
     .close-sidebar:hover { background: var(--danger); color: white; }
 
     /* ==========================================================================
-       4. CALENDAR & BUDGET
+       4. CRISPER NATIVE-STYLE CALENDAR
        ========================================================================== */
     .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 800; font-size: 1.1rem; }
-    .calendar-nav button { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
-    .calendar-nav button:hover { background: var(--ocean); color: white; border-color: var(--ocean); }
+    .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
+    .calendar-nav button:hover { background: var(--card-bg); border-color: var(--ocean); }
     
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-    .cal-day-header { font-size: 0.7rem; color: var(--text-muted); font-weight: 800; padding-bottom: 8px; text-transform: uppercase;}
+    .calendar-grid { 
+        display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; 
+        background: var(--card-bg); padding: 8px; border-radius: 12px; border: 1px solid var(--border);
+    }
+    .cal-day-header { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; padding: 4px 0 8px 0; text-transform: uppercase;}
     
-    .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; background: transparent; position: relative; transition: all 0.2s ease;}
-    .cal-day:hover:not(.empty) { background: var(--card-bg); border: 1px solid var(--ocean); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);}
+    .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; background: transparent; position: relative; transition: 0.2s ease;}
+    .cal-day:hover:not(.empty) { background: var(--surface); box-shadow: inset 0 0 0 1px var(--ocean); }
     .cal-day.empty { cursor: default; }
-    .cal-day.today { font-weight: 800; color: var(--ocean); background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.3);}
-    .cal-day.selected { background: var(--ocean) !important; color: white !important; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); border-color: var(--ocean);}
-    .cal-day.has-expense::after { content: ''; width: 5px; height: 5px; background: var(--danger); border-radius: 50%; position: absolute; bottom: 6px; box-shadow: 0 0 4px rgba(239, 68, 68, 0.5); }
+    .cal-day.today { font-weight: 800; color: var(--ocean); box-shadow: inset 0 -3px 0 0 var(--ocean); background: rgba(14, 165, 233, 0.05); }
+    .cal-day.selected { background: var(--ocean) !important; color: white !important; font-weight: 700; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);}
+    .cal-day.has-expense::after { content: ''; width: 4px; height: 4px; background: var(--danger); border-radius: 50%; position: absolute; bottom: 4px;}
     .cal-day.selected.has-expense::after { background: white; }
 
     .budget-item { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 14px; margin-bottom: 10px; background: var(--card-bg); border-radius: 14px; border-left: 4px solid var(--primary); border: 1px solid var(--border); cursor: pointer; transition: 0.2s;}
@@ -158,8 +167,9 @@
     .replay-card.show { right: 20px; }
     .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .rc-step { background: var(--primary); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; }
-    .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden;}
-    .rc-img-content { width: 100%; height: 100%; object-fit: cover; }
+    .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
+    .rc-img-content { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: 0.3s;}
+    .rc-img-content:hover { transform: scale(1.05); }
     .rc-body { padding: 16px; }
     .rc-nav { display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); }
     .rc-nav button { flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; transition: 0.2s;}
@@ -172,13 +182,21 @@
     .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
     .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
+    /* NEW: Amount Wrapper for "Free" Button Integration */
+    #amountWrapper { flex:1; display:flex; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden; transition: 0.2s; }
+    #amountWrapper:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
+    #amount { flex:1; border:none; padding:14px; font-size:0.95rem; font-family:'Inter'; background:transparent; color:var(--text-main); outline:none; min-width:0; }
+    #btn-free { background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 0 16px; display: flex; align-items: center; font-weight: 800; cursor: pointer; border-left: 1px solid var(--border); transition: 0.2s; user-select: none; font-size: 0.9rem;}
+
     .dt-row { display: flex; gap: 10px; width: 100%; }
     .dt-box { border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; cursor: pointer; transition: 0.2s; align-items: center;}
     .dt-box:hover { border-color: var(--ocean); }
     .dt-date { flex: 1.5; justify-content: space-between; }
     .dt-date input[type="date"] { background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;}
     .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
-    .dt-time { flex: 1; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; padding: 8px 12px;}
+    
+    .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
+    
     .dt-cam { width: 50px; justify-content: center; font-size: 1.3rem; padding: 0;}
     .dt-cam:hover { color: var(--ocean); }
 
@@ -191,7 +209,8 @@
     .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
     .btn-save:active { transform: scale(0.98); }
 
-    .photo-preview { width: 100%; height: 90px; object-fit: cover; border-radius: 12px; display: none; margin-bottom: 14px; border: 1px solid var(--border);}
+    /* MULTIPLE PHOTOS PREVIEW CONTAINER */
+    #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
     #photoInput, #importInput { display: none; }
 
     /* Feed Layout */
@@ -201,7 +220,6 @@
     .exp-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); line-height: 1.3;}
     .exp-amt { font-weight: 800; font-size: 1.3rem; color: var(--danger); font-family: 'JetBrains Mono'; text-align: right;}
     .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
-    .split-badge { background: rgba(14, 165, 233, 0.15); color: var(--ocean); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; margin-left: 6px;}
     .exp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-weight: 500;}
     
     .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
@@ -211,7 +229,9 @@
     .action-btn:hover { opacity: 1; }
     .btn-edit { color: var(--info); }
     .btn-del { color: var(--danger); }
-    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; cursor: pointer; border: 1px solid var(--border); flex-shrink: 0;}
+    
+    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; cursor: pointer; border: 1px solid var(--border); flex-shrink: 0; transition: 0.2s;}
+    .photo-thumb:hover { border-color: var(--ocean); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
 
     /* Sidebar Actions Grid */
     .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0;}
@@ -324,8 +344,7 @@
           <button class="btn-sm" onclick="exportData()"><i class="ph-bold ph-file-csv" style="color:var(--primary)"></i> CSV</button>
           <button class="btn-sm" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="color:var(--info)"></i> HTML</button>
           <button class="btn-sm" onclick="downloadPlacesList()"><i class="ph-bold ph-map-trifold" style="color:var(--warning)"></i> Places</button>
-          <button class="btn-sm" onclick="exportStory()"><i class="ph-bold ph-instagram-logo" style="color:#d946ef"></i> Story</button>
-          <button class="btn-sm danger" style="grid-column: span 2;" onclick="clearAll()"><i class="ph-bold ph-trash"></i> Delete Data</button>
+          <button class="btn-sm special" style="grid-column: span 3;" onclick="exportStory()"><i class="ph-bold ph-instagram-logo"></i> Generate Story</button>
       </div>
   </div>
 
@@ -364,8 +383,8 @@
                 <div class="calendar-nav" style="margin:0;"><button onclick="changeMonth(1)"><i class="ph-bold ph-caret-right"></i></button></div>
             </div>
         </div>
-        <div style="padding:20px;">
-            <div class="calendar-month" id="calendarMonth" style="text-align:center; font-weight:800; font-size:1.1rem; margin-bottom:16px;"></div>
+        <div style="padding:16px;">
+            <div class="calendar-month" id="calendarMonth" style="text-align:center; font-weight:800; font-size:1.1rem; margin-bottom:12px;"></div>
             <div class="calendar-grid" id="calendar"></div>
         </div>
       </div>
@@ -434,7 +453,10 @@
               <input type="text" id="description" class="input" placeholder="Title (e.g. Fish Thali, Surfboard)">
               
               <div class="input-row">
-                <input type="number" id="amount" class="input" placeholder="Amount (₹)" style="flex:1;" required>
+                <div id="amountWrapper">
+                    <input type="number" id="amount" placeholder="Amount (₹)">
+                    <div id="btn-free" onclick="toggleFree()">Free</div>
+                </div>
                 <select id="category" class="select" style="flex:1.5;">
                   <option value="">Category...</option>
                   <option value="🏨 Accommodation">🏨 Accommodation</option>
@@ -447,7 +469,7 @@
                 </select>
               </div>
 
-              <div class="input-row">
+              <div class="input-row" id="paidByRow">
                   <select id="paidBy" class="select" style="flex:1;"></select>
                   <button class="action-badge" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text-main);" onclick="editPayers()" title="Add/Edit Names">
                       <i class="ph-bold ph-pencil-simple"></i> Edit Names
@@ -459,14 +481,14 @@
                       <input type="date" id="dateInput" required>
                   </div>
                   <div class="dt-box dt-time" onclick="openTimePicker()">
-                      <i class="ph-bold ph-clock" style="font-size:0.9rem; color:var(--text-muted);"></i>
+                      <i class="ph-bold ph-clock" style="font-size:1.1rem; color:var(--text-muted);"></i>
                       <div id="displayTimeText" style="display:flex; align-items:baseline; gap:4px;"></div>
                   </div>
                   <input type="hidden" id="timeInput" value="12:00">
-                  <button class="dt-box dt-cam" onclick="document.getElementById('photoInput').click()" title="Attach Photo">
+                  <button class="dt-box dt-cam" onclick="document.getElementById('photoInput').click()" title="Attach Photos">
                       <i class="ph-bold ph-camera"></i>
                   </button>
-                  <input type="file" id="photoInput" accept="image/*">
+                  <input type="file" id="photoInput" accept="image/*" multiple>
               </div>
 
               <div style="position: relative;">
@@ -480,15 +502,13 @@
 
             </div>
             
-            <img id="photoPreview" class="photo-preview">
+            <div id="photoPreviewContainer"></div>
             <button class="btn-save" id="saveBtn" onclick="addExpense()">Save to Itinerary</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  
   <script>
     // ==========================================================================
     // 🔴 FIREBASE CLOUD SYNC LOGIC 🔴 
@@ -516,19 +536,26 @@
     }
 
     // ==========================================================================
-    // GLOBAL STATE & DATA SANITIZER
+    // GLOBAL STATE 
     // ==========================================================================
     let expenses = [];
     let tripBudget = 25000;
-    let payers = ['Me'];
+    let payers = JSON.parse(localStorage.getItem('goaPayers'));
+    if (!payers || (payers.length === 1 && payers[0] === 'Me')) {
+        payers = ['Tarun', 'Neha', 'Ashok', 'Rupini', 'Tejas'];
+        localStorage.setItem('goaPayers', JSON.stringify(payers));
+    }
     
     let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear();
     let selectedDate = null; let activeCategoryFilter = null;
     let searchTimeout = null; let selectedLocation = null;
-    let currentPhotoB64 = null; let editingId = null; let manualPinMode = false;
+    let editingId = null; let manualPinMode = false;
     let map = null; let markers = []; let tempMarker = null; let routeLayer = null;
     let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
     let currentView = 'map';
+    
+    let currentPhotos = []; // ARRAY FOR MULTIPLE PHOTOS
+    let isFree = false; // FLAG FOR FREE BLOCK
 
     if (useFirebase) {
         tripRef.on('value', (snapshot) => {
@@ -536,26 +563,15 @@
             if (data) {
                 expenses = data.expenses || [];
                 tripBudget = data.budget || 25000;
-                payers = data.payers || ['Me'];
-                renderPayers();
-                renderAll();
-            }
+                if (data.payers && data.payers.length > 0 && data.payers[0] !== 'Me') payers = data.payers;
+                renderPayers(); renderAll();
+            } else { renderPayers(); renderAll(); }
         });
     } else {
         try {
             let saved = localStorage.getItem('goaExpenses');
-            if(saved) {
-                let parsed = JSON.parse(saved);
-                if(Array.isArray(parsed)) {
-                    expenses = parsed.map(e => ({
-                        ...e,
-                        amount: parseFloat(e.amount) || 0,
-                        date: e.date || new Date().toISOString().split('T')[0]
-                    }));
-                }
-            }
+            if(saved) expenses = JSON.parse(saved);
             tripBudget = parseFloat(localStorage.getItem('goaBudget')) || 25000;
-            payers = JSON.parse(localStorage.getItem('goaPayers')) || ['Me'];
         } catch(e) { console.warn("Local storage reset."); }
     }
 
@@ -627,7 +643,34 @@
     }
 
     // ==========================================================================
-    // PAYER NAMES DROPDOWN LOGIC
+    // FREE BUTTON TOGGLE LOGIC
+    // ==========================================================================
+    function toggleFree() {
+        isFree = !isFree;
+        const amtInput = document.getElementById('amount');
+        const freeBtn = document.getElementById('btn-free');
+        const paidByRow = document.getElementById('paidByRow');
+        
+        if (isFree) {
+            amtInput.value = '';
+            amtInput.disabled = true;
+            amtInput.placeholder = 'Free';
+            amtInput.style.opacity = '0.5';
+            freeBtn.style.background = 'var(--primary)';
+            freeBtn.style.color = 'white';
+            paidByRow.style.display = 'none';
+        } else {
+            amtInput.disabled = false;
+            amtInput.placeholder = 'Amount (₹)';
+            amtInput.style.opacity = '1';
+            freeBtn.style.background = 'rgba(16, 185, 129, 0.1)';
+            freeBtn.style.color = 'var(--primary)';
+            paidByRow.style.display = 'flex';
+        }
+    }
+
+    // ==========================================================================
+    // PAYER NAMES LOGIC
     // ==========================================================================
     function renderPayers() {
         const select = document.getElementById('paidBy');
@@ -635,13 +678,11 @@
     }
 
     function editPayers() {
-        let input = prompt("Enter names separated by commas (e.g. Me, Rahul, Priya):", payers.join(', '));
+        let input = prompt("Enter names separated by commas (e.g. Tarun, Neha, Ashok):", payers.join(', '));
         if(input !== null) {
             payers = input.split(',').map(n => n.trim()).filter(n => n !== '');
-            if(payers.length === 0) payers = ['Me']; 
-            saveData();
-            renderPayers();
-            showToast("Names updated!");
+            if(payers.length === 0) payers = ['Tarun']; 
+            saveData(); renderPayers(); showToast("Names updated!");
         }
     }
 
@@ -669,7 +710,8 @@
 
     function renderGallery() {
         const container = document.getElementById('gallery-container');
-        let filtered = expenses.filter(e => e.photo);
+        // Filter out expenses that have no photos at all
+        let filtered = expenses.filter(e => e.photo && (Array.isArray(e.photo) ? e.photo.length > 0 : e.photo));
         if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
         if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
         
@@ -692,20 +734,70 @@
             html += `<div class="gallery-date-header"><i class="ph-bold ph-calendar-blank" style="color:var(--ocean)"></i> ${date}</div>`;
             html += `<div class="gallery-grid">`;
             grouped[date].forEach(exp => {
-                html += `
-                <div class="gallery-item" onclick="viewImage('${exp.photo}')">
-                    <img src="${exp.photo}" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div style="font-weight:800; font-family:'Plus Jakarta Sans'; margin-bottom:2px;">${escapeHtml(exp.description)}</div>
-                        <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(exp.place || 'Unknown Location')}</div>
-                    </div>
-                </div>`;
+                let photosArray = Array.isArray(exp.photo) ? exp.photo : [exp.photo];
+                photosArray.forEach(p => {
+                    html += `
+                    <div class="gallery-item" onclick="viewImage('${p}')">
+                        <img src="${p}" class="gallery-img">
+                        <div class="gallery-overlay">
+                            <div style="font-weight:800; font-family:'Plus Jakarta Sans'; margin-bottom:2px;">${escapeHtml(exp.description)}</div>
+                            <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(exp.place || 'Unknown Location')}</div>
+                        </div>
+                    </div>`;
+                });
             });
             html += `</div>`;
         });
 
         container.innerHTML = html;
     }
+
+    // ==========================================================================
+    // MULTIPLE PHOTO ATTACHMENT
+    // ==========================================================================
+    function setupPhotoHandler() {
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas'); const MAX = 600; 
+                        const scale = Math.min(MAX / img.width, MAX / img.height);
+                        canvas.width = img.width * scale; canvas.height = img.height * scale;
+                        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                        currentPhotos.push(canvas.toDataURL('image/jpeg', 0.6));
+                        renderPhotoPreviews();
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            });
+            this.value = ''; // Reset input to allow same file selection again if needed
+        });
+    }
+
+    function renderPhotoPreviews() {
+        const container = document.getElementById('photoPreviewContainer');
+        if(currentPhotos.length === 0) { container.style.display = 'none'; return; }
+        container.style.display = 'flex';
+        container.innerHTML = currentPhotos.map((src, index) => `
+            <div style="position:relative; flex-shrink:0;">
+                <img src="${src}" style="height:70px; width:70px; border-radius:10px; object-fit:cover; border:1px solid var(--border);">
+                <div onclick="removePhoto(${index})" style="position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.3);">✕</div>
+            </div>
+        `).join('');
+    }
+
+    function removePhoto(index) {
+        currentPhotos.splice(index, 1);
+        renderPhotoPreviews();
+    }
+    
+    function viewImage(src) { document.getElementById('lbImg').src = src; document.getElementById('lightbox').style.display = 'flex'; }
 
     // ==========================================================================
     // MATERIAL UI CLOCK
@@ -795,6 +887,79 @@
     }
 
     // ==========================================================================
+    // UI RENDERING & CHART.JS
+    // ==========================================================================
+    function renderCalendar() {
+      const cal = document.getElementById('calendar');
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const startDay = new Date(currentYear, currentMonth, 1).getDay();
+      document.getElementById('calendarMonth').textContent = new Date(currentYear, currentMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+      
+      let html = ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => `<div class="cal-day-header">${d}</div>`).join('');
+      for (let i = 0; i < startDay; i++) html += '<div class="cal-day empty"></div>';
+      
+      const today = new Date();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasExp = expenses.some(e => e.date === dateStr);
+        const isT = day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+        const isSel = selectedDate === dateStr;
+        html += `<div class="cal-day ${hasExp ? 'has-expense' : ''} ${isT ? 'today' : ''} ${isSel ? 'selected' : ''}" onclick="selectDate('${dateStr}')">${day}</div>`;
+      }
+      cal.innerHTML = html;
+    }
+    function changeMonth(delta) { currentMonth += delta; if (currentMonth === 12) { currentYear++; currentMonth = 0; } else if (currentMonth === -1) { currentYear--; currentMonth = 11; } renderCalendar(); }
+    function selectDate(dateStr) { selectedDate = selectedDate === dateStr ? null : dateStr; renderAll(); }
+    function toggleCategoryFilter(cat) { activeCategoryFilter = (activeCategoryFilter === cat) ? null : cat; renderAll(); }
+
+    function renderBudgetBreakdown() {
+      const breakdown = {}; expenses.forEach(e => { breakdown[e.category] = (breakdown[e.category] || 0) + Number(e.amount); });
+      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+      
+      const isLight = document.body.classList.contains('light-mode');
+      const textColor = isLight ? '#64748b' : '#94a3b8';
+
+      const ctx = document.getElementById('expenseChart').getContext('2d');
+      if(window.expenseChartInst) window.expenseChartInst.destroy();
+      
+      const labels = Object.keys(breakdown).map(k => k.split(' ')[1] || k);
+      const data = Object.values(breakdown);
+      const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444', '#0ea5e9'];
+
+      if(total > 0) {
+          window.expenseChartInst = new Chart(ctx, {
+              type: 'doughnut',
+              data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, hoverOffset: 4 }] },
+              options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { color: textColor, font: { family: 'Inter', size: 11 } } } } }
+          });
+      }
+
+      const html = Object.entries(breakdown).sort((a, b) => b[1] - a[1]).map(([cat, amt]) => {
+          const percent = total > 0 ? ((amt / total) * 100).toFixed(1) : 0;
+          const isActive = activeCategoryFilter === cat ? 'active-filter' : '';
+          return `<div class="budget-item ${isActive}" onclick="toggleCategoryFilter('${cat}')"><div><div class="budget-name">${cat}</div><div class="budget-percent">${percent}% of total</div></div><div class="budget-val">₹${amt.toLocaleString('en-IN')}</div></div>`;
+        }).join('');
+      document.getElementById('budgetBreakdownList').innerHTML = html || '<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:20px;">Add expenses to see analytics!</div>';
+    }
+
+    function updateTotal() {
+      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+      document.getElementById('totalSpent').textContent = `₹${total.toLocaleString('en-IN')}`;
+      const pct = Math.min((total / tripBudget) * 100, 100).toFixed(1);
+      document.getElementById('burnText').textContent = `${pct}% of ₹${tripBudget.toLocaleString('en-IN')}`;
+      const bar = document.getElementById('burnBar'); bar.style.width = `${pct}%`;
+      if(pct > 90) bar.style.background = '#ef4444'; else if(pct > 75) bar.style.background = '#f59e0b'; else bar.style.background = '#10b981';
+    }
+
+    function renderAll() { 
+        try { 
+            renderCalendar(); renderBudgetBreakdown(); renderExpenseList(); updateTotal(); 
+            if(currentView === 'gallery') renderGallery(); else updateMap(); 
+        } 
+        catch (e) { console.error("Render error", e); }
+    }
+
+    // ==========================================================================
     // MAP SYSTEM & OSRM ROUTING
     // ==========================================================================
     function initMap() {
@@ -833,13 +998,21 @@
             iconSize: [28, 28], iconAnchor: [14, 14]
         });
 
-        const pHTML = exp.photo ? `<img src="${exp.photo}" style="width:100%; height:80px; object-fit:cover; border-radius:8px; margin-bottom:8px;">` : '';
+        // Show only the first photo in Map Popup
+        let photoUrl = '';
+        if(exp.photo) {
+            photoUrl = Array.isArray(exp.photo) ? exp.photo[0] : exp.photo;
+        }
+
+        const pHTML = photoUrl ? `<img src="${photoUrl}" style="width:100%; height:80px; object-fit:cover; border-radius:8px; margin-bottom:8px;">` : '';
+        const badgeAmt = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary);font-size:1.2rem;font-weight:900;">FREE</span>' : `₹${Number(exp.amount).toLocaleString('en-IN')}`;
+        
         const marker = L.marker([exp.locationData.lat, exp.locationData.lon], {icon: numIcon}).addTo(map).bindPopup(`
             <div style="min-width:180px; font-family:'Inter';">
               ${pHTML}
               <div style="font-size:0.75rem; font-weight:800; color:#0ea5e9; text-transform:uppercase; margin-bottom:4px;">Stop ${index + 1}</div>
               <b style="color:#1e293b; font-size:1rem;">${escapeHtml(exp.description)}</b><br>
-              <span style="color:#ef4444; font-weight:800; font-size:1.2rem; font-family:'JetBrains Mono';">₹${Number(exp.amount).toLocaleString('en-IN')}</span><br>
+              <span style="color:#ef4444; font-weight:800; font-family:'JetBrains Mono';">${badgeAmt}</span><br>
               <span style="color:#64748b; font-size:0.8rem;">${(exp.category||'').split(' ')[0]}</span>
             </div>
           `);
@@ -907,12 +1080,23 @@
         
         document.getElementById('rc-step').textContent = `Stop ${currentReplayIndex + 1} of ${replayRoute.length}`;
         document.getElementById('rc-title').innerHTML = escapeHtml(exp.description);
-        document.getElementById('rc-amt').textContent = `₹${Number(exp.amount).toLocaleString('en-IN')}`;
+        
+        const badgeAmt = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary); font-size:1.3rem;">FREE</span>' : `₹${Number(exp.amount).toLocaleString('en-IN')}`;
+        document.getElementById('rc-amt').innerHTML = badgeAmt;
+        
         document.getElementById('rc-meta').innerHTML = `<span style="background:var(--primary); color:white; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:4px;">${(exp.category||'').split(' ')[0]}</span> <i class="ph-bold ph-calendar-blank"></i> ${formatDate(exp.date)} ${exp.time ? `• ${tConvert(exp.time)}` : ''}`;
         
         let imgContainer = document.getElementById('rc-img-container');
         if(exp.photo) {
-            imgContainer.innerHTML = `<img src="${exp.photo}" class="rc-img-content" onclick="viewImage('${exp.photo}')">`;
+            let photosArray = Array.isArray(exp.photo) ? exp.photo : [exp.photo];
+            if(photosArray.length > 1) {
+                // Horizontal scroll wrapper for multiple replay images
+                imgContainer.innerHTML = `<div style="display:flex; overflow-x:auto; width:100%; height:100%; scroll-snap-type: x mandatory;">` + 
+                    photosArray.map(p => `<img src="${p}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0; scroll-snap-align: start;" onclick="viewImage('${p}')">`).join('') +
+                    `</div>`;
+            } else {
+                imgContainer.innerHTML = `<img src="${photosArray[0]}" class="rc-img-content" onclick="viewImage('${photosArray[0]}')">`;
+            }
         } else {
             imgContainer.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; color:var(--text-muted); opacity:0.5;"><i class="ph-bold ph-image" style="font-size:3.5rem; margin-bottom:8px;"></i> No photo attached</div>`;
         }
@@ -998,103 +1182,6 @@
     }
 
     // ==========================================================================
-    // PHOTO ATTACHMENT
-    // ==========================================================================
-    function setupPhotoHandler() {
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas'); const MAX = 500; 
-                    const scale = Math.min(MAX / img.width, MAX / img.height);
-                    canvas.width = img.width * scale; canvas.height = img.height * scale;
-                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                    currentPhotoB64 = canvas.toDataURL('image/jpeg', 0.6);
-                    document.getElementById('photoPreview').src = currentPhotoB64; document.getElementById('photoPreview').style.display = 'block';
-                }
-                img.src = event.target.result;
-            }
-            reader.readAsDataURL(file);
-        });
-    }
-    function viewImage(src) { document.getElementById('lbImg').src = src; document.getElementById('lightbox').style.display = 'flex'; }
-
-    // ==========================================================================
-    // UI RENDERING & CHART.JS
-    // ==========================================================================
-    function renderCalendar() {
-      const cal = document.getElementById('calendar');
-      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-      const startDay = new Date(currentYear, currentMonth, 1).getDay();
-      document.getElementById('calendarMonth').textContent = new Date(currentYear, currentMonth, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-      
-      let html = ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => `<div class="cal-day-header">${d}</div>`).join('');
-      for (let i = 0; i < startDay; i++) html += '<div class="cal-day empty"></div>';
-      
-      const today = new Date();
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const hasExp = expenses.some(e => e.date === dateStr);
-        const isT = day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
-        const isSel = selectedDate === dateStr;
-        html += `<div class="cal-day ${hasExp ? 'has-expense' : ''} ${isT ? 'today' : ''} ${isSel ? 'selected' : ''}" onclick="selectDate('${dateStr}')">${day}</div>`;
-      }
-      cal.innerHTML = html;
-    }
-    function changeMonth(delta) { currentMonth += delta; if (currentMonth === 12) { currentYear++; currentMonth = 0; } else if (currentMonth === -1) { currentYear--; currentMonth = 11; } renderCalendar(); }
-    function selectDate(dateStr) { selectedDate = selectedDate === dateStr ? null : dateStr; renderAll(); }
-    function toggleCategoryFilter(cat) { activeCategoryFilter = (activeCategoryFilter === cat) ? null : cat; renderAll(); }
-
-    function renderBudgetBreakdown() {
-      const breakdown = {}; expenses.forEach(e => { breakdown[e.category] = (breakdown[e.category] || 0) + Number(e.amount); });
-      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-      
-      const isLight = document.body.classList.contains('light-mode');
-      const textColor = isLight ? '#64748b' : '#94a3b8';
-
-      const ctx = document.getElementById('expenseChart').getContext('2d');
-      if(window.expenseChartInst) window.expenseChartInst.destroy();
-      
-      const labels = Object.keys(breakdown).map(k => k.split(' ')[1] || k);
-      const data = Object.values(breakdown);
-      const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444', '#0ea5e9'];
-
-      if(total > 0) {
-          window.expenseChartInst = new Chart(ctx, {
-              type: 'doughnut',
-              data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, hoverOffset: 4 }] },
-              options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { color: textColor, font: { family: 'Inter', size: 11 } } } } }
-          });
-      }
-
-      const html = Object.entries(breakdown).sort((a, b) => b[1] - a[1]).map(([cat, amt]) => {
-          const percent = total > 0 ? ((amt / total) * 100).toFixed(1) : 0;
-          const isActive = activeCategoryFilter === cat ? 'active-filter' : '';
-          return `<div class="budget-item ${isActive}" onclick="toggleCategoryFilter('${cat}')"><div><div class="budget-name">${cat}</div><div class="budget-percent">${percent}% of total</div></div><div class="budget-val">₹${amt.toLocaleString('en-IN')}</div></div>`;
-        }).join('');
-      document.getElementById('budgetBreakdownList').innerHTML = html || '<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:20px;">Add expenses to see analytics!</div>';
-    }
-
-    function updateTotal() {
-      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-      document.getElementById('totalSpent').textContent = `₹${total.toLocaleString('en-IN')}`;
-      const pct = Math.min((total / tripBudget) * 100, 100).toFixed(1);
-      document.getElementById('burnText').textContent = `${pct}% of ₹${tripBudget.toLocaleString('en-IN')}`;
-      const bar = document.getElementById('burnBar'); bar.style.width = `${pct}%`;
-      if(pct > 90) bar.style.background = '#ef4444'; else if(pct > 75) bar.style.background = '#f59e0b'; else bar.style.background = '#10b981';
-    }
-
-    function renderAll() { 
-        try { 
-            renderCalendar(); renderBudgetBreakdown(); renderExpenseList(); updateTotal(); 
-            if(currentView === 'gallery') renderGallery(); else updateMap(); 
-        } 
-        catch (e) { console.error("Render error", e); }
-    }
-
-    // ==========================================================================
     // CRUD: FORM & FEED
     // ==========================================================================
     function tConvert(time) {
@@ -1106,17 +1193,24 @@
 
     function addExpense() {
       let desc = document.getElementById('description').value.trim();
-      const amount = parseFloat(document.getElementById('amount').value) || 0;
+      let amtRaw = document.getElementById('amount').value;
+      const amount = isFree ? 0 : (parseFloat(amtRaw) || 0);
       const category = document.getElementById('category').value;
       const timeVal = document.getElementById('timeInput').value;
       const place = document.getElementById('place').value.trim();
       const dateVal = document.getElementById('dateInput').value || new Date().toISOString().split('T')[0];
       const paidBy = document.getElementById('paidBy').value.trim();
 
-      if (!amount || !category) return showToast('Please fill Category & Amount!');
+      if (!isFree && amtRaw === '') return showToast('Please fill Amount!');
+      if (!category) return showToast('Please select a Category!');
+      
       if(!desc) { let cleanCat = category.split(' ').slice(1).join(' '); desc = `${cleanCat}${timeVal ? ` at ${tConvert(timeVal)}` : ''}`; }
 
-      const expData = { date: dateVal, time: timeVal, description: desc, amount: amount, category: category, place: place, paidBy: paidBy, locationData: selectedLocation, photo: currentPhotoB64 };
+      const expData = { 
+          date: dateVal, time: timeVal, description: desc, amount: amount, 
+          category: category, place: place, paidBy: isFree ? null : paidBy, isFree: isFree,
+          locationData: selectedLocation, photo: currentPhotos.length > 0 ? [...currentPhotos] : null 
+      };
 
       if(editingId) {
           const idx = expenses.findIndex(e => e.id === editingId);
@@ -1126,20 +1220,31 @@
 
       saveData();
       
+      // Reset Form
+      if (isFree) toggleFree();
       document.getElementById('description').value = ''; document.getElementById('amount').value = ''; document.getElementById('category').value = ''; document.getElementById('place').value = ''; 
       
       const offset = new Date().getTimezoneOffset() * 60000;
       document.getElementById('dateInput').value = (new Date(new Date().getTime() - offset)).toISOString().split('T')[0];
-      selectedLocation = null; currentPhotoB64 = null; document.getElementById('photoPreview').style.display = 'none'; document.getElementById('photoInput').value = '';
+      selectedLocation = null; 
+      currentPhotos = []; renderPhotoPreviews(); document.getElementById('photoInput').value = '';
       if(tempMarker) { map.removeLayer(tempMarker); tempMarker = null; }
     }
 
     function triggerEdit(id) {
         const exp = expenses.find(e => e.id === id); if(!exp) return;
-        document.getElementById('description').value = exp.description; document.getElementById('amount').value = exp.amount; document.getElementById('category').value = exp.category; document.getElementById('place').value = exp.place || ''; 
+        
+        if (exp.isFree) {
+            if (!isFree) toggleFree();
+        } else {
+            if (isFree) toggleFree();
+            document.getElementById('amount').value = exp.amount;
+        }
+
+        document.getElementById('description').value = exp.description; document.getElementById('category').value = exp.category; document.getElementById('place').value = exp.place || ''; 
         
         if(exp.paidBy && !payers.includes(exp.paidBy)) { payers.push(exp.paidBy); renderPayers(); }
-        document.getElementById('paidBy').value = exp.paidBy || 'Me';
+        document.getElementById('paidBy').value = exp.paidBy || 'Tarun';
 
         if(exp.time) {
             document.getElementById('timeInput').value = exp.time;
@@ -1148,8 +1253,10 @@
         }
         if(exp.date) document.getElementById('dateInput').value = exp.date;
         
-        selectedLocation = exp.locationData || null; currentPhotoB64 = exp.photo || null;
-        if(currentPhotoB64) { document.getElementById('photoPreview').src = currentPhotoB64; document.getElementById('photoPreview').style.display = 'block'; }
+        selectedLocation = exp.locationData || null; 
+        currentPhotos = exp.photo ? (Array.isArray(exp.photo) ? [...exp.photo] : [exp.photo]) : [];
+        renderPhotoPreviews();
+
         editingId = id; document.getElementById('saveBtn').textContent = 'Update Memory'; showToast('Editing mode active');
         if(document.getElementById('itinerarySidebar').classList.contains('open')) toggleSidebar();
     }
@@ -1163,10 +1270,35 @@
         let locHTML = '';
         if(e.locationData && e.locationData.lat) locHTML = `<button onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn"><i class="ph-bold ph-map-pin"></i> Locate Map</button>`; 
         else if(e.place) locHTML = `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(e.place)}</span>`; 
-        const photoHTML = e.photo ? `<img src="${e.photo}" class="photo-thumb" onclick="viewImage('${e.photo}')">` : '';
+        
+        // Multi-Photo Support in Feed
+        let photoHTML = '';
+        if (e.photo) {
+            let photosArray = Array.isArray(e.photo) ? e.photo : [e.photo];
+            if(photosArray.length > 0) {
+                photoHTML = `<div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">` + 
+                    photosArray.map(p => `<img src="${p}" class="photo-thumb" onclick="viewImage('${p}')">`).join('') + 
+                    `</div>`;
+            }
+        }
+
+        const badgeAmt = (e.isFree || e.amount === 0) ? '<span style="color:var(--primary); font-size:1.1rem; font-weight:900;">FREE</span>' : `₹${Number(e.amount).toLocaleString('en-IN')}`;
 
         return `<div class="expense-item" id="item-${e.id}">
-          <div class="exp-top"><div style="display:flex; gap:12px; align-items:flex-start;">${photoHTML}<div><div class="exp-title">${escapeHtml(e.description)}</div><div class="exp-meta"><span><i class="ph-bold ph-calendar-blank"></i> ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>${e.paidBy ? `<span style="color:var(--ocean);font-weight:700;"><i class="ph-bold ph-wallet"></i> Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}</div></div></div><div style="text-align:right; flex-shrink:0;"><div class="exp-amt">₹${Number(e.amount).toLocaleString('en-IN')}</div><div><div class="exp-cat">${(e.category||'').split(' ')[0]}</div></div></div></div>
+          <div class="exp-top">
+             <div style="flex:1;">
+                 ${photoHTML}
+                 <div class="exp-title">${escapeHtml(e.description)}</div>
+                 <div class="exp-meta">
+                    <span><i class="ph-bold ph-calendar-blank"></i> ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>
+                    ${(e.paidBy && !e.isFree) ? `<span style="color:var(--ocean);font-weight:700;"><i class="ph-bold ph-wallet"></i> Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}
+                 </div>
+             </div>
+             <div style="text-align:right; flex-shrink:0;">
+                 <div class="exp-amt">${badgeAmt}</div>
+                 <div><div class="exp-cat">${(e.category||'').split(' ')[0]}</div></div>
+             </div>
+          </div>
           <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button class="action-btn btn-edit" onclick="triggerEdit(${e.id})"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="action-btn btn-del" onclick="deleteExpense(${e.id})"><i class="ph-bold ph-trash"></i> Delete</button></div></div>
         </div>`;
       }).join('');
@@ -1176,7 +1308,11 @@
     function deleteExpense(id) { 
         if (confirm('Delete this memory?')) { 
             expenses = expenses.filter(e => e.id !== id); 
-            if(editingId === id) { editingId = null; document.getElementById('saveBtn').textContent = 'Save to Itinerary'; } 
+            if(editingId === id) { 
+                editingId = null; 
+                document.getElementById('saveBtn').textContent = 'Save to Itinerary'; 
+                if(isFree) toggleFree();
+            } 
             saveData(); 
             showToast('Deleted & Synced.'); 
         } 
@@ -1190,68 +1326,13 @@
     function clearAll() { if (confirm('⚠️ Delete ALL data? Cannot be undone!')) { expenses = []; saveData(); init(); showToast('Cleared!'); } }
     function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
 
-    function exportSync() {
-        const backup = { version: "v_master", date: new Date().toISOString(), data: expenses, budget: tripBudget, payers: payers };
-        const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = `Goa-Sync-${new Date().toISOString().slice(0,10)}.json`; a.click(); showToast('Backup File Saved!');
-    }
-
-    function importSync(event) {
-        const file = event.target.files[0]; if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const imp = JSON.parse(e.target.result);
-                if(imp.data && Array.isArray(imp.data)) {
-                    if(confirm("Merge this backup with your current data?")) {
-                        const existingIds = new Set(expenses.map(ex => ex.id));
-                        imp.data.forEach(item => { if(!existingIds.has(item.id)) expenses.push(item); });
-                        if(imp.budget) tripBudget = imp.budget;
-                        if(imp.payers) payers = imp.payers;
-                        saveData(); renderPayers(); init(); showToast("Sync Successful! 🚀");
-                    }
-                } else throw new Error();
-            } catch(err) { showToast("Error loading file."); }
-        };
-        reader.readAsText(file);
-    }
-
     function exportData() {
       const csv = [['Date', 'Time', 'Description', 'Amount', 'Category', 'Place', 'Paid By'],
-        ...expenses.map(e => [e.date, e.time||'', e.description, e.amount, e.category, e.place||'', e.paidBy||''])
+        ...expenses.map(e => [e.date, e.time||'', e.description, e.isFree ? 0 : e.amount, e.category, e.place||'', e.isFree ? 'Free' : (e.paidBy||'')])
       ].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-expenses.csv`; a.click(); showToast('CSV exported!');
     }
-
-    function exportStory() {
-        if(expenses.length === 0) return showToast("Add expenses first!");
-        const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
-        const topCat = Object.entries(expenses.reduce((acc, e) => { acc[e.category] = (acc[e.category]||0) + Number(e.amount); return acc; }, {})).sort((a,b)=>b[1]-a[1])[0][0];
-        const storyHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans';background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;}.card{background:linear-gradient(135deg,#0ea5e9,#f43f5e);width:350px;padding:40px 30px;border-radius:30px;color:white;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;overflow:hidden;}.card::before{content:'🌴';font-size:150px;position:absolute;opacity:0.1;top:-20px;left:-20px;}h1{font-size:2.5rem;margin:0 0 10px 0;line-height:1.1;font-weight:800;}p{font-size:1rem;opacity:0.9;margin-bottom:30px;}.metric{background:rgba(0,0,0,0.2);padding:15px;border-radius:15px;margin-bottom:15px;text-align:left;display:flex;justify-content:space-between;align-items:center;}.m-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;opacity:0.8;}.m-val{font-size:1.4rem;font-weight:800;}</style></head><body><div class="card"><h1>My Goa<br>Journey</h1><p>Trip Summary.</p><div class="metric"><div class="m-label">Total Splurge</div><div class="m-val">₹${total.toLocaleString('en-IN')}</div></div><div class="metric"><div class="m-label">Top Category</div><div class="m-val">${topCat.substring(topCat.indexOf(' ')+1)}</div></div></div></body></html>`;
-        const blob = new Blob([storyHTML], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
-    }
-
-    function exportHTML() {
-      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
-      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
-    }
-
-    function downloadPlacesList() {
-      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
-      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? stats.locationData.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
-      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
-    }
-
-    document.addEventListener('click', (e) => {
-      const sug = document.getElementById('locationSuggestions');
-      if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none';
-    });
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
