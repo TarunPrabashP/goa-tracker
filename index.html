@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏖️ Goa Trip Expense Tracker - Master Edition</title>
+  <title>🏖️ Goa Trip Expense Tracker - Live Sync Edition</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
   <style>
     /* ==========================================================================
@@ -128,7 +131,6 @@
     #map-wrapper { flex: 1 1 auto; position: relative; width: 100%; min-height: 300px; background: var(--card-bg); overflow: hidden; }
     #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     
-    /* NEW: View Toggle Buttons */
     .view-toggle { display: flex; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
     .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px;}
     .view-toggle button.active { background: var(--ocean); color: white; }
@@ -141,7 +143,7 @@
     .seq-marker.origin { background: var(--primary); }
     .seq-marker.end { background: var(--danger); }
 
-    /* NEW: Gallery Layout */
+    /* Gallery Layout */
     #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
     .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
     @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
@@ -199,7 +201,6 @@
     .exp-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); line-height: 1.3;}
     .exp-amt { font-weight: 800; font-size: 1.3rem; color: var(--danger); font-family: 'JetBrains Mono'; text-align: right;}
     .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
-    .split-badge { background: rgba(14, 165, 233, 0.15); color: var(--ocean); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; margin-left: 6px;}
     .exp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-weight: 500;}
     
     .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
@@ -220,7 +221,7 @@
     .btn-sm.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); }
 
     /* ==========================================================================
-       7. MATERIAL UI CLOCK & SETTLEMENT MODAL
+       7. MATERIAL UI CLOCK MODAL 
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(4px);}
     .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
@@ -247,7 +248,6 @@
     .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
     .mat-tp-action-btns { display: flex; gap: 16px; }
     .mat-tp-action-btn { background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px; transition: 0.2s;}
-    .mat-tp-action-btn:hover { background: rgba(255, 181, 157, 0.1); border-radius: 8px;}
 
     /* Lightbox & Toast */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
@@ -307,39 +307,24 @@
       </div>
   </div>
 
-  <div id="settlementModal" class="mat-modal-overlay">
-      <div class="mat-time-picker" style="width: 380px; background: var(--surface); border: 1px solid var(--border); padding: 24px; color: var(--text-main);">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-              <h2 style="margin:0; font-size:1.3rem; display:flex; align-items:center; gap:8px;"><i class="ph-fill ph-users-three" style="color:var(--primary)"></i> Settlements</h2>
-              <button class="close-sidebar" onclick="document.getElementById('settlementModal').style.display='none'"><i class="ph-bold ph-x"></i></button>
-          </div>
-          <div id="settlementContent" style="max-height: 400px; overflow-y: auto; padding-right: 4px;"></div>
-      </div>
-  </div>
-
   <div id="lightbox" onclick="this.style.display='none'"><div class="close-lb"><i class="ph-bold ph-x"></i></div><img id="lbImg" src=""></div>
   <div id="toast" class="toast"><i class="ph-fill ph-info"></i> <span id="toastMsg">Message</span></div>
 
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
   <div id="itinerarySidebar" class="sidebar">
       <div class="sidebar-header">
-          <h2><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
+          <h2 style="margin:0; font-size:1.2rem; display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary & Options</h2>
           <button class="close-sidebar" onclick="toggleSidebar()"><i class="ph-bold ph-x"></i></button>
       </div>
-      <div class="scroll-area" id="expenseList"></div>
+      
+      <div class="scroll-area" id="expenseList" style="padding-top: 12px;"></div>
       
       <div class="actions-grid">
           <button class="btn-sm" onclick="exportData()"><i class="ph-bold ph-file-csv" style="color:var(--primary)"></i> CSV</button>
           <button class="btn-sm" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="color:var(--info)"></i> HTML</button>
           <button class="btn-sm" onclick="downloadPlacesList()"><i class="ph-bold ph-map-trifold" style="color:var(--warning)"></i> Places</button>
-          
-          <button class="btn-sm" onclick="showSettlements()"><i class="ph-bold ph-users-three" style="color:#10b981"></i> Split Tab</button>
-          <button class="btn-sm" onclick="exportSync()"><i class="ph-bold ph-export" style="color:var(--info)"></i> Backup</button>
-          <button class="btn-sm" onclick="document.getElementById('importInput').click()"><i class="ph-bold ph-download-simple" style="color:var(--ocean)"></i> Load</button>
-          
-          <input type="file" id="importInput" style="display:none;" accept=".json" onchange="importSync(event)">
-          <button class="btn-sm special" style="grid-column: span 3;" onclick="exportStory()"><i class="ph-bold ph-instagram-logo"></i> Generate Social Story</button>
-          <button class="btn-sm danger" style="grid-column: span 3;" onclick="clearAll()"><i class="ph-bold ph-trash"></i> Delete All Data Forever</button>
+          <button class="btn-sm" onclick="exportStory()"><i class="ph-bold ph-instagram-logo" style="color:#d946ef"></i> Story</button>
+          <button class="btn-sm danger" style="grid-column: span 2;" onclick="clearAll()"><i class="ph-bold ph-trash"></i> Delete Data</button>
       </div>
   </div>
 
@@ -352,11 +337,11 @@
     <div class="ph-right">
       <div class="ph-stat">
         <div class="ph-label">Budget Burn <i class="ph-bold ph-pencil-simple budget-edit" onclick="setBudget()"></i></div>
+        <div style="font-size:0.8rem; font-weight:800; color:var(--text-main); margin-top:2px;" id="burnText">0%</div>
         <div class="burn-container"><div class="burn-bar"><div class="burn-fill" id="burnBar"></div></div></div>
-        <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-top:4px;" id="burnText">0%</div>
       </div>
       <div class="ph-stat">
-        <div class="ph-label">Route Distance</div>
+        <div class="ph-label">Route Dist.</div>
         <div class="ph-val dist" id="totalDistance">0 km</div>
       </div>
       <div class="ph-stat">
@@ -407,7 +392,7 @@
                     <button id="btn-view-map" class="active" onclick="switchView('map')">Map</button>
                     <button id="btn-view-gallery" onclick="switchView('gallery')">Gallery</button>
                 </div>
-                <button class="replay-btn" id="btn-replay" onclick="startReplay()"><i class="ph-fill ph-play-circle"></i> Replay</button>
+                <button class="replay-btn" id="btn-replay" onclick="startReplay()"><i class="ph-fill ph-play-circle"></i> Story Replay</button>
             </div>
         </div>
         <div id="map-wrapper">
@@ -462,8 +447,10 @@
               </div>
 
               <div class="input-row">
-                  <input type="text" id="paidBy" class="input" placeholder="Paid By (e.g. Me)" style="flex:1;">
-                  <input type="text" id="splitWith" class="input" placeholder="Split With (e.g. Rahul, Priya)" style="flex:1.5;">
+                  <select id="paidBy" class="select" style="flex:1;"></select>
+                  <button class="action-badge" style="background:var(--card-bg); border:1px solid var(--border); color:var(--text-main);" onclick="editPayers()" title="Add/Edit Names">
+                      <i class="ph-bold ph-pencil-simple"></i> Edit Names
+                  </button>
               </div>
 
               <div class="dt-row">
@@ -499,40 +486,78 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  
   <script>
     // ==========================================================================
-    // DATA SANITIZER
+    // 🔴 FIREBASE CLOUD SYNC LOGIC 🔴 
+    // Paste your config block below!
+    // ==========================================================================
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAaYy-wZcb3GIGKGK-hj8y9_A2O4Pzw3bM",
+  authDomain: "goa-34b5f.firebaseapp.com",
+  databaseURL: "https://goa-34b5f-default-rtdb.firebaseio.com",
+  projectId: "goa-34b5f",
+  storageBucket: "goa-34b5f.firebasestorage.app",
+  messagingSenderId: "931865940606",
+  appId: "1:931865940606:web:ea4aaec0ccb54e1144be2f",
+  measurementId: "G-VTY51YM4V2"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+    // ==========================================================================
+    // GLOBAL STATE
     // ==========================================================================
     let expenses = [];
-    try {
-        let savedData = JSON.parse(localStorage.getItem('goaExpenses'));
-        if (Array.isArray(savedData)) {
-            expenses = savedData.map(e => ({
-                ...e,
-                amount: parseFloat(e.amount) || 0,
-                date: e.date || new Date().toISOString().split('T')[0]
-            }));
-        } else { localStorage.removeItem('goaExpenses'); }
-    } catch(e) { localStorage.removeItem('goaExpenses'); }
-
-    let tripBudget = parseFloat(localStorage.getItem('goaBudget')) || 25000;
+    let tripBudget = 25000;
+    let payers = ['Me'];
     
     let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear();
     let selectedDate = null; let activeCategoryFilter = null;
     let searchTimeout = null; let selectedLocation = null;
     let currentPhotoB64 = null; let editingId = null; let manualPinMode = false;
     let map = null; let markers = []; let tempMarker = null; let routeLayer = null;
-
-    // REPLAY STATE
-    let replayRoute = [];
-    let currentReplayIndex = 0;
-    let isReplaying = false;
-
-    // VIEW STATE
+    let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
     let currentView = 'map';
 
+    // ==========================================================================
+    // LIVE LISTENER (FIRES WHEN ANYONE ADDS AN EXPENSE)
+    // ==========================================================================
+    tripRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            expenses = data.expenses || [];
+            tripBudget = data.budget || 25000;
+            payers = data.payers || ['Me'];
+            renderPayers();
+            renderAll();
+        } else {
+            renderPayers();
+            renderAll();
+        }
+    });
+
+    // Replace old localStorage function with Firebase push
+    function saveData() { 
+        tripRef.set({
+            expenses: expenses,
+            budget: tripBudget,
+            payers: payers
+        });
+    }
+
+    // ==========================================================================
+    // INITIALIZATION
+    // ==========================================================================
     function init() {
       if(localStorage.getItem('goaTheme') === 'light') {
           document.body.classList.replace('dark-mode', 'light-mode');
@@ -549,9 +574,7 @@
       const offset = now.getTimezoneOffset() * 60000;
       document.getElementById('dateInput').value = (new Date(now.getTime() - offset)).toISOString().split('T')[0];
 
-      renderAll(); 
       initMap(); 
-      updateMap(); 
       setupPhotoHandler();
       setTimeout(() => { if(map) map.invalidateSize(); }, 500);
     }
@@ -571,7 +594,7 @@
 
     function setBudget() {
         let b = prompt("Enter your total trip budget (₹):", tripBudget);
-        if(b && !isNaN(b)) { tripBudget = parseFloat(b); localStorage.setItem('goaBudget', tripBudget); updateTotal(); }
+        if(b && !isNaN(b)) { tripBudget = parseFloat(b); saveData(); }
     }
 
     function toggleSidebar() {
@@ -582,6 +605,24 @@
         } else {
             sidebar.classList.add('open'); overlay.style.display = 'block';
             setTimeout(() => { if(map) map.invalidateSize(); }, 300);
+        }
+    }
+
+    // ==========================================================================
+    // PAYER NAMES DROPDOWN LOGIC
+    // ==========================================================================
+    function renderPayers() {
+        const select = document.getElementById('paidBy');
+        select.innerHTML = payers.map(p => `<option value="${escapeHtml(p)}">Paid by: ${escapeHtml(p)}</option>`).join('');
+    }
+
+    function editPayers() {
+        let input = prompt("Enter names separated by commas (e.g. Me, Rahul, Priya):", payers.join(', '));
+        if(input !== null) {
+            payers = input.split(',').map(n => n.trim()).filter(n => n !== '');
+            if(payers.length === 0) payers = ['Me']; 
+            saveData();
+            showToast("Names updated & synced!");
         }
     }
 
@@ -602,7 +643,7 @@
             document.getElementById('map').style.display = 'none';
             document.getElementById('gallery-container').style.display = 'block';
             document.getElementById('btn-replay').style.display = 'none';
-            if(isReplaying) exitReplay(); // Close replay card if switching
+            if(isReplaying) exitReplay();
             renderGallery();
         }
     }
@@ -618,7 +659,6 @@
             return;
         }
 
-        // Group by Date
         const grouped = {};
         filtered.forEach(e => {
             const dateStr = formatDate(e.date);
@@ -736,70 +776,6 @@
     }
 
     // ==========================================================================
-    // SPLITWISE SETTLEMENT LOGIC
-    // ==========================================================================
-    function calculateSettlements() {
-        let balances = {};
-        expenses.forEach(e => {
-            if(e.splitWith && e.splitWith.trim() !== '') {
-                let payer = (e.paidBy && e.paidBy.trim() !== '') ? e.paidBy.trim() : 'Me';
-                let splitters = e.splitWith.split(',').map(s => s.trim()).filter(s => s !== '');
-                
-                if(splitters.length > 0) {
-                    if(!splitters.includes(payer)) splitters.push(payer);
-                    let splitAmount = e.amount / splitters.length;
-                    
-                    balances[payer] = (balances[payer] || 0) + e.amount;
-                    splitters.forEach(s => { balances[s] = (balances[s] || 0) - splitAmount; });
-                }
-            }
-        });
-
-        let debtors = [], creditors = [];
-        for(let person in balances) {
-            if(balances[person] < -0.01) debtors.push({person, amount: Math.abs(balances[person])});
-            else if(balances[person] > 0.01) creditors.push({person, amount: balances[person]});
-        }
-
-        let transactions = [];
-        let d = 0, c = 0;
-        while(d < debtors.length && c < creditors.length) {
-            let debtor = debtors[d], creditor = creditors[c];
-            let settled = Math.min(debtor.amount, creditor.amount);
-            
-            transactions.push(`${debtor.person} owes ${creditor.person} ₹${settled.toFixed(0)}`);
-            debtor.amount -= settled; creditor.amount -= settled;
-            
-            if(debtor.amount < 0.01) d++;
-            if(creditor.amount < 0.01) c++;
-        }
-        return transactions;
-    }
-
-    function showSettlements() {
-        const transactions = calculateSettlements();
-        let html = '';
-        if(transactions.length === 0) {
-            html = '<div style="text-align:center; color:var(--text-muted); padding: 20px 0; font-size:0.95rem;">No split expenses added yet.</div>';
-        } else {
-            html = transactions.map(t => {
-                const parts = t.match(/(.+) owes (.+) ₹(.+)/);
-                if(parts) {
-                    return `
-                    <div style="background:var(--card-bg); border:1px solid var(--border); padding:14px; border-radius:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
-                        <div><strong style="color:var(--danger); font-size:1.05rem;">${parts[1]}</strong> <span style="color:var(--text-muted); font-size:0.8rem; margin:0 4px;">owes</span> <strong style="color:var(--primary); font-size:1.05rem;">${parts[2]}</strong></div>
-                        <div style="font-family:'JetBrains Mono'; font-weight:800; font-size:1.2rem; color:var(--text-main);">₹${parts[3]}</div>
-                    </div>`;
-                }
-                return `<div>${t}</div>`;
-            }).join('');
-        }
-        document.getElementById('settlementContent').innerHTML = html;
-        document.getElementById('settlementModal').style.display = 'flex';
-        toggleSidebar(); 
-    }
-
-    // ==========================================================================
     // MAP SYSTEM & OSRM ROUTING
     // ==========================================================================
     function initMap() {
@@ -858,7 +834,7 @@
               if(data.code === "Ok") {
                   routeLayer = L.geoJSON(data.routes[0].geometry, { style: { color: 'var(--ocean)', weight: 4, opacity: 0.8, dashArray: '5, 10' } }).addTo(map);
                   document.getElementById('totalDistance').textContent = (data.routes[0].distance / 1000).toFixed(1) + ' km';
-              } else throw new Error();
+              } else throw new Error("OSRM Failed");
           }).catch(err => {
               routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 4, dashArray: '8, 8'}).addTo(map);
               let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
@@ -1117,34 +1093,31 @@
       const place = document.getElementById('place').value.trim();
       const dateVal = document.getElementById('dateInput').value || new Date().toISOString().split('T')[0];
       const paidBy = document.getElementById('paidBy').value.trim();
-      const splitWith = document.getElementById('splitWith').value.trim();
 
       if (!amount || !category) return showToast('Please fill Category & Amount!');
       if(!desc) { let cleanCat = category.split(' ').slice(1).join(' '); desc = `${cleanCat}${timeVal ? ` at ${tConvert(timeVal)}` : ''}`; }
 
-      const expData = { date: dateVal, time: timeVal, description: desc, amount: amount, category: category, place: place, paidBy: paidBy, splitWith: splitWith, who: document.getElementById('who').value.trim(), locationData: selectedLocation, photo: currentPhotoB64 };
+      const expData = { date: dateVal, time: timeVal, description: desc, amount: amount, category: category, place: place, paidBy: paidBy, locationData: selectedLocation, photo: currentPhotoB64 };
 
       if(editingId) {
           const idx = expenses.findIndex(e => e.id === editingId);
           if(idx !== -1) expenses[idx] = { ...expenses[idx], ...expData };
-          editingId = null; document.getElementById('saveBtn').textContent = 'Save to Itinerary'; showToast('Updated! ✓');
-      } else { expData.id = Date.now(); expenses.unshift(expData); showToast('Saved! ✓'); }
+          editingId = null; document.getElementById('saveBtn').textContent = 'Save to Itinerary'; showToast('Updated & Synced! ✓');
+      } else { expData.id = Date.now(); expenses.unshift(expData); showToast('Saved & Synced! ✓'); }
 
       saveData();
+      
       document.getElementById('description').value = ''; document.getElementById('amount').value = ''; document.getElementById('category').value = ''; document.getElementById('place').value = ''; 
-      document.getElementById('splitWith').value = '';
       
       const offset = new Date().getTimezoneOffset() * 60000;
       document.getElementById('dateInput').value = (new Date(new Date().getTime() - offset)).toISOString().split('T')[0];
       selectedLocation = null; currentPhotoB64 = null; document.getElementById('photoPreview').style.display = 'none'; document.getElementById('photoInput').value = '';
       if(tempMarker) { map.removeLayer(tempMarker); tempMarker = null; }
-      renderAll();
     }
 
     function triggerEdit(id) {
         const exp = expenses.find(e => e.id === id); if(!exp) return;
         document.getElementById('description').value = exp.description; document.getElementById('amount').value = exp.amount; document.getElementById('category').value = exp.category; document.getElementById('place').value = exp.place || ''; 
-        document.getElementById('splitWith').value = exp.splitWith || '';
         
         if(exp.paidBy && !payers.includes(exp.paidBy)) { payers.push(exp.paidBy); renderPayers(); }
         document.getElementById('paidBy').value = exp.paidBy || 'Me';
@@ -1172,149 +1145,37 @@
         if(e.locationData && e.locationData.lat) locHTML = `<button onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn"><i class="ph-bold ph-map-pin"></i> Locate Map</button>`; 
         else if(e.place) locHTML = `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(e.place)}</span>`; 
         const photoHTML = e.photo ? `<img src="${e.photo}" class="photo-thumb" onclick="viewImage('${e.photo}')">` : '';
-        const splitBadge = (e.splitWith && e.splitWith.trim() !== '') ? `<span class="split-badge"><i class="ph-bold ph-users-three"></i> Split</span>` : '';
 
         return `<div class="expense-item" id="item-${e.id}">
-          <div class="exp-top"><div style="display:flex; gap:12px; align-items:flex-start;">${photoHTML}<div><div class="exp-title">${escapeHtml(e.description)}</div><div class="exp-meta"><span><i class="ph-bold ph-calendar-blank"></i> ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>${e.paidBy ? `<span style="color:var(--ocean);font-weight:700;"><i class="ph-bold ph-wallet"></i> Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}</div></div></div><div style="text-align:right; flex-shrink:0;"><div class="exp-amt">₹${Number(e.amount).toLocaleString('en-IN')}</div><div><div class="exp-cat">${(e.category||'').split(' ')[0]}</div>${splitBadge}</div></div></div>
+          <div class="exp-top"><div style="display:flex; gap:12px; align-items:flex-start;">${photoHTML}<div><div class="exp-title">${escapeHtml(e.description)}</div><div class="exp-meta"><span><i class="ph-bold ph-calendar-blank"></i> ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>${e.paidBy ? `<span style="color:var(--ocean);font-weight:700;"><i class="ph-bold ph-wallet"></i> Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}</div></div></div><div style="text-align:right; flex-shrink:0;"><div class="exp-amt">₹${Number(e.amount).toLocaleString('en-IN')}</div><div><div class="exp-cat">${(e.category||'').split(' ')[0]}</div></div></div></div>
           <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button class="action-btn btn-edit" onclick="triggerEdit(${e.id})"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button class="action-btn btn-del" onclick="deleteExpense(${e.id})"><i class="ph-bold ph-trash"></i> Delete</button></div></div>
         </div>`;
       }).join('');
       document.getElementById('expenseList').innerHTML = html || '<p style="text-align:center;color:var(--text-muted);padding:40px;font-size:0.9rem;">No items match criteria.</p>';
     }
 
-    function deleteExpense(id) { if (confirm('Delete this memory?')) { expenses = expenses.filter(e => e.id !== id); if(editingId === id) { editingId = null; document.getElementById('saveBtn').textContent = 'Save to Itinerary'; } saveData(); renderAll(); showToast('Deleted.'); } }
+    function deleteExpense(id) { 
+        if (confirm('Delete this memory?')) { 
+            expenses = expenses.filter(e => e.id !== id); 
+            if(editingId === id) { editingId = null; document.getElementById('saveBtn').textContent = 'Save to Itinerary'; } 
+            saveData(); 
+            showToast('Deleted & Synced.'); 
+        } 
+    }
 
     // ==========================================================================
     // EXPORTS 
     // ==========================================================================
     function escapeHtml(t) { if(!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
     function formatDate(d) { return new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
-    function saveData() { localStorage.setItem('goaExpenses', JSON.stringify(expenses)); }
-    function clearAll() { if (confirm('⚠️ Delete ALL data? Cannot be undone!')) { expenses = []; saveData(); init(); showToast('Cleared!'); } }
     function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
 
-    function exportSync() {
-        const backup = { version: "v_master", date: new Date().toISOString(), data: expenses, budget: tripBudget };
-        const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = `Goa-Sync-${new Date().toISOString().slice(0,10)}.json`; a.click(); showToast('Backup File Saved!');
-    }
-
-    function importSync(event) {
-        const file = event.target.files[0]; if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const imp = JSON.parse(e.target.result);
-                if(imp.data && Array.isArray(imp.data)) {
-                    if(confirm("Merge this backup with your current data?")) {
-                        const existingIds = new Set(expenses.map(ex => ex.id));
-                        imp.data.forEach(item => { if(!existingIds.has(item.id)) expenses.push(item); });
-                        if(imp.budget) tripBudget = imp.budget;
-                        saveData(); localStorage.setItem('goaBudget', tripBudget); init(); showToast("Sync Successful! 🚀");
-                    }
-                } else throw new Error();
-            } catch(err) { showToast("Error loading file."); }
-        };
-        reader.readAsText(file);
-    }
-
     function exportData() {
-      const csv = [['Date', 'Time', 'Description', 'Amount', 'Category', 'Place', 'Paid By', 'Split With'],
-        ...expenses.map(e => [e.date, e.time||'', e.description, e.amount, e.category, e.place||'', e.paidBy||'', e.splitWith||''])
+      const csv = [['Date', 'Time', 'Description', 'Amount', 'Category', 'Place', 'Paid By'],
+        ...expenses.map(e => [e.date, e.time||'', e.description, e.amount, e.category, e.place||'', e.paidBy||''])
       ].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-expenses.csv`; a.click(); showToast('CSV exported!');
-    }
-
-    function exportStory() {
-        if(expenses.length === 0) return showToast("Add expenses first!");
-        const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
-        const topCat = Object.entries(expenses.reduce((acc, e) => { acc[e.category] = (acc[e.category]||0) + Number(e.amount); return acc; }, {})).sort((a,b)=>b[1]-a[1])[0][0];
-        const storyHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans';background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;}.card{background:linear-gradient(135deg,#0ea5e9,#f43f5e);width:350px;padding:40px 30px;border-radius:30px;color:white;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;overflow:hidden;}.card::before{content:'🌴';font-size:150px;position:absolute;opacity:0.1;top:-20px;left:-20px;}h1{font-size:2.5rem;margin:0 0 10px 0;line-height:1.1;font-weight:800;}p{font-size:1rem;opacity:0.9;margin-bottom:30px;}.metric{background:rgba(0,0,0,0.2);padding:15px;border-radius:15px;margin-bottom:15px;text-align:left;display:flex;justify-content:space-between;align-items:center;}.m-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;opacity:0.8;}.m-val{font-size:1.4rem;font-weight:800;}</style></head><body><div class="card"><h1>My Goa<br>Journey</h1><p>Trip Summary.</p><div class="metric"><div class="m-label">Total Splurge</div><div class="m-val">₹${total.toLocaleString('en-IN')}</div></div><div class="metric"><div class="m-label">Top Category</div><div class="m-val">${topCat.substring(topCat.indexOf(' ')+1)}</div></div></div></body></html>`;
-        const blob = new Blob([storyHTML], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
-    }
-
-    function exportHTML() {
-      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
-      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
-    }
-
-    function downloadPlacesList() {
-      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
-      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? stats.locationData.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
-      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
-    }
-
-    document.addEventListener('click', (e) => {
-      const sug = document.getElementById('locationSuggestions');
-      if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none';
-    });
-
-    // ==========================================================================
-    // VIEW SWITCHER (MAP vs GALLERY)
-    // ==========================================================================
-    function switchView(view) {
-        currentView = view;
-        document.getElementById('btn-view-map').classList.toggle('active', view === 'map');
-        document.getElementById('btn-view-gallery').classList.toggle('active', view === 'gallery');
-        
-        if (view === 'map') {
-            document.getElementById('map').style.display = 'block';
-            document.getElementById('gallery-container').style.display = 'none';
-            document.getElementById('btn-replay').style.display = 'flex';
-            if(map) map.invalidateSize();
-        } else {
-            document.getElementById('map').style.display = 'none';
-            document.getElementById('gallery-container').style.display = 'block';
-            document.getElementById('btn-replay').style.display = 'none';
-            if(isReplaying) exitReplay();
-            renderGallery();
-        }
-    }
-
-    function renderGallery() {
-        const container = document.getElementById('gallery-container');
-        let filtered = expenses.filter(e => e.photo);
-        if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
-        if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
-        
-        if(filtered.length === 0) {
-            container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:40px; font-size:0.9rem;">No photos attached to memories yet.</div>';
-            return;
-        }
-
-        const grouped = {};
-        filtered.forEach(e => {
-            const dateStr = formatDate(e.date);
-            if(!grouped[dateStr]) grouped[dateStr] = [];
-            grouped[dateStr].push(e);
-        });
-
-        const sortedDates = Object.keys(grouped).sort((a, b) => new Date(grouped[b][0].date) - new Date(grouped[a][0].date));
-
-        let html = '';
-        sortedDates.forEach(date => {
-            html += `<div class="gallery-date-header"><i class="ph-bold ph-calendar-blank" style="color:var(--ocean)"></i> ${date}</div>`;
-            html += `<div class="gallery-grid">`;
-            grouped[date].forEach(exp => {
-                html += `
-                <div class="gallery-item" onclick="viewImage('${exp.photo}')">
-                    <img src="${exp.photo}" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div style="font-weight:800; font-family:'Plus Jakarta Sans'; margin-bottom:2px;">${escapeHtml(exp.description)}</div>
-                        <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(exp.place || 'Unknown Location')}</div>
-                    </div>
-                </div>`;
-            });
-            html += `</div>`;
-        });
-
-        container.innerHTML = html;
     }
 
     window.addEventListener('DOMContentLoaded', init);
