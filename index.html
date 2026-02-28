@@ -48,12 +48,10 @@
 
     h1, h2, h3, .total-value, .budget-val, .exp-amt { font-family: 'Plus Jakarta Sans', sans-serif; }
     
-    /* Clean Scrollbars */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 10px; }
 
-    /* Hide number input arrows */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     input[type=number] { -moz-appearance: textfield; }
@@ -105,16 +103,13 @@
     .close-sidebar:hover { background: var(--danger); color: white; }
 
     /* ==========================================================================
-       4. CRISPER NATIVE-STYLE CALENDAR
+       4. CALENDAR & BUDGET
        ========================================================================== */
     .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 800; font-size: 1.1rem; }
     .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
     .calendar-nav button:hover { background: var(--card-bg); border-color: var(--ocean); }
     
-    .calendar-grid { 
-        display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; 
-        background: var(--card-bg); padding: 8px; border-radius: 12px; border: 1px solid var(--border);
-    }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; background: var(--card-bg); padding: 8px; border-radius: 12px; border: 1px solid var(--border);}
     .cal-day-header { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; padding: 4px 0 8px 0; text-transform: uppercase;}
     
     .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; background: transparent; position: relative; transition: 0.2s ease;}
@@ -134,11 +129,11 @@
     .budget-percent { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 2px;}
 
     /* ==========================================================================
-       5. MAP, GALLERY & ROUTING
+       5. MAP & GALLERY
        ========================================================================== */
     .col-center .panel { display: flex; flex-direction: column; }
-    #map-wrapper { flex: 1 1 auto; position: relative; width: 100%; min-height: 300px; background: var(--card-bg); overflow: hidden; }
-    #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+    #map-wrapper { flex: 1 1 auto; position: relative; width: 100%; height: 100%; min-height: 300px; background: var(--card-bg); overflow: hidden; }
+    #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     
     .view-toggle { display: flex; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
     .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px;}
@@ -152,7 +147,7 @@
     .seq-marker.origin { background: var(--primary); }
     .seq-marker.end { background: var(--danger); }
 
-    /* Gallery Layout */
+    /* Gallery */
     #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
     .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
     @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
@@ -182,7 +177,6 @@
     .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
     .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
-    /* NEW: Amount Wrapper for "Free" Button Integration */
     #amountWrapper { flex:1; display:flex; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); overflow: hidden; transition: 0.2s; }
     #amountWrapper:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     #amount { flex:1; border:none; padding:14px; font-size:0.95rem; font-family:'Inter'; background:transparent; color:var(--text-main); outline:none; min-width:0; }
@@ -196,7 +190,6 @@
     .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
     
     .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
-    
     .dt-cam { width: 50px; justify-content: center; font-size: 1.3rem; padding: 0;}
     .dt-cam:hover { color: var(--ocean); }
 
@@ -209,7 +202,6 @@
     .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
     .btn-save:active { transform: scale(0.98); }
 
-    /* MULTIPLE PHOTOS PREVIEW CONTAINER */
     #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
     #photoInput, #importInput { display: none; }
 
@@ -233,7 +225,6 @@
     .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; cursor: pointer; border: 1px solid var(--border); flex-shrink: 0; transition: 0.2s;}
     .photo-thumb:hover { border-color: var(--ocean); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
 
-    /* Sidebar Actions Grid */
     .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0;}
     .btn-sm { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.2s;}
     .btn-sm i { font-size: 1.4rem; }
@@ -242,35 +233,30 @@
     .btn-sm.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); }
 
     /* ==========================================================================
-       7. MATERIAL UI CLOCK MODAL 
+       7. CLOCK MODAL & LIGHTBOX
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(4px);}
     .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
     .mat-tp-label { font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;}
-    
     .mat-tp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;}
     .mat-tp-display { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center;}
     .mat-tp-box { background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d; transition: 0.2s;}
     .mat-tp-box.active { background: #7c3116; color: #ffdbd1; }
     .mat-tp-colon { font-size: 3.5rem; color: #d7c2b9; padding-bottom: 8px;}
-    
     .mat-tp-ampm { display: flex; flex-direction: column; border: 1px solid #4a3e39; border-radius: 12px; overflow: hidden; }
     .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: 0.2s;}
     .mat-tp-ampm-btn:first-child { border-bottom: 1px solid #4a3e39; }
     .mat-tp-ampm-btn.active { background: #4a3e39; color: #ffdbd1;}
-
     .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;}
     .mat-dial-center { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: #ffb59d; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; }
     .mat-dial-hand { position: absolute; bottom: 50%; left: calc(50% - 2px); width: 4px; height: calc(50% - 20px); background: #ffb59d; transform-origin: bottom center; z-index: 5;}
     .mat-dial-hand-circle { position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;}
     .mat-dial-number { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; z-index: 15; color: #d7c2b9; pointer-events: none;}
-
     .mat-tp-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 8px;}
     .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
     .mat-tp-action-btns { display: flex; gap: 16px; }
     .mat-tp-action-btn { background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px; transition: 0.2s;}
 
-    /* Lightbox & Toast */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
     #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
     .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
@@ -280,7 +266,7 @@
     .toast.show { transform: translateX(-50%) translateY(0); }
 
     /* ==========================================================================
-       9. RESPONSIVE
+       8. RESPONSIVE
        ========================================================================== */
     @media (max-width: 1024px) {
       body { height: auto; overflow: auto; display: block; padding: 12px; }
@@ -503,6 +489,7 @@
             </div>
             
             <div id="photoPreviewContainer"></div>
+            
             <button class="btn-save" id="saveBtn" onclick="addExpense()">Save to Itinerary</button>
         </div>
       </div>
@@ -554,8 +541,8 @@
     let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
     let currentView = 'map';
     
-    let currentPhotos = []; // ARRAY FOR MULTIPLE PHOTOS
-    let isFree = false; // FLAG FOR FREE BLOCK
+    let currentPhotos = []; 
+    let isFree = false; 
 
     if (useFirebase) {
         tripRef.on('value', (snapshot) => {
@@ -570,7 +557,10 @@
     } else {
         try {
             let saved = localStorage.getItem('goaExpenses');
-            if(saved) expenses = JSON.parse(saved);
+            if(saved) {
+                let parsed = JSON.parse(saved);
+                if(Array.isArray(parsed)) expenses = parsed;
+            }
             tripBudget = parseFloat(localStorage.getItem('goaBudget')) || 25000;
         } catch(e) { console.warn("Local storage reset."); }
     }
@@ -610,7 +600,10 @@
       initMap(); 
       updateMap(); 
       setupPhotoHandler();
-      setTimeout(() => { if(map) map.invalidateSize(); }, 500);
+      
+      // Prevent collapse bugs on map
+      setTimeout(() => { if(map) { map.invalidateSize(); updateMap(); } }, 500);
+      setTimeout(() => { if(map) { map.invalidateSize(); updateMap(); } }, 1500);
     }
     
     function toggleTheme() {
@@ -642,9 +635,6 @@
         }
     }
 
-    // ==========================================================================
-    // FREE BUTTON TOGGLE LOGIC
-    // ==========================================================================
     function toggleFree() {
         isFree = !isFree;
         const amtInput = document.getElementById('amount');
@@ -652,26 +642,16 @@
         const paidByRow = document.getElementById('paidByRow');
         
         if (isFree) {
-            amtInput.value = '';
-            amtInput.disabled = true;
-            amtInput.placeholder = 'Free';
-            amtInput.style.opacity = '0.5';
-            freeBtn.style.background = 'var(--primary)';
-            freeBtn.style.color = 'white';
+            amtInput.value = ''; amtInput.disabled = true; amtInput.placeholder = 'Free';
+            amtInput.style.opacity = '0.5'; freeBtn.style.background = 'var(--primary)'; freeBtn.style.color = 'white';
             paidByRow.style.display = 'none';
         } else {
-            amtInput.disabled = false;
-            amtInput.placeholder = 'Amount (₹)';
-            amtInput.style.opacity = '1';
-            freeBtn.style.background = 'rgba(16, 185, 129, 0.1)';
-            freeBtn.style.color = 'var(--primary)';
+            amtInput.disabled = false; amtInput.placeholder = 'Amount (₹)';
+            amtInput.style.opacity = '1'; freeBtn.style.background = 'rgba(16, 185, 129, 0.1)'; freeBtn.style.color = 'var(--primary)';
             paidByRow.style.display = 'flex';
         }
     }
 
-    // ==========================================================================
-    // PAYER NAMES LOGIC
-    // ==========================================================================
     function renderPayers() {
         const select = document.getElementById('paidBy');
         select.innerHTML = payers.map(p => `<option value="${escapeHtml(p)}">Paid by: ${escapeHtml(p)}</option>`).join('');
@@ -687,7 +667,7 @@
     }
 
     // ==========================================================================
-    // VIEW SWITCHER (MAP vs GALLERY)
+    // VIEW SWITCHER
     // ==========================================================================
     function switchView(view) {
         currentView = view;
@@ -698,7 +678,7 @@
             document.getElementById('map').style.display = 'block';
             document.getElementById('gallery-container').style.display = 'none';
             document.getElementById('btn-replay').style.display = 'flex';
-            if(map) map.invalidateSize();
+            setTimeout(() => { if(map) map.invalidateSize(); }, 100);
         } else {
             document.getElementById('map').style.display = 'none';
             document.getElementById('gallery-container').style.display = 'block';
@@ -710,7 +690,6 @@
 
     function renderGallery() {
         const container = document.getElementById('gallery-container');
-        // Filter out expenses that have no photos at all
         let filtered = expenses.filter(e => e.photo && (Array.isArray(e.photo) ? e.photo.length > 0 : e.photo));
         if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
         if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
@@ -748,7 +727,6 @@
             });
             html += `</div>`;
         });
-
         container.innerHTML = html;
     }
 
@@ -776,7 +754,7 @@
                 }
                 reader.readAsDataURL(file);
             });
-            this.value = ''; // Reset input to allow same file selection again if needed
+            this.value = ''; 
         });
     }
 
@@ -792,11 +770,7 @@
         `).join('');
     }
 
-    function removePhoto(index) {
-        currentPhotos.splice(index, 1);
-        renderPhotoPreviews();
-    }
-    
+    function removePhoto(index) { currentPhotos.splice(index, 1); renderPhotoPreviews(); }
     function viewImage(src) { document.getElementById('lbImg').src = src; document.getElementById('lightbox').style.display = 'flex'; }
 
     // ==========================================================================
@@ -887,7 +861,7 @@
     }
 
     // ==========================================================================
-    // UI RENDERING & CHART.JS
+    // UI RENDERING 
     // ==========================================================================
     function renderCalendar() {
       const cal = document.getElementById('calendar');
@@ -998,11 +972,8 @@
             iconSize: [28, 28], iconAnchor: [14, 14]
         });
 
-        // Show only the first photo in Map Popup
         let photoUrl = '';
-        if(exp.photo) {
-            photoUrl = Array.isArray(exp.photo) ? exp.photo[0] : exp.photo;
-        }
+        if(exp.photo) { photoUrl = Array.isArray(exp.photo) ? exp.photo[0] : exp.photo; }
 
         const pHTML = photoUrl ? `<img src="${photoUrl}" style="width:100%; height:80px; object-fit:cover; border-radius:8px; margin-bottom:8px;">` : '';
         const badgeAmt = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary);font-size:1.2rem;font-weight:900;">FREE</span>' : `₹${Number(exp.amount).toLocaleString('en-IN')}`;
@@ -1036,8 +1007,10 @@
           document.getElementById('totalDistance').textContent = '0 km';
       }
 
-      if (markers.length > 0 && !isReplaying) {
+      if (markers.length > 1 && !isReplaying) {
           try { map.fitBounds(L.featureGroup(markers).getBounds().pad(0.2)); } catch(e){}
+      } else if (markers.length === 1 && !isReplaying) {
+          map.setView(markers[0].getLatLng(), 15);
       }
     }
 
@@ -1087,10 +1060,9 @@
         document.getElementById('rc-meta').innerHTML = `<span style="background:var(--primary); color:white; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:4px;">${(exp.category||'').split(' ')[0]}</span> <i class="ph-bold ph-calendar-blank"></i> ${formatDate(exp.date)} ${exp.time ? `• ${tConvert(exp.time)}` : ''}`;
         
         let imgContainer = document.getElementById('rc-img-container');
-        if(exp.photo) {
+        if(exp.photo && (Array.isArray(exp.photo) ? exp.photo.length > 0 : true)) {
             let photosArray = Array.isArray(exp.photo) ? exp.photo : [exp.photo];
             if(photosArray.length > 1) {
-                // Horizontal scroll wrapper for multiple replay images
                 imgContainer.innerHTML = `<div style="display:flex; overflow-x:auto; width:100%; height:100%; scroll-snap-type: x mandatory;">` + 
                     photosArray.map(p => `<img src="${p}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0; scroll-snap-align: start;" onclick="viewImage('${p}')">`).join('') +
                     `</div>`;
@@ -1203,7 +1175,6 @@
 
       if (!isFree && amtRaw === '') return showToast('Please fill Amount!');
       if (!category) return showToast('Please select a Category!');
-      
       if(!desc) { let cleanCat = category.split(' ').slice(1).join(' '); desc = `${cleanCat}${timeVal ? ` at ${tConvert(timeVal)}` : ''}`; }
 
       const expData = { 
@@ -1220,7 +1191,6 @@
 
       saveData();
       
-      // Reset Form
       if (isFree) toggleFree();
       document.getElementById('description').value = ''; document.getElementById('amount').value = ''; document.getElementById('category').value = ''; document.getElementById('place').value = ''; 
       
@@ -1234,12 +1204,8 @@
     function triggerEdit(id) {
         const exp = expenses.find(e => e.id === id); if(!exp) return;
         
-        if (exp.isFree) {
-            if (!isFree) toggleFree();
-        } else {
-            if (isFree) toggleFree();
-            document.getElementById('amount').value = exp.amount;
-        }
+        if (exp.isFree) { if (!isFree) toggleFree(); } 
+        else { if (isFree) toggleFree(); document.getElementById('amount').value = exp.amount; }
 
         document.getElementById('description').value = exp.description; document.getElementById('category').value = exp.category; document.getElementById('place').value = exp.place || ''; 
         
@@ -1271,7 +1237,6 @@
         if(e.locationData && e.locationData.lat) locHTML = `<button onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn"><i class="ph-bold ph-map-pin"></i> Locate Map</button>`; 
         else if(e.place) locHTML = `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(e.place)}</span>`; 
         
-        // Multi-Photo Support in Feed
         let photoHTML = '';
         if (e.photo) {
             let photosArray = Array.isArray(e.photo) ? e.photo : [e.photo];
@@ -1286,7 +1251,7 @@
 
         return `<div class="expense-item" id="item-${e.id}">
           <div class="exp-top">
-             <div style="flex:1;">
+             <div style="flex:1; min-width:0;">
                  ${photoHTML}
                  <div class="exp-title">${escapeHtml(e.description)}</div>
                  <div class="exp-meta">
@@ -1308,13 +1273,8 @@
     function deleteExpense(id) { 
         if (confirm('Delete this memory?')) { 
             expenses = expenses.filter(e => e.id !== id); 
-            if(editingId === id) { 
-                editingId = null; 
-                document.getElementById('saveBtn').textContent = 'Save to Itinerary'; 
-                if(isFree) toggleFree();
-            } 
-            saveData(); 
-            showToast('Deleted & Synced.'); 
+            if(editingId === id) { editingId = null; document.getElementById('saveBtn').textContent = 'Save to Itinerary'; if(isFree) toggleFree(); } 
+            saveData(); showToast('Deleted & Synced.'); 
         } 
     }
 
@@ -1333,6 +1293,35 @@
       const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-expenses.csv`; a.click(); showToast('CSV exported!');
     }
+
+    function exportStory() {
+        if(expenses.length === 0) return showToast("Add expenses first!");
+        const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
+        const topCat = Object.entries(expenses.reduce((acc, e) => { acc[e.category] = (acc[e.category]||0) + Number(e.amount); return acc; }, {})).sort((a,b)=>b[1]-a[1])[0][0];
+        const storyHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans';background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;}.card{background:linear-gradient(135deg,#0ea5e9,#f43f5e);width:350px;padding:40px 30px;border-radius:30px;color:white;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;overflow:hidden;}.card::before{content:'🌴';font-size:150px;position:absolute;opacity:0.1;top:-20px;left:-20px;}h1{font-size:2.5rem;margin:0 0 10px 0;line-height:1.1;font-weight:800;}p{font-size:1rem;opacity:0.9;margin-bottom:30px;}.metric{background:rgba(0,0,0,0.2);padding:15px;border-radius:15px;margin-bottom:15px;text-align:left;display:flex;justify-content:space-between;align-items:center;}.m-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;opacity:0.8;}.m-val{font-size:1.4rem;font-weight:800;}</style></head><body><div class="card"><h1>My Goa<br>Journey</h1><p>Trip Summary.</p><div class="metric"><div class="m-label">Total Splurge</div><div class="m-val">₹${total.toLocaleString('en-IN')}</div></div><div class="metric"><div class="m-label">Top Category</div><div class="m-val">${topCat.substring(topCat.indexOf(' ')+1)}</div></div></div></body></html>`;
+        const blob = new Blob([storyHTML], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
+    }
+
+    function exportHTML() {
+      const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
+    }
+
+    function downloadPlacesList() {
+      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
+      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? stats.locationData.mapsUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
+    }
+
+    document.addEventListener('click', (e) => {
+      const sug = document.getElementById('locationSuggestions');
+      if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none';
+    });
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
