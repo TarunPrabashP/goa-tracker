@@ -84,6 +84,7 @@
     .panel-header { padding: 16px 20px; font-weight: 800; font-size: 1.05rem; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;}
     .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
 
+    /* Feed Sidebar */
     .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 99998; backdrop-filter: blur(4px);}
     .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
     .sidebar.open { right: 0 !important; }
@@ -122,7 +123,7 @@
     
     .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;}
 
-    /* Crosshair Mouse Pointer CSS */
+    /* Crosshair Mouse Pointer CSS for exact clicking */
     .map-pin-mode, .map-pin-mode * { cursor: crosshair !important; }
 
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
@@ -164,11 +165,11 @@
     .amt-group { display: flex; background: #27273a; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; flex: 1; transition: 0.2s; align-items: stretch;}
     .amt-group:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     .amt-group input { flex: 1; padding: 14px; background: transparent; border: none; color: var(--text-main); outline: none; font-family: 'Inter'; font-size: 0.95rem; min-width: 0;}
-    .amt-group .free-btn { background: #2a373b; color: #10b981; font-weight: 800; padding: 0 20px; border-left: 1px solid var(--border); transition: 0.2s; font-size: 0.95rem; }
-    .amt-group .scan-btn { background: #3b82f6; color: white; font-size: 1.2rem; padding: 0 18px; border-left: 1px solid var(--border); }
+    .amt-group .free-btn { background: #2a373b; color: #10b981; font-weight: 800; padding: 0 20px; border-left: 1px solid var(--border); transition: 0.2s; font-size: 0.95rem; border-right: none; border-top: none; border-bottom: none;}
+    .amt-group .scan-btn { background: #3b82f6; color: white; font-size: 1.2rem; padding: 0 18px; border-left: 1px solid var(--border); border-right: none; border-top: none; border-bottom: none;}
 
     /* Exact Photo Toggles Match from Screenshot */
-    .img-type-toggle { display: flex; gap: 12px; margin-bottom: 10px;}
+    .img-type-toggle { display: flex; gap: 12px; margin-bottom: 10px; background: transparent;}
     .img-type-btn { flex: 1; padding: 10px; border: 1px solid #4a4a6a; border-radius: 6px; font-size: 0.9rem; cursor: pointer; background: transparent; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; transition: 0.3s ease;}
     .img-type-btn.active { border-color: #0ea5e9; color: #0ea5e9; background: rgba(14, 165, 233, 0.05); }
 
@@ -180,7 +181,7 @@
     .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
     .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
     
-    .action-badge { padding: 0 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
+    .action-badge { padding: 0 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
     .action-badge:hover { filter: brightness(1.1); transform: translateY(-1px);}
     .btn-gps { background: var(--info); color: white; border: none;}
     .btn-pin { background: var(--warning); color: white; border: none;}
@@ -200,10 +201,10 @@
     .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
     .exp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-weight: 500;}
     
-    .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
+    .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
     .locate-btn:hover { background: var(--ocean); color: white; }
     .feed-actions { display: flex; gap: 16px; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 12px;}
-    .action-btn { background: none; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 4px; opacity: 0.8; transition: 0.2s; color: inherit;}
+    .action-btn { background: none; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 4px; opacity: 0.8; transition: 0.2s; color: inherit; border: none; cursor: pointer;}
     .action-btn:hover { opacity: 1; }
     .btn-edit { color: var(--info); }
     .btn-del { color: var(--danger); }
@@ -256,7 +257,9 @@
     .mat-dial-hand-circle { position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;}
     .mat-dial-number { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; z-index: 15; color: #d7c2b9; pointer-events: none;}
     .mat-tp-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 8px;}
-    .mat-tp-action-btn { color: #ffb59d; font-weight: 600; font-size: 1rem; padding: 8px 12px; background: transparent;}
+    .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
+    .mat-tp-action-btns { display: flex; gap: 16px; }
+    .mat-tp-action-btn { color: #ffb59d; font-weight: 600; font-size: 1rem; padding: 8px 12px; background: transparent; border: none; cursor: pointer;}
 
     /* Lightbox & Toast */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
@@ -267,6 +270,7 @@
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 14px 28px; border-radius: 30px; font-weight: 700; z-index: 999999; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* OCR Loading */
     #ocrLoading { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 999999; justify-content: center; align-items: center; color: white; font-weight: bold; flex-direction: column; gap: 16px;}
     .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -508,11 +512,9 @@
                   <option value="">Category...</option>
                   <option value="🏨 Accommodation">🏨 Accommodation</option>
                   <option value="🍔 Food & Drinks">🍔 Food & Drinks</option>
-                  <option value="🚗 Transport">🚗 Transport</option>
+                  <option value="🚗 Transport (Diesel)">🚗 Transport (Diesel)</option>
                   <option value="🎢 Activities">🎢 Activities</option>
                   <option value="🛍️ Shopping">🛍️ Shopping</option>
-                  <option value="💊 Medical">💊 Medical</option>
-                  <option value="📱 Other">📱 Other</option>
                 </select>
               </div>
 
@@ -563,7 +565,7 @@
               </div>
 
               <button type="button" id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s;" onclick="document.getElementById('photoInput').click()">
-                  <i class="ph-bold ph-plus"></i> Select Images to Upload
+                  <i class="ph-bold ph-plus"></i> Select Images
               </button>
               <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
 
@@ -694,12 +696,12 @@
     }
 
     // ==========================================================================
-    // FORM LOGIC: CATEGORY & FREE TOGGLE
+    // FORM LOGIC: CATEGORY, FREE TOGGLE
     // ==========================================================================
     function handleCategoryChange() {
         const cat = document.getElementById('category').value;
         const isAcc = cat === '🏨 Accommodation';
-        const isTransport = cat.includes('Transport');
+        const isTransport = cat === '🚗 Transport (Diesel)';
         
         const descInput = document.getElementById('description');
         const dtRow = document.getElementById('dtRow');
@@ -1190,6 +1192,8 @@
       placesLoc.forEach((exp, index) => {
         latlngs.push([exp.locationData.lat, exp.locationData.lon]);
         
+        let isAcc = exp.category === '🏨 Accommodation';
+        
         let catColors = {
             '🏨 Accommodation': '#8b5cf6', // purple
             '🍔 Food & Drinks': '#f59e0b', // orange
@@ -1231,28 +1235,24 @@
         markersCluster.addLayer(marker);
       });
 
-      // True Continuous Routing (Solid road line, no dashes)
+      // True Continuous Routing (Solid line, No Straight Line Fallback)
       if (placesLoc.length > 1) {
           const coordsStr = placesLoc.map(p => `${p.locationData.lon},${p.locationData.lat}`).join(';');
           
           if(placesLoc.length <= 100) {
-              fetch(`https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=simplified&geometries=geojson`)
+              fetch(`https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`)
               .then(r => r.json()).then(data => {
                   if(data.code === "Ok") {
-                      // Solid Line Route based on roads
                       routeLayer = L.geoJSON(data.routes[0].geometry, { style: { color: 'var(--ocean)', weight: 4, opacity: 0.8, lineCap: 'round', lineJoin: 'round' } }).addTo(map);
                       document.getElementById('totalDistance').textContent = (data.routes[0].distance / 1000).toFixed(1) + ' km';
                   } else throw new Error();
               }).catch(err => {
-                  // Fallback continuous line
-                  routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 4, opacity: 0.8, lineCap: 'round', lineJoin: 'round'}).addTo(map);
                   let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
-                  document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km';
+                  document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km (Direct)';
               });
           } else {
-              routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 4, opacity: 0.8, lineCap: 'round', lineJoin: 'round'}).addTo(map);
               let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
-              document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km';
+              document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km (Direct)';
           }
       } else {
           document.getElementById('totalDistance').textContent = '0 km';
@@ -1335,7 +1335,7 @@
         closeAllSidebars();
         
         if (window.innerWidth <= 1024) {
-            document.getElementById('map-wrapper').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('map-wrapper').scrollIntoView();
         }
         
         // Turns cursor to Crosshair
@@ -1384,7 +1384,7 @@
         switchView('map');
         closeAllSidebars();
         
-        if (window.innerWidth <= 1024) { document.getElementById('map-wrapper').scrollIntoView({behavior: 'smooth'}); }
+        if (window.innerWidth <= 1024) { document.getElementById('map-wrapper').scrollIntoView(); }
 
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(pos => {
@@ -1594,6 +1594,7 @@
                         const existingIds = new Set(expenses.map(ex => ex.id));
                         imp.data.forEach(item => { if(!existingIds.has(item.id)) expenses.push(item); });
                         if(imp.budget) tripBudget = imp.budget;
+                        if(imp.payers) payers = imp.payers;
                         saveData(); renderPayers(); init(); showToast("Sync Successful! 🚀");
                     }
                 } else throw new Error();
