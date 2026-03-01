@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏖️ Goa Trip Tracker - Master Edition</title>
+  <title>🏖️ Goa Trip Tracker - Mobile Master Edition</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -41,7 +41,7 @@
       --text-main: #1e293b; --text-muted: #64748b; --border: #cbd5e1;
     }
 
-    body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); height: 100vh; overflow: hidden; color: var(--text-main); display: flex; flex-direction: column; padding: 16px; gap: 16px; transition: background 0.4s ease; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-gradient); height: 100vh; overflow: hidden; color: var(--text-main); display: flex; flex-direction: column; padding: 16px; gap: 16px; transition: background 0.4s ease; text-rendering: optimizeLegibility; }
     h1, h2, h3, h4, .total-value, .budget-val, .exp-amt { font-family: 'Plus Jakarta Sans', sans-serif; }
     
     ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -56,7 +56,7 @@
     .premium-header { background: var(--surface); backdrop-filter: blur(12px); border-radius: 24px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); flex-shrink: 0; border: 1px solid var(--border); z-index: 10; }
     .ph-left { display: flex; align-items: center; gap: 16px; }
     .ph-title { font-size: 1.5rem; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px;}
-    .ph-theme-btn { background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; color: var(--text-main); transition: 0.2s;}
+    .ph-theme-btn { background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-main); transition: 0.2s;}
     
     .ph-right { display: flex; align-items: center; gap: 20px; }
     .ph-stat { display: flex; flex-direction: column; align-items: flex-end; }
@@ -68,11 +68,8 @@
     .burn-bar { width: 100%; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
     .burn-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
     
-    .sidebar-btn { background: var(--ocean); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
-    .sidebar-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);}
-    
-    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
-    .overview-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(217, 70, 239, 0.5);}
+    .sidebar-btn { background: var(--ocean); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
+    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
 
     /* ==========================================================================
        3. DASHBOARD GRID & FEED SIDEBAR
@@ -91,12 +88,9 @@
     .sidebar-header h2 { font-size: 1.3rem; margin: 0; display: flex; align-items: center; gap: 8px;}
     .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
 
-    /* Perfectly aligned action buttons */
-    .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0; width: 100%; box-sizing: border-box; }
-    .btn-side { width: 100%; background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.2s; box-sizing: border-box; }
-    .btn-side:hover { border-color: var(--ocean); transform: translateY(-2px); }
-    .btn-side.danger { grid-column: span 3; color: var(--danger); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); flex-direction: row; padding: 14px;}
-    .btn-side.danger:hover { background: var(--danger); color: white; }
+    .sidebar-actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0;}
+    .btn-side { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.2s;}
+    .btn-side.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); grid-column: span 3; flex-direction: row; justify-content: center; padding: 14px;}
 
     /* ==========================================================================
        4. CALENDAR & BUDGET
@@ -113,7 +107,6 @@
     .cal-day.has-expense::after { content: ''; width: 4px; height: 4px; background: var(--danger); border-radius: 50%; position: absolute; bottom: 4px;}
 
     .budget-item { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 14px; margin-bottom: 10px; background: var(--card-bg); border-radius: 14px; border-left: 4px solid var(--primary); border: 1px solid var(--border); cursor: pointer; transition:0.2s;}
-    .budget-item:hover { transform: translateX(4px); border-color: var(--primary);}
     .budget-item.active-filter { background: var(--primary); color: white; }
 
     /* ==========================================================================
@@ -129,34 +122,32 @@
     
     .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;}
 
-    /* Crosshair Mouse Pointer CSS for exact clicking */
     .map-pin-mode, .map-pin-mode * { cursor: crosshair !important; }
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
 
-    /* Gallery Grid */
+    /* Gallery */
     #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
     .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
     @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
     .gallery-item { break-inside: avoid; margin-bottom: 16px; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); transition: 0.3s;}
-    .gallery-item:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 10;}
     .gallery-img { width: 100%; display: block; border-radius: 12px; }
     .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; padding: 24px 12px 12px; font-size: 0.85rem; pointer-events: none;}
     .gallery-date-header { font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;}
 
-    /* Replay Card - Styled to Match Screenshot */
+    /* Replay Card */
     .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .replay-card.show { right: 20px; }
     .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .rc-step { background: var(--primary); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; }
+    .close-replay-btn { width: 32px; height: 32px; background: rgba(239,68,68,0.1); color: var(--danger); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: bold; transition: 0.2s; }
+    
     .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
     .rc-img-content { width: 100%; height: 100%; object-fit: cover; }
     .rc-body { padding: 16px; }
     .rc-nav { display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); align-items: center;}
     
-    /* Exact Prev/Next Match */
-    .btn-replay-prev { background: transparent; color: var(--text-main); border: 1px solid var(--text-muted); flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s;}
-    .btn-replay-next { background: #10b981; color: white; border: 1px solid #059669; flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s;}
-    .btn-replay-prev:hover { background: var(--surface); }
+    .btn-replay-prev { background: transparent; color: var(--text-main); border: 1px solid var(--text-muted); flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; transition: 0.2s;}
+    .btn-replay-next { background: #10b981; color: white; border: 1px solid #059669; flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; transition: 0.2s;}
 
     /* ==========================================================================
        6. FORM & FEED
@@ -166,70 +157,61 @@
     .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
     .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
-    /* PERFECTED AMOUNT BOX: Seamless integration exactly like screenshot */
-    .amt-group { display: flex; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); align-items: stretch; transition: 0.2s; }
+    /* PERFECTED AMOUNT BOX: Seamless, centered, zero offset */
+    .amt-group { display: flex; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; flex: 1; align-items: stretch;}
     .amt-group:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
-    .amt-group input { flex: 1; padding: 14px; background: transparent; border: none; color: var(--text-main); outline: none; font-family: 'Inter'; font-size: 0.95rem; min-width: 0; margin: 0; border-radius: 8px 0 0 8px; }
-    .amt-group .free-btn { background: rgba(16, 185, 129, 0.1); color: var(--primary); font-weight: 800; padding: 0 24px; border: none; border-left: 1px solid var(--border); transition: 0.2s; font-size: 0.95rem; cursor: pointer; margin: 0; border-radius: 0 8px 8px 0; display: flex; align-items: center; justify-content: center;}
+    .amt-group input { flex: 1; padding: 14px; background: transparent; border: none; color: var(--text-main); outline: none; font-family: 'Inter'; font-size: 0.95rem; min-width: 0; margin: 0; border-radius: 0; }
+    .amt-group .free-btn { background: rgba(16, 185, 129, 0.1); color: var(--primary); font-weight: 800; padding: 0 24px; border: none; border-left: 1px solid var(--border); font-size: 0.95rem; margin: 0; border-radius: 0; display: flex; align-items: center; justify-content: center;}
     .amt-group .free-btn:hover { background: var(--primary); color: white; }
 
-    /* Exact Photo Toggles Match from Screenshot */
     .img-type-toggle { display: flex; gap: 12px; margin-bottom: 10px;}
-    .img-type-btn { flex: 1; padding: 10px; border: 1px solid #4a4a6a; border-radius: 6px; font-size: 0.9rem; cursor: pointer; background: transparent; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; transition: 0.3s ease;}
+    .img-type-btn { flex: 1; padding: 10px; border: 1px solid #4a4a6a; border-radius: 6px; font-size: 0.9rem; background: transparent; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; transition: 0.3s ease;}
     .img-type-btn.active { border-color: #0ea5e9; color: #0ea5e9; background: rgba(14, 165, 233, 0.05); }
 
     .dt-row { display: flex; gap: 10px; width: 100%; }
-    .dt-box { border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; cursor: pointer; transition: 0.2s; align-items: center;}
-    .dt-box:hover { border-color: var(--ocean); }
+    .dt-box { border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; transition: 0.2s; align-items: center;}
     .dt-date { flex: 1.5; justify-content: space-between; }
-    .dt-date input[type="date"] { background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;}
+    .dt-date input[type="date"] { background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; }
     .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
-    .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
+    .dt-time { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
     
-    .action-badge { padding: 0 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
-    .action-badge:hover { filter: brightness(1.1); transform: translateY(-1px);}
+    .action-badge { padding: 12px 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
     .btn-gps { background: var(--info); color: white; }
     .btn-pin { background: var(--warning); color: white; }
     
     .btn-save { background: var(--primary); color: white; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; width: 100%; font-family: 'Plus Jakarta Sans'; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); transition: 0.2s;}
-    .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
 
     #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
     #photoInput { display: none; }
 
     /* Feed Layout */
     .expense-item { padding: 16px; background: var(--card-bg); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; transition: 0.2s;}
-    .expense-item:hover { transform: translateY(-2px); border-color: var(--ocean); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
     .exp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;}
     .exp-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); line-height: 1.3;}
     .exp-amt { font-weight: 800; font-size: 1.3rem; color: var(--danger); font-family: 'JetBrains Mono'; text-align: right;}
     .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
     .exp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-weight: 500;}
     
-    .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
-    .locate-btn:hover { background: var(--ocean); color: white; }
+    .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
     .feed-actions { display: flex; gap: 16px; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 12px;}
-    .action-btn { background: none; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 4px; opacity: 0.8; transition: 0.2s; color: inherit; border: none; cursor: pointer;}
-    .action-btn:hover { opacity: 1; }
+    .action-btn { background: none; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 4px; opacity: 0.8; color: inherit;}
     .btn-edit { color: var(--info); }
     .btn-del { color: var(--danger); }
-    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer;}
+    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0;}
 
     /* ==========================================================================
-       7. COMPACT OVERVIEW MODAL WITH GRAPHS
+       7. COMPACT OVERVIEW MODAL
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(8px);}
     
     .overview-modal-content { width: 95%; max-width: 900px; height: 90vh; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.7); color: var(--text-main); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     
-    /* Compact Top Stats */
     .stats-grid-top { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
     .stat-box { background: var(--card-bg); border: 1px solid var(--border); padding: 16px; border-radius: 12px; text-align: center; position: relative; overflow: hidden;}
     .stat-box-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; z-index: 2; position: relative;}
     .stat-box-val { font-size: 1.5rem; font-weight: 800; font-family: 'JetBrains Mono'; color: var(--text-main); z-index: 2; position: relative;}
     
-    /* Multi-Graph Grid layout */
     .ov-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .chart-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px; height: 220px; width: 100%; position: relative; }
     .ov-section-title { font-size: 1rem; margin: 0 0 10px 0; display: flex; align-items: center; gap: 6px; color: var(--text-main); font-weight: 800;}
@@ -240,66 +222,69 @@
     .overview-table tr:last-child td { border-bottom: none; }
     
     .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 10px; padding-bottom: 8px;}
-    .carousel-item { flex: 0 0 120px; height: 120px; border-radius: 10px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: pointer;}
-    .carousel-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
-    .carousel-item img:hover { transform: scale(1.05); }
+    .carousel-item { flex: 0 0 120px; height: 120px; border-radius: 10px; overflow: hidden; position: relative; border: 1px solid var(--border);}
+    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
 
     /* Clock Picker */
     .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
     .mat-tp-label { font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;}
     .mat-tp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;}
     .mat-tp-display { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center;}
-    .mat-tp-box { background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d;}
+    .mat-tp-box { background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; color: #ffb59d;}
     .mat-tp-box.active { background: #7c3116; color: #ffdbd1; }
     .mat-tp-colon { font-size: 3.5rem; color: #d7c2b9; padding-bottom: 8px;}
     .mat-tp-ampm { display: flex; flex-direction: column; border: 1px solid #4a3e39; border-radius: 12px; overflow: hidden; }
-    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; padding: 14px 16px; font-weight: 600; font-size: 0.95rem; border: none;}
+    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; padding: 14px 16px; font-weight: 600; font-size: 0.95rem; }
     .mat-tp-ampm-btn:first-child { border-bottom: 1px solid #4a3e39; }
     .mat-tp-ampm-btn.active { background: #4a3e39; color: #ffdbd1;}
-    .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;}
+    .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; touch-action: none;}
     .mat-dial-center { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: #ffb59d; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; }
     .mat-dial-hand { position: absolute; bottom: 50%; left: calc(50% - 2px); width: 4px; height: calc(50% - 20px); background: #ffb59d; transform-origin: bottom center; z-index: 5;}
     .mat-dial-hand-circle { position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;}
     .mat-dial-number { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; z-index: 15; color: #d7c2b9; pointer-events: none;}
     .mat-tp-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 8px;}
-    .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
     .mat-tp-action-btns { display: flex; gap: 16px; }
-    .mat-tp-action-btn { color: #ffb59d; font-weight: 600; font-size: 1rem; padding: 8px 12px; background: transparent; border: none; cursor: pointer;}
+    .mat-tp-action-btn { color: #ffb59d; font-weight: 600; font-size: 1rem; padding: 8px 12px; background: transparent; border: none; }
 
     /* Lightbox & Toast */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
-    #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
-    .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
-    .close-lb:hover { background: var(--danger); }
+    #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px;}
+    .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 14px 28px; border-radius: 30px; font-weight: 700; z-index: 999999; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
     .toast.show { transform: translateX(-50%) translateY(0); }
 
     /* ==========================================================================
-       8. MOBILE RESPONSIVENESS OVERHAUL
+       8. PERFECT MOBILE RESPONSIVENESS
        ========================================================================== */
-    @media (max-width: 1024px) {
-      body { height: auto; overflow-x: hidden; overflow-y: auto; display: block; padding: 12px; }
-      .premium-header { flex-direction: column; gap: 16px; border-radius: 20px; padding: 20px; }
-      .ph-right { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 15px;}
-      .dashboard-grid { display: flex; flex-direction: column; height: auto; overflow: visible;}
+    @media (max-width: 768px) {
+      body { height: auto; overflow-x: hidden; overflow-y: auto; display: flex; padding: 8px; gap: 12px; }
+      .premium-header { flex-direction: column; gap: 12px; border-radius: 16px; padding: 16px; align-items: flex-start;}
+      .ph-right { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 6px; }
+      .ph-stat { align-items: flex-start; }
+      .ph-stat:first-child { grid-column: span 2; }
+      .sidebar-btn, .overview-btn { width: 100%; padding: 12px; justify-content: center; font-size: 1rem; }
       
+      .dashboard-grid { display: flex; flex-direction: column; gap: 12px; }
       .col-left, .col-center, .col-right { height: auto; overflow: visible; width: 100%; }
-      .col-center .panel { height: 450px; min-height: 450px; }
+      .col-center .panel { height: 400px; min-height: 400px; }
       
       .input-row { flex-direction: column; }
-      .dt-row { flex-direction: column; }
+      .loc-row { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+      .loc-row input { flex: 1 1 100%; min-width: 100%; }
+      .loc-row button { flex: 1 1 48%; padding: 14px; font-size: 1rem; justify-content: center; }
+
+      .dt-row { flex-direction: row !important; }
       .scroll-area { overflow: visible; padding: 16px; }
       .sidebar { width: 100vw; right: -100vw; }
       
-      /* Mobile Overview Modal Stacking */
       .overview-modal-content { width: 100%; height: 100vh; border-radius: 0; max-height: 100vh; }
-      .ov-grid-2 { grid-template-columns: 1fr; } 
-      .stats-grid-top { grid-template-columns: 1fr 1fr; }
-      .replay-card { right: 5%; left: 5%; width: auto; }
+      .ov-grid-2 { grid-template-columns: 1fr; gap: 16px; } 
+      .stats-grid-top { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .replay-card { right: 5%; left: 5%; width: 90%; top: 10px; z-index: 9999; }
       
-      /* Delete Button stack */
-      .actions-grid { grid-template-columns: repeat(3, 1fr); }
+      .actions-grid { grid-template-columns: repeat(3, 1fr); width: 100%; gap: 8px;}
+      .btn-side { padding: 14px 4px; font-size: 0.85rem; }
       .btn-side.danger { grid-column: span 3; }
     }
   </style>
@@ -307,7 +292,7 @@
 <body class="dark-mode">
 
   <div id="lightbox" onclick="this.style.display='none'"><div class="close-lb">✕</div><img id="lbImg" src=""></div>
-  <div id="toast" class="toast"><i class="ph-fill ph-info"></i> <span id="toastMsg">Message</span></div>
+  <div id="toast" class="toast"><span><i class="ph-fill ph-info"></i></span> <span id="toastMsg">Message</span></div>
 
   <div id="timeModal" class="mat-modal-overlay">
       <div class="mat-time-picker">
@@ -329,7 +314,7 @@
               <div id="tp-dial-numbers"></div>
           </div>
           <div class="mat-tp-actions">
-              <i class="ph-bold ph-keyboard mat-tp-keyboard"></i>
+              <span class="mat-tp-keyboard">⌨</span>
               <div class="mat-tp-action-btns">
                   <button type="button" class="mat-tp-action-btn" onclick="closeTimePicker()">Cancel</button>
                   <button type="button" class="mat-tp-action-btn" onclick="saveTimePicker()">OK</button>
@@ -341,23 +326,23 @@
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeAllSidebars()"></div>
   <div id="itinerarySidebar" class="sidebar">
       <div class="sidebar-header">
-          <h2><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
+          <h2><span style="color:var(--ocean)">☰</span> Itinerary Feed</h2>
           <button type="button" class="close-sidebar" onclick="closeAllSidebars()">✕</button>
       </div>
       <div class="scroll-area" id="expenseList"></div>
       
       <div class="actions-grid">
-          <button type="button" class="btn-side" onclick="exportData()"><i class="ph-bold ph-file-csv" style="font-size:1.4rem; color:var(--primary)"></i> CSV</button>
-          <button type="button" class="btn-side" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="font-size:1.4rem; color:var(--info)"></i> HTML</button>
-          <button type="button" class="btn-side" onclick="exportSync()"><i class="ph-bold ph-export" style="font-size:1.4rem; color:var(--ocean)"></i> Backup</button>
-          <button type="button" class="btn-side danger" onclick="clearAll()"><i class="ph-bold ph-trash" style="font-size:1.4rem;"></i> Delete All Data</button>
+          <button type="button" class="btn-side" onclick="exportData()"><span style="font-size:1.4rem; color:var(--primary)">⤓</span> CSV</button>
+          <button type="button" class="btn-side" onclick="exportHTML()"><span style="font-size:1.4rem; color:var(--info)">📄</span> HTML</button>
+          <button type="button" class="btn-side" onclick="exportSync()"><span style="font-size:1.4rem; color:var(--ocean)">☁</span> Backup</button>
+          <button type="button" class="btn-side danger" onclick="clearAll()"><span style="font-size:1.4rem;">🗑</span> Delete All Data</button>
       </div>
   </div>
 
   <div id="overviewModal" class="mat-modal-overlay">
       <div class="overview-modal-content">
           <div style="padding: 24px; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
-              <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:8px;"><i class="ph-fill ph-chart-line-up" style="color:#8b5cf6"></i> Trip Dashboard</h2>
+              <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:8px;"><span style="color:#8b5cf6">📈</span> Trip Dashboard</h2>
               <button type="button" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('overviewModal').style.display='none'">✕</button>
           </div>
           
@@ -372,34 +357,23 @@
 
               <div class="ov-grid-2">
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-chart-pie-slice"></i> Category Spending</h3>
+                      <h3 class="ov-section-title">📊 Category Spending</h3>
                       <div class="chart-container"><canvas id="overviewCategoryChart"></canvas></div>
                   </div>
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-trend-up"></i> Spending Trend</h3>
+                      <h3 class="ov-section-title">📉 Spending Trend</h3>
                       <div class="chart-container"><canvas id="overviewTrendChart"></canvas></div>
                   </div>
               </div>
 
               <div class="ov-grid-2">
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-list-numbers"></i> Breakdown</h3>
+                      <h3 class="ov-section-title">🧾 Breakdown</h3>
                       <div id="overviewTableContainer"></div>
                   </div>
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-map-pin"></i> Top Places</h3>
+                      <h3 class="ov-section-title">📍 Top Places</h3>
                       <div id="overviewPlacesContainer"></div>
-                  </div>
-              </div>
-
-              <div class="ov-grid-2">
-                  <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-receipt"></i> Receipts</h3>
-                      <div id="receiptCarousel" class="carousel-wrapper"></div>
-                  </div>
-                  <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-image"></i> Memories</h3>
-                      <div id="memoryCarousel" class="carousel-wrapper"></div>
                   </div>
               </div>
           </div>
@@ -408,12 +382,12 @@
 
   <div class="premium-header">
     <div class="ph-left">
-      <h1 class="ph-title"><i class="ph-fill ph-beach-tent" style="color:var(--ocean)"></i> Goa Trip</h1>
-      <button type="button" class="ph-theme-btn" onclick="toggleTheme()" id="themeBtn"><i class="ph-fill ph-sun"></i></button>
+      <h1 class="ph-title"><span style="color:var(--ocean)">🏖️</span> Goa Trip</h1>
+      <button type="button" class="ph-theme-btn" onclick="toggleTheme()" id="themeBtn">☼</button>
     </div>
     <div class="ph-right">
       <div class="ph-stat">
-        <div class="ph-label">Budget Burn <i class="ph-bold ph-pencil-simple" style="cursor:pointer;" onclick="setBudget()"></i></div>
+        <div class="ph-label">Budget Burn <span style="cursor:pointer;" onclick="setBudget()">✎</span></div>
         <div style="font-size:0.8rem; font-weight:800; color:var(--text-main); margin-top:2px;" id="burnText">0%</div>
         <div class="burn-container"><div class="burn-bar"><div class="burn-fill" id="burnBar"></div></div></div>
       </div>
@@ -425,8 +399,8 @@
         <div class="ph-label">Total Spent</div>
         <div class="ph-val total" id="totalSpent">₹0</div>
       </div>
-      <button type="button" class="sidebar-btn" onclick="toggleSidebar('feed')"><i class="ph-bold ph-list-dashes"></i> Feed</button>
-      <button type="button" class="overview-btn" onclick="openOverviewModal()"><i class="ph-bold ph-chart-bar"></i> Overview</button>
+      <button type="button" class="sidebar-btn" onclick="toggleSidebar('feed')">☰ Feed</button>
+      <button type="button" class="overview-btn" onclick="openOverviewModal()">📈 Overview</button>
     </div>
   </div>
 
@@ -435,10 +409,10 @@
     <div class="col-left">
       <div class="panel" style="flex: 0 0 auto;">
         <div class="panel-header">
-            <span><i class="ph-bold ph-calendar-blank"></i> Timeline</span>
+            <span>📅 Timeline</span>
             <div style="display:flex; gap:8px;">
-                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(-1)"><i class="ph-bold ph-caret-left"></i></button>
-                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(1)"><i class="ph-bold ph-caret-right"></i></button>
+                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(-1)">❮</button>
+                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(1)">❯</button>
             </div>
         </div>
         <div style="padding:16px;">
@@ -449,8 +423,8 @@
 
       <div class="panel" style="flex: 1;">
         <div class="panel-header">
-            <span><i class="ph-bold ph-chart-pie-slice"></i> Analytics</span>
-            <button type="button" style="font-size:0.75rem; color:var(--text-muted); background:transparent; border:none; cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)"><i class="ph-bold ph-arrows-clockwise"></i> Reset</button>
+            <span>📊 Analytics</span>
+            <button type="button" style="font-size:0.75rem; color:var(--text-muted); background:transparent; border:none; cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)">⟳ Reset</button>
         </div>
         <div class="scroll-area" style="display: flex; flex-direction: column; gap: 16px;">
             <div style="font-size:0.7rem; text-align:center; color:var(--text-muted);">*Click a slice to filter map*</div>
@@ -465,14 +439,14 @@
     <div class="col-center">
       <div class="panel" style="flex: 1; padding: 0; position: relative;">
         <div class="panel-header">
-            <span style="display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-map-trifold"></i> Live View</span>
+            <span style="display:flex; align-items:center; gap:8px;">🗺️ Live View</span>
             <div style="display:flex; gap: 8px;">
                 <div class="view-toggle">
                     <button type="button" id="btn-view-map" class="active" onclick="switchView('map')">Map</button>
                     <button type="button" id="btn-view-gallery" onclick="switchView('gallery')">Gallery</button>
                 </div>
-                <button type="button" class="btn-action-map" id="btn-heatmap" onclick="toggleHeatmap()"><i class="ph-bold ph-fire"></i> Heatmap</button>
-                <button type="button" class="btn-action-map" style="background:var(--ocean); color:white; border:none;" onclick="startReplay()"><i class="ph-bold ph-play-circle"></i></button>
+                <button type="button" class="btn-action-map" id="btn-heatmap" onclick="toggleHeatmap()">🔥 Heatmap</button>
+                <button type="button" class="btn-action-map" style="background:var(--ocean); color:white; border:none;" onclick="startReplay()">▶</button>
             </div>
         </div>
         
@@ -483,7 +457,7 @@
             <div id="replayCard" class="replay-card">
                 <div class="rc-header">
                     <span id="rc-step" class="rc-step">Step 1 of 5</span>
-                    <button type="button" style="width:28px; height:28px; background:transparent; color:var(--text-main); font-size:1rem; cursor:pointer; border:none;" onclick="exitReplay()">✕</button>
+                    <button type="button" class="close-replay-btn" onclick="exitReplay()">✕</button>
                 </div>
                 <div id="rc-img-container" class="rc-img-wrapper"></div>
                 <div class="rc-body">
@@ -492,7 +466,7 @@
                         <div id="rc-amt" style="color:var(--danger); font-family:'JetBrains Mono'; font-weight:800; font-size:1.1rem; flex-shrink: 0;">₹0</div>
                     </div>
                     <div style="font-size:0.75rem; color:var(--text-muted); background: rgba(148, 163, 184, 0.1); padding: 8px; border-radius: 8px; margin-bottom: 12px;">
-                        Use <b>Arrow Keys</b> (<i class="ph-bold ph-arrow-left"></i> <i class="ph-bold ph-arrow-right"></i>) to navigate.
+                        Use <b>Arrow Keys</b> (❮ ❯) to navigate.
                     </div>
                     <div id="rc-meta" style="color:var(--text-muted); font-size:0.8rem; display:flex; align-items:center; gap:4px; font-weight: 500;"></div>
                 </div>
@@ -508,7 +482,7 @@
 
     <div class="col-right">
       <div class="panel" style="flex: 1;">
-        <div class="panel-header"><span><i class="ph-bold ph-plus-circle"></i> Add Memory</span></div>
+        <div class="panel-header"><span>⊕ Add Memory</span></div>
         <div class="scroll-area">
             <div class="form-grid">
               
@@ -542,33 +516,31 @@
                   </select>
               </div>
 
-              <div style="position: relative;">
-                <div class="input-row">
-                  <input type="text" id="place" class="input" placeholder="Search Location..." oninput="searchLocation(this.value)" style="flex:1;">
-                  <button type="button" class="action-badge btn-pin" onclick="enableManualPin(event)"><i class="ph-bold ph-map-pin"></i> Pin</button>
-                  <button type="button" class="action-badge btn-gps" onclick="pinCurrentLocation(event)"><i class="ph-bold ph-crosshair"></i> GPS</button>
-                </div>
-                <div id="locationSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);"></div>
+              <div style="position: relative;" class="input-row loc-row">
+                  <input type="text" id="place" class="input" placeholder="Search Location..." oninput="searchLocation(this.value)">
+                  <button type="button" class="action-badge btn-pin" onclick="enableManualPin(event)">📍 Pin</button>
+                  <button type="button" class="action-badge btn-gps" onclick="pinCurrentLocation(event)">🎯 GPS</button>
+                  <div id="locationSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);"></div>
               </div>
 
               <div class="dt-row" id="dtRow">
                   <div class="dt-box dt-date" style="flex: 1.5; justify-content: space-between;">
-                      <input type="date" id="dateInput" required style="background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;">
+                      <input type="date" id="dateInput" required>
                   </div>
-                  <div class="dt-box dt-time" onclick="openTimePicker()" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                      <i class="ph-bold ph-clock" style="font-size:0.9rem; color:var(--text-muted);"></i>
+                  <div class="dt-box dt-time" onclick="openTimePicker()" style="flex: 1;">
+                      <span style="font-size:0.9rem; color:var(--text-muted);">🕒</span>
                       <div id="displayTimeText" style="display:flex; align-items:baseline; gap:4px;"></div>
                   </div>
                   <input type="hidden" id="timeInput" value="12:00">
               </div>
 
               <div class="img-type-toggle" id="imgToggleRow">
-                  <button type="button" class="img-type-btn active" id="type-memory" onclick="setPhotoType('memory')"><i class="ph-bold ph-camera"></i> Memory Photo</button>
-                  <button type="button" class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')"><i class="ph-bold ph-receipt"></i> Receipt/Bill</button>
+                  <button type="button" class="img-type-btn active" id="type-memory" onclick="setPhotoType('memory')">📷 Memory Photo</button>
+                  <button type="button" class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')">🧾 Receipt/Bill</button>
               </div>
 
               <button type="button" id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s;" onclick="document.getElementById('photoInput').click()">
-                  <i class="ph-bold ph-plus"></i> Select Images to Upload
+                  ⊕ Select Images to Upload
               </button>
               <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
 
@@ -610,9 +582,6 @@
     let expenses = [];
     let tripBudget = 25000;
     
-    // Strict Alphabetical Names
-    const payers = ['Ashok', 'Neha', 'Rupini', 'Tarun', 'Tejas'];
-    
     let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear();
     let selectedDate = null; let activeCategoryFilter = null;
     let searchTimeout = null; let selectedLocation = null; let editingId = null; 
@@ -648,7 +617,7 @@
     // INITIALIZATION
     // ==========================================================================
     function init() {
-      if(localStorage.getItem('goaTheme') === 'light') { document.body.classList.replace('dark-mode', 'light-mode'); document.getElementById('themeBtn').innerHTML = '<i class="ph-fill ph-moon"></i>'; }
+      if(localStorage.getItem('goaTheme') === 'light') { document.body.classList.replace('dark-mode', 'light-mode'); document.getElementById('themeBtn').innerHTML = '☾'; }
 
       const now = new Date();
       let h = String(now.getHours()).padStart(2, '0'); let m = String(now.getMinutes()).padStart(2, '0');
@@ -665,9 +634,9 @@
     
     function toggleTheme() {
         if(document.body.classList.contains('dark-mode')) {
-            document.body.classList.replace('dark-mode', 'light-mode'); localStorage.setItem('goaTheme', 'light'); document.getElementById('themeBtn').innerHTML = '<i class="ph-fill ph-moon"></i>';
+            document.body.classList.replace('dark-mode', 'light-mode'); localStorage.setItem('goaTheme', 'light'); document.getElementById('themeBtn').innerHTML = '☾';
         } else {
-            document.body.classList.replace('light-mode', 'dark-mode'); localStorage.setItem('goaTheme', 'dark'); document.getElementById('themeBtn').innerHTML = '<i class="ph-fill ph-sun"></i>';
+            document.body.classList.replace('light-mode', 'dark-mode'); localStorage.setItem('goaTheme', 'dark'); document.getElementById('themeBtn').innerHTML = '☼';
         }
         renderBudgetBreakdown();
         if(document.getElementById('overviewModal').style.display === 'flex') {
@@ -676,7 +645,7 @@
     }
     function setBudget() { let b = prompt("Enter total trip budget (₹):", tripBudget); if(b && !isNaN(b)) { tripBudget = parseFloat(b); saveData(); } }
     
-    function toggleSidebar(type) {
+    function toggleSidebar() {
         const feed = document.getElementById('itinerarySidebar');
         const overlay = document.getElementById('sidebarOverlay');
         feed.classList.add('open'); overlay.style.display = 'block';
@@ -685,9 +654,7 @@
     
     function openOverviewModal() {
         document.getElementById('overviewModal').style.display = 'flex';
-        setTimeout(() => {
-            try { renderOverview(); } catch(e) { console.error("Overview Modal Error:", e); }
-        }, 100);
+        setTimeout(() => { try { renderOverview(); } catch(e) {} }, 100);
     }
     
     function closeAllSidebars() {
@@ -828,8 +795,11 @@
         let angle = tp_mode === 'hour' ? (tp_hr === 12 ? 0 : tp_hr * 30) : tp_min * 6;
         
         document.getElementById('tp-hand').style.transform = `rotate(${angle}deg)`;
-        document.getElementById('tp-hand-text').textContent = tp_mode === 'hour' ? tp_hr : String(tp_min).padStart(2, '0');
-        document.getElementById('tp-hand-text').style.transform = `rotate(-${angle}deg)`;
+        
+        // Text counter-rotation fix
+        const handText = document.getElementById('tp-hand-text');
+        handText.textContent = tp_mode === 'hour' ? tp_hr : String(tp_min).padStart(2, '0');
+        handText.style.transform = `rotate(-${angle}deg)`;
         
         for(let i = 1; i <= 12; i++) {
             let num = tp_mode === 'hour' ? i : (i === 12 ? 0 : i * 5);
@@ -954,7 +924,7 @@
     }
 
     // ==========================================================================
-    // COMPACT & CREATIVE OVERVIEW DASHBOARD
+    // COMPACT OVERVIEW DASHBOARD
     // ==========================================================================
     function renderOverview() {
         let cStats = {}; let rImgs = []; let mImgs = [];
@@ -963,17 +933,14 @@
         const uniqueDates = new Set(expenses.map(e => e.date));
         const days = Math.max(1, uniqueDates.size);
 
-        // Trend data variables
         const dateTotals = {};
 
         expenses.forEach(e => {
             let amt = Number(e.amount) || 0;
             totalSpend += amt;
             
-            // Collect Dates for Line Graph
             if(!e.isFree) dateTotals[e.date] = (dateTotals[e.date] || 0) + amt;
 
-            // Collect Location Data
             if(e.place) {
                 placeSet.add(e.place);
                 if(!placeStats[e.place]) placeStats[e.place] = { count: 0, spent: 0 };
@@ -981,7 +948,6 @@
                 placeStats[e.place].spent += amt;
             }
 
-            // Collect Category Data
             if(!e.isFree) {
                 if(!cStats[e.category]) cStats[e.category] = 0;
                 cStats[e.category] += amt;
@@ -992,14 +958,12 @@
             }
         });
 
-        // Top Stats Cards
         document.getElementById('ovGrandTotal').textContent = `₹${totalSpend.toLocaleString('en-IN')}`;
         document.getElementById('ovDailyAvg').textContent = `₹${Math.round(totalSpend/days).toLocaleString('en-IN')}`;
         document.getElementById('ovTotalLocs').textContent = placeSet.size;
 
         let topCatName = "-"; let topCatAmount = 0;
         
-        // Build Category Breakdown Table
         let catTableHTML = `<table class="overview-table"><tr><th>Category</th><th>Spent</th><th>%</th></tr>`;
         Object.entries(cStats).sort((a,b)=>b[1]-a[1]).forEach(([c, amt]) => {
             if(amt > topCatAmount) { topCatAmount = amt; topCatName = c.split(' ')[1] || c; }
@@ -1010,7 +974,7 @@
         document.getElementById('ovTopCategory').textContent = topCatName;
         document.getElementById('overviewTableContainer').innerHTML = Object.keys(cStats).length > 0 ? catTableHTML : '<div style="color:var(--text-muted);font-size:0.85rem;">No spending data yet.</div>';
 
-        // Build Top Places Table
+        // Removed the "Visits" column from Top Places
         let placesTableHTML = `<table class="overview-table"><tr><th>Place</th><th>Spent</th></tr>`;
         Object.entries(placeStats).sort((a,b)=>b[1].spent-a[1].spent).slice(0,5).forEach(([p, d]) => {
             placesTableHTML += `<tr><td><strong>${p}</strong></td><td style="color:var(--danger);font-weight:bold;">₹${d.spent.toLocaleString('en-IN')}</td></tr>`;
@@ -1022,14 +986,12 @@
         const textColor = isLight ? '#64748b' : '#94a3b8';
         const gridColor = isLight ? 'rgba(148, 163, 184, 0.2)' : 'rgba(148, 163, 184, 0.1)';
 
-        // GRAPH 1: Category Bar Chart
         const ctxCat = document.getElementById('overviewCategoryChart').getContext('2d');
         if(window.overviewCategoryChartInst) window.overviewCategoryChartInst.destroy();
         
         const catLabels = Object.keys(cStats).map(c => c.split(' ')[1] || c);
         const catData = Object.values(cStats);
         
-        // Match Pie Chart colors perfectly
         let barColors = Object.keys(cStats).map(cat => {
             if(cat.includes('Accommodation')) return '#8b5cf6';
             if(cat.includes('Food')) return '#f59e0b';
@@ -1052,7 +1014,6 @@
             }
         });
 
-        // GRAPH 2: Spending Trend Line Chart
         const ctxTrend = document.getElementById('overviewTrendChart').getContext('2d');
         if(window.overviewTrendChartInst) window.overviewTrendChartInst.destroy();
 
@@ -1132,7 +1093,7 @@
 
         let html = '';
         sortedDates.forEach(date => {
-            html += `<div class="gallery-date-header"><i class="ph-bold ph-calendar-blank" style="color:var(--ocean)"></i> ${date}</div><div class="gallery-grid">`;
+            html += `<div class="gallery-date-header"><span style="color:var(--ocean)">📅</span> ${date}</div><div class="gallery-grid">`;
             grouped[date].forEach(exp => {
                 let photosArray = Array.isArray(exp.photo) ? exp.photo : [{url: exp.photo}];
                 photosArray.forEach(p => {
@@ -1141,7 +1102,7 @@
                         <img src="${p.url}" class="gallery-img">
                         <div class="gallery-overlay">
                             <div style="font-weight:800; font-family:'Plus Jakarta Sans'; margin-bottom:2px;">${escapeHtml(exp.description)}</div>
-                            <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(exp.place || 'Unknown Location')}</div>
+                            <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;">📍 ${escapeHtml(exp.place || 'Unknown Location')}</div>
                         </div>
                     </div>`;
                 });
@@ -1161,7 +1122,7 @@
       if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
       if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
 
-      // FLAWLESS CHRONOLOGICAL SORTING BY DATE + TIME + ID
+      // FLAWLESS CHRONOLOGICAL SORTING BY DATE + TIME
       const placesLoc = filtered.filter(e => e.locationData && typeof e.locationData.lat === 'number').sort((a, b) => {
           let dA = a.date || '1970-01-01'; let dB = b.date || '1970-01-01';
           let tA = a.time ? a.time.padStart(5, '0') : '00:00';
@@ -1200,15 +1161,15 @@
         if(isAcc) {
             htmlIcon = `<div style="font-size: 20px; background: white; border-radius: 50%; width: 34px; height: 34px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 2px solid ${color};">🏨</div>`;
         } else {
-            // Precise Teardrop Category Colored Pin
+            // Teardrop Category Colored Pin
             htmlIcon = `
-            <div style="position: relative; width: 34px; height: 44px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));">
+            <div style="position: relative; width: 34px; height: 46px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));">
                <div style="position: absolute; top: 0; left: 0; width: 34px; height: 34px; background-color: ${color}; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white;"></div>
                <div style="position: absolute; top: 0; left: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-family:'Plus Jakarta Sans'; font-size: 14px; z-index: 2;">${index + 1}</div>
             </div>`;
         }
 
-        const numIcon = L.divIcon({ className: 'custom-icon', html: htmlIcon, iconSize: [34, 44], iconAnchor: [17, 44] });
+        const numIcon = L.divIcon({ className: 'custom-icon', html: htmlIcon, iconSize: [34, 46], iconAnchor: [17, 42] });
         const marker = L.marker([exp.locationData.lat, exp.locationData.lon], {icon: numIcon});
 
         let pHTML = '';
@@ -1231,7 +1192,7 @@
         markersCluster.addLayer(marker);
       });
 
-      // True Continuous Routing (Solid line, No Straight Line Fallback)
+      // True Continuous Road Routing (No Straight Line Fallbacks)
       if (placesLoc.length > 1) {
           document.getElementById('totalDistance').innerHTML = '<span style="font-size:0.7rem; opacity:0.8;">Calculating...</span>';
           const coordsStr = placesLoc.map(p => `${p.locationData.lon},${p.locationData.lat}`).join(';');
@@ -1241,11 +1202,12 @@
               .then(r => r.json()).then(data => {
                   if(data.code === "Ok") {
                       // Solid Line Route based on exact roads
-                      routeLayer = L.geoJSON(data.routes[0].geometry, { style: { color: 'var(--ocean)', weight: 4, opacity: 0.8, lineCap: 'round', lineJoin: 'round' } }).addTo(map);
+                      routeLayer = L.geoJSON(data.routes[0].geometry, { style: { color: 'var(--ocean)', weight: 4, opacity: 0.8 } }).addTo(map);
                       document.getElementById('totalDistance').textContent = (data.routes[0].distance / 1000).toFixed(1) + ' km';
                   } else throw new Error();
               }).catch(err => {
-                  // NO straight line drawing fallback. Just show distance text.
+                  // Purposefully removed straight line fallback!
+                  // It will just compute direct distance and show the pins beautifully.
                   let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
                   document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km (Direct)';
               });
@@ -1269,13 +1231,6 @@
         closeAllSidebars();
         switchView('map');
         map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); 
-    }
-
-    function exportMap() {
-        showToast("📸 Capturing Map...");
-        html2canvas(document.getElementById("map-wrapper"), {useCORS: true}).then(canvas => {
-            const link = document.createElement('a'); link.download = `Goa-Map-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); showToast("✅ Snapshot Saved!");
-        });
     }
 
     // ==========================================================================
@@ -1310,7 +1265,7 @@
         document.getElementById('rc-step').textContent = `Stop ${currentReplayIndex + 1} of ${replayRoute.length}`;
         document.getElementById('rc-title').innerHTML = escapeHtml(exp.description);
         document.getElementById('rc-amt').innerHTML = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary); font-size:1.3rem;">FREE</span>' : `₹${Number(exp.amount).toLocaleString('en-IN')}`;
-        document.getElementById('rc-meta').innerHTML = `<span style="background:var(--primary); color:white; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:4px;">${(exp.category||'').split(' ')[0]}</span> <i class="ph-bold ph-calendar-blank"></i> ${formatDate(exp.date)} ${exp.time ? `• ${tConvert(exp.time)}` : ''}`;
+        document.getElementById('rc-meta').innerHTML = `<span style="background:var(--primary); color:white; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:4px;">${(exp.category||'').split(' ')[0]}</span> 📅 ${formatDate(exp.date)} ${exp.time ? `• ${tConvert(exp.time)}` : ''}`;
         
         let imgContainer = document.getElementById('rc-img-container');
         if(exp.photo && (Array.isArray(exp.photo) ? exp.photo.length > 0 : true)) {
@@ -1320,7 +1275,7 @@
                     photosArray.map(p => `<img src="${p.url}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0; scroll-snap-align: start;" onclick="viewImage('${p.url}')">`).join('') + `</div>`;
             } else { imgContainer.innerHTML = `<img src="${photosArray[0].url}" style="width:100%; height:100%; object-fit:cover;" onclick="viewImage('${photosArray[0].url}')">`; }
         } else {
-            imgContainer.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; color:var(--text-muted); opacity:0.5;"><i class="ph-bold ph-image" style="font-size:3.5rem; margin-bottom:8px;"></i> No photo</div>`;
+            imgContainer.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; color:var(--text-muted); opacity:0.5;"><span style="font-size:3.5rem; margin-bottom:8px;">📷</span> No photo</div>`;
         }
 
         document.getElementById('rc-prev').style.opacity = currentReplayIndex === 0 ? '0.5' : '1';
@@ -1439,7 +1394,7 @@
             sug.innerHTML = results.map(place => {
               const shortName = place.display_name.split(',')[0];
               const safeName = shortName.replace(/'/g, "\\'"); 
-              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${safeName}', ${place.lat}, ${place.lon})"><div style="font-weight: 700; font-size: 0.9rem;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
+              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${safeName}', ${place.lat}, ${place.lon})"><div style="font-weight: 700; font-size: 0.9rem;">📍 ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
             }).join('');
           }).catch(() => { sug.innerHTML = '<div style="padding: 12px; color: var(--danger); font-size:0.85rem;">Error searching.</div>'; });
       }, 400);
@@ -1543,7 +1498,7 @@
       if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
 
       const html = filtered.map(e => {
-        let locHTML = (e.locationData && e.locationData.lat) ? `<button type="button" onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn"><i class="ph-bold ph-map-pin"></i> Locate Map</button>` : `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(e.place)}</span>`; 
+        let locHTML = (e.locationData && e.locationData.lat) ? `<button type="button" onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn">📍 Locate Map</button>` : `<span style="font-size:0.75rem;color:var(--text-muted);">📍 ${escapeHtml(e.place)}</span>`; 
         
         let photoHTML = '';
         if (e.photo) {
@@ -1561,8 +1516,8 @@
                  ${photoHTML}
                  <div class="exp-title">${escapeHtml(e.description)}</div>
                  <div class="exp-meta">
-                    <span><i class="ph-bold ph-calendar-blank"></i> ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>
-                    ${(e.paidBy && !e.isFree) ? `<span style="color:var(--ocean);font-weight:700;"><i class="ph-bold ph-wallet"></i> Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}
+                    <span>📅 ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>
+                    ${(e.paidBy && !e.isFree) ? `<span style="color:var(--ocean);font-weight:700;">👤 Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}
                  </div>
              </div>
              <div style="text-align:right; flex-shrink:0;">
@@ -1570,7 +1525,7 @@
                  <div><div class="exp-cat">${(e.category||'').split(' ')[0]}</div></div>
              </div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button type="button" class="action-btn btn-edit" onclick="triggerEdit(${e.id})"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button type="button" class="action-btn btn-del" onclick="deleteExpense(${e.id})"><i class="ph-bold ph-trash"></i></button></div></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button type="button" class="action-btn btn-edit" onclick="triggerEdit(${e.id})">✎ Edit</button><button type="button" class="action-btn btn-del" onclick="deleteExpense(${e.id})">🗑</button></div></div>
         </div>`;
       }).join('');
       document.getElementById('expenseList').innerHTML = html || '<p style="text-align:center;color:var(--text-muted);padding:40px;font-size:0.9rem;">No memories logged yet.</p>';
