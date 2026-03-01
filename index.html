@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏖️ Goa Trip Tracker - Ultimate Edition</title>
+  <title>🏖️ Goa Trip Tracker - Pro Edition</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -59,7 +59,7 @@
     .ph-title { font-size: 1.5rem; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px;}
     .ph-theme-btn { background: var(--card-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; color: var(--text-main); transition: 0.2s;}
     
-    .ph-right { display: flex; align-items: center; gap: 24px; }
+    .ph-right { display: flex; align-items: center; gap: 20px; }
     .ph-stat { display: flex; flex-direction: column; align-items: flex-end; }
     .ph-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap:4px; }
     .ph-val { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 800; color: var(--info); margin-top: 2px; }
@@ -70,7 +70,10 @@
     .burn-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
     
     .sidebar-btn { background: var(--ocean); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
-    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
+    .sidebar-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);}
+    
+    .stats-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
+    .stats-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(217, 70, 239, 0.5);}
 
     /* ==========================================================================
        3. DASHBOARD GRID & SIDEBARS
@@ -81,13 +84,25 @@
     .panel-header { padding: 16px 20px; font-weight: 800; font-size: 1.05rem; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;}
     .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
 
-    /* Hidden Sidebar */
+    /* Dynamic Slide-out Sidebars */
     .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 99998; backdrop-filter: blur(4px);}
-    .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
+    .sidebar { position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
     .sidebar.open { right: 0 !important; }
     .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .sidebar-header h2 { font-size: 1.3rem; margin: 0; display: flex; align-items: center; gap: 8px;}
     .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+
+    /* Detailed Stats Sidebar Specifics */
+    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.9rem; }
+    .overview-table th { background: var(--card-bg); text-align: left; padding: 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); }
+    .overview-table td { padding: 12px; border-bottom: 1px solid var(--border); }
+    
+    .cat-card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+    .cat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden;}
+    .cat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); border-color: var(--ocean);}
+    .cat-card-title { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-bottom: 8px;}
+    .cat-card-val { font-size: 1.3rem; font-weight: 800; color: var(--text-main); font-family: 'JetBrains Mono';}
+    .cat-card-bg { position: absolute; right: -10px; bottom: -10px; font-size: 3rem; opacity: 0.05; }
 
     /* ==========================================================================
        4. CALENDAR & BUDGET
@@ -119,8 +134,8 @@
     .view-toggle button.active { background: var(--ocean); color: white; }
     
     .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;}
+
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
-    .temp-pin-icon { display: flex; align-items: center; justify-content: center; font-size: 36px; filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.5)); transform: translate(-10px, -24px); }
 
     /* Gallery */
     #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
@@ -139,7 +154,7 @@
     .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
     .rc-img-content { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: 0.3s;}
     .rc-body { padding: 16px; }
-    .rc-nav { display: flex; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); }
+    .rc-nav { display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); }
     .btn-replay-nav { flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;}
 
     /* ==========================================================================
@@ -202,19 +217,20 @@
     .photo-thumb:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
 
     /* ==========================================================================
-       7. CENTERED OVERVIEW MODAL, CLOCK, LIGHTBOX
+       7. POPUP MODALS (Category Details, Clock, Lightbox, Loading)
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(4px);}
     
-    /* RECTIFIED: Overview is now a Centered Modal Pop-up */
-    .overview-modal-content { width: 90%; max-width: 650px; max-height: 85vh; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); color: var(--text-main); }
+    /* RECTIFIED CATEGORY EVENTS MODAL */
+    .category-modal-content { width: 90%; max-width: 650px; max-height: 85vh; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); color: var(--text-main); }
+    .cat-modal-header { padding: 20px; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; }
+    .cat-modal-title { margin: 0; font-size: 1.3rem; display: flex; align-items: center; gap: 8px; color: var(--primary); }
+    .cat-modal-body { padding: 20px; overflow-y: auto; flex: 1; }
     
-    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.9rem; }
-    .overview-table th { background: var(--card-bg); text-align: left; padding: 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); }
-    .overview-table td { padding: 12px; border-bottom: 1px solid var(--border); }
-    .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 12px; padding-bottom: 10px; margin-bottom: 24px;}
-    .carousel-item { flex: 0 0 140px; height: 140px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); cursor: pointer;}
-    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+    /* Event List inside Category Popup */
+    .cat-event-row { display: flex; gap: 16px; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--card-bg); margin-bottom: 12px; align-items: center;}
+    .cat-event-info { flex: 1; }
+    .cat-event-images { display: flex; gap: 8px; flex-wrap: wrap;}
 
     /* Clock Picker */
     .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
@@ -307,7 +323,35 @@
       </div>
   </div>
 
+  <div id="categoryModal" class="mat-modal-overlay">
+      <div class="category-modal-content">
+          <div class="cat-modal-header">
+              <h2 class="cat-modal-title" id="catModalTitle"><i class="ph-bold ph-folder-open"></i> Category</h2>
+              <button type="button" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('categoryModal').style.display='none'">✕</button>
+          </div>
+          <div class="cat-modal-body" id="catModalBody">
+              </div>
+      </div>
+  </div>
+
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeAllSidebars()"></div>
+  <div id="statsSidebar" class="sidebar">
+      <div class="sidebar-header">
+          <h2><i class="ph-bold ph-chart-bar" style="color:var(--primary)"></i> Detailed Stats</h2>
+          <button type="button" class="close-sidebar" onclick="closeAllSidebars()">✕</button>
+      </div>
+      <div class="scroll-area" style="padding: 20px;">
+          
+          <h3 style="margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px;"><i class="ph-bold ph-users"></i> Payer Breakdown</h3>
+          <div class="overview-table" id="overviewTableContainer"></div>
+
+          <h3 style="margin: 25px 0 15px 0; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px;"><i class="ph-bold ph-folder-open"></i> Category Galleries</h3>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:15px;">Click a category to view all logged events and photos.</div>
+          <div id="statsCategoryList" class="cat-card-grid"></div>
+
+      </div>
+  </div>
+
   <div id="itinerarySidebar" class="sidebar">
       <div class="sidebar-header">
           <h2><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
@@ -319,25 +363,6 @@
           <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportData()"><i class="ph-bold ph-file-csv" style="font-size:1.4rem; color:var(--primary)"></i> CSV</button>
           <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="font-size:1.4rem; color:var(--info)"></i> HTML</button>
           <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportSync()"><i class="ph-bold ph-export" style="font-size:1.4rem; color:var(--ocean)"></i> Backup</button>
-      </div>
-  </div>
-
-  <div id="overviewModal" class="mat-modal-overlay">
-      <div class="overview-modal-content">
-          <div style="padding: 20px; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center;">
-              <h2 style="margin:0; font-size:1.3rem; display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-chart-pie-slice" style="color:var(--primary)"></i> Trip Overview</h2>
-              <button type="button" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('overviewModal').style.display='none'">✕</button>
-          </div>
-          <div class="scroll-area" style="padding: 20px; overflow-y: auto;">
-              <h3 style="margin-bottom: 15px; font-size: 1.1rem;"><i class="ph-bold ph-users"></i> Payer Breakdown</h3>
-              <div id="overviewTableContainer"></div>
-
-              <h3 style="margin: 25px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-receipt"></i> Receipts Gallery</h3>
-              <div id="receiptCarousel" class="carousel-wrapper"></div>
-
-              <h3 style="margin: 20px 0 10px 0; font-size: 1.1rem;"><i class="ph-bold ph-image"></i> Memories Gallery</h3>
-              <div id="memoryCarousel" class="carousel-wrapper"></div>
-          </div>
       </div>
   </div>
 
@@ -356,8 +381,9 @@
         <div class="ph-label" id="filterLabel">Total Spent</div>
         <div class="ph-val total" id="totalSpent">₹0</div>
       </div>
+      
       <button type="button" class="sidebar-btn" onclick="toggleSidebar('feed')"><i class="ph-bold ph-list-dashes"></i> Feed</button>
-      <button type="button" class="overview-btn" onclick="openOverviewModal()"><i class="ph-bold ph-chart-bar"></i> Overview</button>
+      <button type="button" class="stats-btn" onclick="toggleSidebar('stats')"><i class="ph-bold ph-chart-bar"></i> Detailed Stats</button>
     </div>
   </div>
 
@@ -539,6 +565,7 @@
     let expenses = [];
     let tripBudget = 25000;
     
+    // Default 5 names. No more split-with!
     let payers = ['Tarun', 'Neha', 'Ashok', 'Rupini', 'Tejas'];
     try {
         let p = localStorage.getItem('goaPayers');
@@ -549,10 +576,10 @@
     let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear();
     let selectedDate = null; let activeCategoryFilter = null;
     let searchTimeout = null; let selectedLocation = null; let editingId = null; 
-    let map = null; let markersCluster = null; let heatLayer = null; let routeLayer = null;
+    let map = null; let markersCluster = null; let heatLayer = null; let routeLayer = null; let tempMarker = null;
     let isHeatmap = false; let currentPhotos = []; let currentPhotoUploadType = 'memory'; 
     let isFree = false; let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
-    let currentView = 'map'; let manualPinMode = false; let tempMarker = null;
+    let currentView = 'map'; let manualPinMode = false;
 
     if (useFirebase) {
         tripRef.on('value', (snapshot) => {
@@ -615,7 +642,7 @@
     }
     
     function openOverviewModal() {
-        try { renderOverview(); } catch(e) { console.error("Overview error", e); }
+        try { renderOverview(); } catch(e) { console.error("Error opening overview:", e); }
         document.getElementById('overviewModal').style.display = 'flex';
     }
     
@@ -626,6 +653,7 @@
         if(overlay) overlay.style.display = 'none';
         
         document.getElementById('overviewModal').style.display = 'none';
+        document.getElementById('categoryModal').style.display = 'none';
         setTimeout(() => { if(map) map.invalidateSize(); }, 300);
     }
 
@@ -1147,7 +1175,6 @@
         
         document.getElementById('map').classList.add('map-pin-mode');
         
-        // Prevent instant misfire
         setTimeout(() => {
             map.off('click', handleMapClick); 
             map.once('click', handleMapClick);
@@ -1158,7 +1185,10 @@
         if(!manualPinMode) return;
         const lat = e.latlng.lat; const lon = e.latlng.lng;
         if(tempMarker) map.removeLayer(tempMarker);
+        
+        // Use standard DivIcon for the temporary pin just like d.html
         tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned!</b>").openPopup();
+        
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
             let shortName = data.display_name ? data.display_name.split(',')[0] : `Map Pin`;
             selectLocation(shortName, lat, lon);
@@ -1399,6 +1429,23 @@
       a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
     }
     
+    function downloadPlacesList() {
+      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
+      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
+      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? `http://maps.google.com/?q=${stats.locationData.lat},${stats.locationData.lon}` : `http://maps.google.com/?q=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
+    }
+    
+    function exportStory() {
+        if(expenses.length === 0) return showToast("Add expenses first!");
+        const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
+        const topCat = Object.entries(expenses.reduce((acc, e) => { acc[e.category] = (acc[e.category]||0) + Number(e.amount); return acc; }, {})).sort((a,b)=>b[1]-a[1])[0][0];
+        const storyHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans';background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;}.card{background:linear-gradient(135deg,#0ea5e9,#f43f5e);width:350px;padding:40px 30px;border-radius:30px;color:white;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;overflow:hidden;}.card::before{content:'🌴';font-size:150px;position:absolute;opacity:0.1;top:-20px;left:-20px;}h1{font-size:2.5rem;margin:0 0 10px 0;line-height:1.1;font-weight:800;}p{font-size:1rem;opacity:0.9;margin-bottom:30px;}.metric{background:rgba(0,0,0,0.2);padding:15px;border-radius:15px;margin-bottom:15px;text-align:left;display:flex;justify-content:space-between;align-items:center;}.m-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;opacity:0.8;}.m-val{font-size:1.4rem;font-weight:800;}</style></head><body><div class="card"><h1>My Goa<br>Journey</h1><p>Trip Summary.</p><div class="metric"><div class="m-label">Total Splurge</div><div class="m-val">₹${total.toLocaleString('en-IN')}</div></div><div class="metric"><div class="m-label">Top Category</div><div class="m-val">${topCat.substring(topCat.indexOf(' ')+1)}</div></div></div></body></html>`;
+        const blob = new Blob([storyHTML], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `goa-story.html`; a.click(); showToast('📸 Story generated!');
+    }
+
     document.addEventListener('click', (e) => { const sug = document.getElementById('locationSuggestions'); if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none'; });
     window.addEventListener('DOMContentLoaded', init);
   </script>
