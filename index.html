@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏖️ Goa Trip Tracker - Pro Edition</title>
+  <title>🏖️ Goa Trip Tracker - Ultimate Edition</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -49,7 +49,7 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 10px; }
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    button { font-family: inherit; appearance: none; outline: none; border: none; cursor: pointer; }
+    button { font-family: inherit; appearance: none; -webkit-appearance: none; outline: none; }
 
     /* ==========================================================================
        2. HEADER
@@ -69,11 +69,13 @@
     .burn-bar { width: 100%; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
     .burn-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
     
-    .sidebar-btn { background: var(--ocean); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
-    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
+    .sidebar-btn { background: var(--ocean); color: white; border: none; padding: 12px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
+    .sidebar-btn:hover { transform: translateY(-2px); }
+    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; border: none; padding: 12px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
+    .overview-btn:hover { transform: translateY(-2px); }
 
     /* ==========================================================================
-       3. DASHBOARD GRID & FEED SIDEBAR
+       3. DASHBOARD GRID
        ========================================================================== */
     .dashboard-grid { display: grid; grid-template-columns: 300px 1fr 380px; gap: 16px; flex: 1; overflow: hidden; }
     .col-left, .col-center, .col-right { display: flex; flex-direction: column; gap: 16px; height: 100%; overflow: hidden; }
@@ -81,19 +83,19 @@
     .panel-header { padding: 16px 20px; font-weight: 800; font-size: 1.05rem; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;}
     .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
 
-    /* Feed Sidebar */
+    /* Hidden Sidebar for Feed */
     .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 99998; backdrop-filter: blur(4px);}
     .sidebar { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: var(--surface); z-index: 99999; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: -10px 0 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; border-left: 1px solid var(--border);}
     .sidebar.open { right: 0 !important; }
     .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .sidebar-header h2 { font-size: 1.3rem; margin: 0; display: flex; align-items: center; gap: 8px;}
-    .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+    .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
 
     /* ==========================================================================
        4. CALENDAR & BUDGET
        ========================================================================== */
     .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 800; }
-    .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;}
+    .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;}
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; background: var(--card-bg); padding: 8px; border-radius: 12px; border: 1px solid var(--border);}
     .cal-day-header { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; padding: 4px 0; text-transform: uppercase;}
     .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; position: relative; transition: 0.2s ease;}
@@ -108,21 +110,25 @@
     .budget-item.active-filter { background: var(--primary); color: white; }
 
     /* ==========================================================================
-       5. MAP, CROSSHAIR PINNING & REPLAY
+       5. MAP & CROSSHAIR PINNING
        ========================================================================== */
-    .col-center .panel { display: flex; flex-direction: column; }
+    .col-center .panel { display: flex; flex-direction: column; position: relative; }
     #map-wrapper { flex: 1 1 auto; position: relative; width: 100%; min-height: 300px; background: var(--card-bg); overflow: hidden; }
     #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     
     .view-toggle { display: flex; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
-    .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; transition: 0.2s;}
+    .view-toggle button { background: transparent; color: var(--text-muted); border: none; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s;}
     .view-toggle button.active { background: var(--ocean); color: white; }
     
-    .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;}
+    .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;}
 
     /* Target Crosshair System */
-    #mapCrosshair { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; font-size: 40px; color: var(--danger); pointer-events: none; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: 400; line-height: 1;}
-    #confirmPinBtn { display: none; position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1000; background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 800; font-family: 'Plus Jakarta Sans'; font-size: 1rem; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5); transition: 0.2s;}
+    #mapCrosshair { display: none; position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; transform: translate(-50%, -50%); z-index: 1000; pointer-events: none;}
+    #mapCrosshair::before, #mapCrosshair::after { content: ''; position: absolute; background: var(--danger); box-shadow: 0 0 4px rgba(0,0,0,0.5); }
+    #mapCrosshair::before { top: 9px; left: 0; width: 20px; height: 2px; }
+    #mapCrosshair::after { top: 0; left: 9px; width: 2px; height: 20px; }
+
+    #confirmPinBtn { display: none; position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1000; background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 800; font-family: 'Plus Jakarta Sans'; font-size: 1rem; border: none; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5); cursor: pointer; transition: 0.2s;}
     #confirmPinBtn:hover { transform: translateX(-50%) scale(1.05); }
 
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
@@ -130,13 +136,14 @@
     /* Gallery Grid */
     #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
     .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
+    @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
     .gallery-item { break-inside: avoid; margin-bottom: 16px; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); transition: 0.3s;}
     .gallery-item:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 10;}
     .gallery-img { width: 100%; display: block; border-radius: 12px; }
     .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; padding: 24px 12px 12px; font-size: 0.85rem; pointer-events: none;}
     .gallery-date-header { font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;}
 
-    /* Exact Styling for Replay Navigation */
+    /* Replay Card */
     .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .replay-card.show { right: 20px; }
     .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
@@ -144,12 +151,12 @@
     .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
     .rc-img-content { width: 100%; height: 100%; object-fit: cover; }
     .rc-body { padding: 16px; }
-    .rc-nav { display: flex; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); align-items: center; gap: 0;}
-    .btn-replay-prev { background: white; color: #1e293b; border: 1px solid #cbd5e1; padding: 8px 16px; font-weight: 600; font-size: 1rem; border-radius: 6px 0 0 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .btn-replay-next { background: #10b981; color: white; border: 1px solid #059669; padding: 8px 16px; font-weight: 600; font-size: 1rem; border-radius: 0 6px 6px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .rc-nav { display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); }
+    .btn-replay-prev { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border); flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;}
+    .btn-replay-next { background: var(--primary); color: white; border: none; flex: 1; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;}
 
     /* ==========================================================================
-       6. FORM & INPUT ELEMENTS
+       6. FORM & FEED
        ========================================================================== */
     .form-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
     .input-row { display: flex; gap: 12px; }
@@ -164,42 +171,49 @@
     .amt-group .scan-btn { background: #3b82f6; color: white; font-size: 1.2rem; padding: 0 18px; border-left: 1px solid var(--border);}
 
     /* Photo Toggles */
-    .img-type-toggle { display: flex; gap: 8px; margin-bottom: 10px;}
-    .img-type-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; border: 1px solid var(--border); background: transparent; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 6px; transition: 0.2s;}
-    .img-type-btn.active { background: var(--ocean); border-color: var(--ocean); color: white; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); }
+    .img-type-toggle { display: flex; gap: 8px; margin-bottom: 10px; background: var(--card-bg); border: 1px solid var(--border); padding: 6px; border-radius: 14px;}
+    .img-type-btn { flex: 1; padding: 10px 12px; border: none; border-radius: 10px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-muted); font-weight: bold; transition: 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 6px;}
+    .img-type-btn.active { background: var(--ocean); color: white; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); }
 
     .dt-row { display: flex; gap: 10px; width: 100%; }
-    .dt-box { border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; transition: 0.2s; align-items: center;}
+    .dt-box { border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; cursor: pointer; transition: 0.2s; align-items: center;}
     .dt-box:hover { border-color: var(--ocean); }
     .dt-date { flex: 1.5; justify-content: space-between; }
     .dt-date input[type="date"] { background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;}
     .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
-    .dt-time { flex: 1; justify-content: center; gap: 8px; padding: 8px 12px; cursor: pointer;}
+    .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
     
-    .action-badge { padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
+    .action-badge { padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
+    .action-badge:hover { filter: brightness(1.1); transform: translateY(-1px);}
     .btn-gps { background: var(--info); color: white; }
     .btn-pin { background: var(--warning); color: white; }
     
-    .btn-save { background: var(--primary); color: white; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; width: 100%; font-family: 'Plus Jakarta Sans'; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); transition: 0.2s;}
+    .btn-save { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; width: 100%; font-family: 'Plus Jakarta Sans'; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); transition: 0.2s;}
     .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
+    .btn-save:active { transform: scale(0.98); }
 
     #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
     #photoInput, #ocrInput { display: none; }
 
     /* Feed Layout */
     .expense-item { padding: 16px; background: var(--card-bg); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; transition: 0.2s;}
-    .expense-item:hover { border-color: var(--ocean); }
+    .expense-item:hover { transform: translateY(-2px); border-color: var(--ocean); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
     .exp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;}
     .exp-title { font-weight: 800; font-size: 1.05rem; color: var(--text-main); line-height: 1.3;}
     .exp-amt { font-weight: 800; font-size: 1.3rem; color: var(--danger); font-family: 'JetBrains Mono'; text-align: right;}
     .exp-cat { background: var(--primary); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
-    .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
+    .exp-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-weight: 500;}
+    
+    .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
+    .locate-btn:hover { background: var(--ocean); color: white; }
     .feed-actions { display: flex; gap: 16px; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 12px;}
-    .action-btn { background: none; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 4px; opacity: 0.8;}
-    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0;}
+    .action-btn { background: none; border: none; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; opacity: 0.8; transition: 0.2s; color: inherit;}
+    .action-btn:hover { opacity: 1; }
+    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; cursor: pointer; border: 2px solid var(--border); flex-shrink: 0; transition: 0.2s;}
+    .photo-thumb:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
 
     /* ==========================================================================
-       7. GRAPHICAL OVERVIEW MODAL, CLOCK, LIGHTBOX
+       7. CENTERED OVERVIEW MODAL, CLOCK, LIGHTBOX
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(8px);}
     
@@ -213,13 +227,18 @@
     .stat-box-val { font-size: 1.8rem; font-weight: 800; font-family: 'JetBrains Mono'; color: var(--text-main); position: relative; z-index: 2;}
     .stat-box-icon { position: absolute; right: -10px; bottom: -10px; font-size: 4rem; opacity: 0.05; z-index: 1; }
 
-    .chart-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; height: 280px; }
+    .chart-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; height: 280px; width: 100%; }
     
     .carousel-wrapper { width: 100%; overflow-x: auto; display: flex; gap: 12px; padding-bottom: 10px; margin-bottom: 24px;}
     .carousel-item { flex: 0 0 160px; height: 160px; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border); }
-    .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+    .carousel-item img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
 
-    /* Clock */
+    .overview-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.95rem; background: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid var(--border);}
+    .overview-table th { background: rgba(0,0,0,0.2); text-align: left; padding: 14px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+    .overview-table td { padding: 14px; border-bottom: 1px solid var(--border); }
+    .overview-table tr:last-child td { border-bottom: none; }
+
+    /* Clock Picker */
     .mat-time-picker { background: #201a18; border-radius: 28px; width: 340px; padding: 24px; font-family: 'Inter', sans-serif; user-select: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
     .mat-tp-label { font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;}
     .mat-tp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;}
@@ -228,7 +247,7 @@
     .mat-tp-box.active { background: #7c3116; color: #ffdbd1; }
     .mat-tp-colon { font-size: 3.5rem; color: #d7c2b9; padding-bottom: 8px;}
     .mat-tp-ampm { display: flex; flex-direction: column; border: 1px solid #4a3e39; border-radius: 12px; overflow: hidden; }
-    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; padding: 14px 16px; font-weight: 600; font-size: 0.95rem; }
+    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
     .mat-tp-ampm-btn:first-child { border-bottom: 1px solid #4a3e39; }
     .mat-tp-ampm-btn.active { background: #4a3e39; color: #ffdbd1;}
     .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;}
@@ -237,16 +256,20 @@
     .mat-dial-hand-circle { position: absolute; top: -16px; left: -16px; width: 40px; height: 40px; background: #ffb59d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #441a08; font-weight: 700; font-size: 1.15rem;}
     .mat-dial-number { position: absolute; width: 40px; height: 40px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; z-index: 15; color: #d7c2b9; pointer-events: none;}
     .mat-tp-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 8px;}
-    .mat-tp-action-btn { color: #ffb59d; font-weight: 600; font-size: 1rem; padding: 8px 12px; background: transparent; }
+    .mat-tp-keyboard { color: #d7c2b9; font-size: 1.6rem; cursor: pointer; }
+    .mat-tp-action-btns { display: flex; gap: 16px; }
+    .mat-tp-action-btn { background: none; border: none; color: #ffb59d; font-weight: 600; font-size: 1rem; cursor: pointer; padding: 8px 12px; transition: 0.2s;}
 
     /* Lightbox & Toast */
     #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
     #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
     .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
+    .close-lb:hover { background: var(--danger); }
     
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 14px 28px; border-radius: 30px; font-weight: 700; z-index: 999999; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* OCR Loading */
     #ocrLoading { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 999999; justify-content: center; align-items: center; color: white; font-weight: bold; flex-direction: column; gap: 16px;}
     .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -261,7 +284,8 @@
       .dashboard-grid { display: flex; flex-direction: column; height: auto; overflow: visible;}
       
       .col-left, .col-center, .col-right { height: auto; overflow: visible; width: 100%; }
-      .col-center .panel { height: 400px; min-height: 400px; }
+      .col-center .panel { height: 450px; min-height: 450px; }
+      #map-wrapper { height: 100%; }
       
       .input-row { flex-direction: column; }
       .dt-row { flex-direction: column; }
@@ -320,9 +344,9 @@
       <div class="scroll-area" id="expenseList"></div>
       
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0;">
-          <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportData()"><i class="ph-bold ph-file-csv" style="font-size:1.4rem; color:var(--primary)"></i> CSV</button>
-          <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="font-size:1.4rem; color:var(--info)"></i> HTML</button>
-          <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 6px;" onclick="exportSync()"><i class="ph-bold ph-export" style="font-size:1.4rem; color:var(--ocean)"></i> Backup</button>
+          <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;" onclick="exportData()"><i class="ph-bold ph-file-csv" style="font-size:1.4rem; color:var(--primary)"></i> CSV</button>
+          <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="font-size:1.4rem; color:var(--info)"></i> HTML</button>
+          <button type="button" style="background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;" onclick="exportSync()"><i class="ph-bold ph-export" style="font-size:1.4rem; color:var(--ocean)"></i> Backup</button>
       </div>
   </div>
 
@@ -330,7 +354,7 @@
       <div class="overview-modal-content">
           <div style="padding: 24px; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
               <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:8px;"><i class="ph-fill ph-chart-line-up" style="color:#8b5cf6"></i> Trip Dashboard</h2>
-              <button type="button" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;" onclick="closeAllSidebars()">✕</button>
+              <button type="button" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="closeAllSidebars()">✕</button>
           </div>
           
           <div class="scroll-area" style="padding: 24px;">
@@ -342,6 +366,9 @@
                   <div class="stat-box"><i class="ph-fill ph-map-pin stat-box-icon"></i><div class="stat-box-title">Locations</div><div class="stat-box-val" id="ovTotalLocs" style="color:var(--ocean)">0</div></div>
               </div>
 
+              <h3 style="margin: 20px 0 15px 0; font-size: 1.2rem;"><i class="ph-bold ph-users"></i> Payer Breakdown</h3>
+              <div id="overviewTableContainer"></div>
+              
               <div class="chart-container">
                   <canvas id="overviewPayerChart"></canvas>
               </div>
@@ -382,8 +409,8 @@
         <div class="panel-header">
             <span><i class="ph-bold ph-calendar-blank"></i> Timeline</span>
             <div style="display:flex; gap:8px;">
-                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px;" onclick="changeMonth(-1)"><i class="ph-bold ph-caret-left"></i></button>
-                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px;" onclick="changeMonth(1)"><i class="ph-bold ph-caret-right"></i></button>
+                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(-1)"><i class="ph-bold ph-caret-left"></i></button>
+                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(1)"><i class="ph-bold ph-caret-right"></i></button>
             </div>
         </div>
         <div style="padding:16px;">
@@ -395,7 +422,7 @@
       <div class="panel" style="flex: 1;">
         <div class="panel-header">
             <span><i class="ph-bold ph-chart-pie-slice"></i> Analytics</span>
-            <button type="button" style="font-size:0.75rem; color:var(--text-muted); background:transparent; border:none; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)"><i class="ph-bold ph-arrows-clockwise"></i> Reset</button>
+            <button type="button" style="font-size:0.75rem; color:var(--text-muted); background:transparent; border:none; cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)"><i class="ph-bold ph-arrows-clockwise"></i> Reset</button>
         </div>
         <div class="scroll-area" style="display: flex; flex-direction: column; gap: 16px;">
             <div style="font-size:0.7rem; text-align:center; color:var(--text-muted);">*Click a slice to filter map*</div>
@@ -424,7 +451,7 @@
         <div id="map-wrapper">
             <div id="map"></div>
             
-            <div id="mapCrosshair">📍</div>
+            <div id="mapCrosshair"></div>
             <button type="button" id="confirmPinBtn" onclick="confirmManualPin()">Confirm Location</button>
 
             <div id="gallery-container"></div>
@@ -432,7 +459,7 @@
             <div id="replayCard" class="replay-card">
                 <div class="rc-header">
                     <span id="rc-step" class="rc-step">Step 1 of 5</span>
-                    <button type="button" style="width:28px; height:28px; background:transparent; color:var(--text-main); font-size:1rem;" onclick="exitReplay()">✕</button>
+                    <button type="button" style="width:28px; height:28px; background:transparent; color:var(--text-main); font-size:1rem; cursor:pointer; border:none;" onclick="exitReplay()">✕</button>
                 </div>
                 <div id="rc-img-container" class="rc-img-wrapper"></div>
                 <div class="rc-body">
@@ -450,6 +477,7 @@
                     <button type="button" id="rc-next" class="btn-replay-next" onclick="nextReplay()">Next</button>
                 </div>
             </div>
+
         </div>
       </div>
     </div>
@@ -486,7 +514,7 @@
                   <select id="paidBy" class="select" style="flex:1;"></select>
               </div>
               <div id="editNamesRow" style="text-align:right; margin-top:-8px; margin-bottom: 4px;">
-                  <button type="button" style="background:transparent; color:var(--ocean); font-size:0.75rem; font-weight:bold;" onclick="editPayers()"><i class="ph-bold ph-pencil-simple"></i> Edit Default Names</button>
+                  <button type="button" style="background:transparent; border:none; color:var(--ocean); font-size:0.75rem; font-weight:bold; cursor:pointer;" onclick="editPayers()"><i class="ph-bold ph-pencil-simple"></i> Edit Default Names</button>
               </div>
 
               <div style="position: relative;">
@@ -499,7 +527,7 @@
               </div>
 
               <div class="dt-row" id="dtRow">
-                  <div class="dt-box dt-date">
+                  <div class="dt-box dt-date" onclick="document.getElementById('dateInput').showPicker()">
                       <input type="date" id="dateInput" required>
                   </div>
                   <div class="dt-box dt-time" onclick="openTimePicker()">
@@ -514,8 +542,8 @@
                   <button type="button" class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')"><i class="ph-bold ph-receipt"></i> Receipt/Bill</button>
               </div>
 
-              <button type="button" id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; transition: 0.2s;" onclick="document.getElementById('photoInput').click()">
-                  <i class="ph-bold ph-plus"></i> Select Images
+              <button type="button" id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s;" onclick="document.getElementById('photoInput').click()">
+                  <i class="ph-bold ph-plus"></i> Select Images to Upload
               </button>
               <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
 
@@ -634,8 +662,11 @@
     }
     
     function openOverviewModal() {
-        try { renderOverview(); } catch(e) { console.error("Overview Error:", e); }
         document.getElementById('overviewModal').style.display = 'flex';
+        // Delay drawing the chart so the canvas has physical dimensions to render inside
+        setTimeout(() => {
+            try { renderOverview(); } catch(e) { console.error("Overview Modal Error:", e); }
+        }, 50);
     }
     
     function closeAllSidebars() {
@@ -857,13 +888,13 @@
         const days = Math.max(1, uniqueDates.size);
 
         expenses.forEach(e => {
-            totalSpend += e.amount;
+            totalSpend += Number(e.amount) || 0;
             if(e.place) placeSet.add(e.place);
 
             if(!e.isFree && e.paidBy) {
                 if(!pStats[e.paidBy]) pStats[e.paidBy] = { t:0, cats:{} };
-                pStats[e.paidBy].t += e.amount;
-                pStats[e.paidBy].cats[e.category] = (pStats[e.paidBy].cats[e.category]||0) + e.amount;
+                pStats[e.paidBy].t += Number(e.amount) || 0;
+                pStats[e.paidBy].cats[e.category] = (pStats[e.paidBy].cats[e.category]||0) + Number(e.amount);
             }
             if(e.photo) {
                 let pArr = Array.isArray(e.photo) ? e.photo : [{url: e.photo, type: 'memory'}];
@@ -928,7 +959,7 @@
     }
 
     // ==========================================================================
-    // MAP SYSTEM & TARGET CROSSHAIR PINNING
+    // MAP SYSTEM: CIRCLE PINS, CLUSTERS, HEATMAP
     // ==========================================================================
     function initMap() {
       map = L.map('map', { zoomControl: false }).setView([15.2993, 74.1240], 10);
@@ -1055,10 +1086,27 @@
         markersCluster.addLayer(marker);
       });
 
+      // RESTORED OSRM Routing Lines
       if (placesLoc.length > 1) {
-          routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 3, dashArray: '6, 8', opacity: 0.6}).addTo(map);
-          let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
-          document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km';
+          const coordsStr = placesLoc.map(p => `${p.locationData.lon},${p.locationData.lat}`).join(';');
+          
+          if(placesLoc.length <= 100) {
+              fetch(`https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`)
+              .then(r => r.json()).then(data => {
+                  if(data.code === "Ok") {
+                      routeLayer = L.geoJSON(data.routes[0].geometry, { style: { color: 'var(--ocean)', weight: 4, opacity: 0.8, dashArray: '5, 10' } }).addTo(map);
+                      document.getElementById('totalDistance').textContent = (data.routes[0].distance / 1000).toFixed(1) + ' km';
+                  } else throw new Error();
+              }).catch(err => {
+                  routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 3, dashArray: '6, 8', opacity: 0.6}).addTo(map);
+                  let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
+                  document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km';
+              });
+          } else {
+              routeLayer = L.polyline(latlngs, {color: 'var(--ocean)', weight: 3, dashArray: '6, 8', opacity: 0.6}).addTo(map);
+              let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
+              document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km';
+          }
       } else {
           document.getElementById('totalDistance').textContent = '0 km';
       }
@@ -1077,68 +1125,11 @@
         map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); 
     }
 
-    // ==========================================================================
-    // MANUAL CROSSHAIR PINNING & GPS
-    // ==========================================================================
-    function enableManualPin(e) {
-        if(e) { e.preventDefault(); e.stopPropagation(); }
-        manualPinMode = true; 
-        switchView('map');
-        closeAllSidebars();
-        
-        // Show Target Crosshair UI
-        document.getElementById('mapCrosshair').style.display = 'block';
-        document.getElementById('confirmPinBtn').style.display = 'block';
-        showToast("📍 Drag map to target and confirm!");
-        
-        if (window.innerWidth <= 1024) {
-            document.getElementById('map-wrapper').scrollIntoView({behavior: 'smooth'});
-        }
-    }
-    
-    function confirmManualPin() {
-        const center = map.getCenter();
-        const lat = center.lat; const lon = center.lng;
-        
-        // Hide Crosshair UI
-        manualPinMode = false;
-        document.getElementById('mapCrosshair').style.display = 'none';
-        document.getElementById('confirmPinBtn').style.display = 'none';
-        
-        if(tempMarker) map.removeLayer(tempMarker);
-        tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Location Pinned!</b>").openPopup();
-        
-        document.getElementById('place').value = "Fetching address...";
-        
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
-            let shortName = data.display_name ? data.display_name.split(',')[0] : `Map Pin`;
-            selectLocation(shortName, lat, lon);
-        }).catch(() => { selectLocation(`Map Pin`, lat, lon); });
-        
-        if (window.innerWidth <= 1024) { document.getElementById('place').scrollIntoView({behavior: 'smooth'}); }
-    }
-    
-    function pinCurrentLocation(e) {
-        if(e) { e.preventDefault(); e.stopPropagation(); }
-        showToast("Requesting GPS...");
-        switchView('map');
-        closeAllSidebars();
-        
-        if (window.innerWidth <= 1024) { document.getElementById('map-wrapper').scrollIntoView({behavior: 'smooth'}); }
-
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                const lat = pos.coords.latitude, lon = pos.coords.longitude;
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
-                    let shortName = data.display_name ? data.display_name.split(',')[0] : `Live GPS Pin`;
-                    selectLocation(shortName, lat, lon);
-                    if(tempMarker) map.removeLayer(tempMarker);
-                    tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 You are here</b>").openPopup();
-                    map.flyTo([lat, lon], 16);
-                    if (window.innerWidth <= 1024) { document.getElementById('place').scrollIntoView({behavior: 'smooth'}); }
-                }).catch(() => { selectLocation(`Live Pin`, lat, lon); });
-            }, () => showToast("GPS Error: You must click 'Allow'."), { timeout: 10000, enableHighAccuracy: true });
-        } else { showToast("GPS not supported."); }
+    function exportMap() {
+        showToast("📸 Capturing Map...");
+        html2canvas(document.getElementById("map-wrapper"), {useCORS: true}).then(canvas => {
+            const link = document.createElement('a'); link.download = `Goa-Map-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); showToast("✅ Snapshot Saved!");
+        });
     }
 
     // ==========================================================================
@@ -1185,6 +1176,99 @@
     function prevReplay() { if(currentReplayIndex > 0) { currentReplayIndex--; renderReplayStep(); } }
     function exitReplay() { isReplaying = false; document.getElementById('replayCard').classList.remove('show'); document.removeEventListener('keydown', handleReplayKey); updateMap(); }
     function handleReplayKey(e) { if(!isReplaying) return; if(e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextReplay(); } if(e.key === 'ArrowLeft') { e.preventDefault(); prevReplay(); } if(e.key === 'Escape') { e.preventDefault(); exitReplay(); } }
+
+    // ==========================================================================
+    // MANUAL CROSSHAIR PINNING & GPS (INSTANT LAG-FREE FIX)
+    // ==========================================================================
+    function enableManualPin(e) {
+        if(e) { e.preventDefault(); e.stopPropagation(); }
+        manualPinMode = true; 
+        switchView('map');
+        closeAllSidebars();
+        
+        document.getElementById('mapCrosshair').style.display = 'block';
+        document.getElementById('confirmPinBtn').style.display = 'block';
+        showToast("📍 Drag map to target and confirm!");
+        
+        if (window.innerWidth <= 1024) {
+            document.getElementById('map-wrapper').scrollIntoView();
+        }
+    }
+    
+    function confirmManualPin() {
+        const center = map.getCenter();
+        const lat = center.lat; const lon = center.lng;
+        
+        manualPinMode = false;
+        document.getElementById('mapCrosshair').style.display = 'none';
+        document.getElementById('confirmPinBtn').style.display = 'none';
+        
+        if(tempMarker) map.removeLayer(tempMarker);
+        tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned!</b>").openPopup();
+        
+        document.getElementById('place').value = "Fetching address...";
+        
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
+        .then(r => r.json())
+        .then(data => {
+            let shortName = data.display_name ? data.display_name.split(',')[0] : `Map Pin`;
+            selectLocation(shortName, lat, lon);
+        }).catch(() => { selectLocation(`Map Pin`, lat, lon); });
+        
+        if (window.innerWidth <= 1024) { document.getElementById('place').scrollIntoView({behavior: 'smooth'}); }
+    }
+    
+    function pinCurrentLocation(e) {
+        if(e) { e.preventDefault(); e.stopPropagation(); }
+        showToast("Requesting GPS...");
+        switchView('map');
+        closeAllSidebars();
+        
+        document.getElementById('map-wrapper').scrollIntoView();
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                const lat = pos.coords.latitude, lon = pos.coords.longitude;
+                document.getElementById('place').value = "Fetching address...";
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
+                    let shortName = data.display_name ? data.display_name.split(',')[0] : `Live GPS Pin`;
+                    selectLocation(shortName, lat, lon);
+                    if(tempMarker) map.removeLayer(tempMarker);
+                    tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 You are here</b>").openPopup();
+                    map.flyTo([lat, lon], 16);
+                    if (window.innerWidth <= 1024) { document.getElementById('place').scrollIntoView({behavior: 'smooth'}); }
+                }).catch(() => { selectLocation(`Live Pin`, lat, lon); });
+            }, () => {
+                showToast("GPS Error: Fallback active.");
+                // Fallback to Goa Center if user denies GPS to prevent freeze
+                selectLocation(`Goa (Fallback)`, 15.2993, 74.1240);
+                map.flyTo([15.2993, 74.1240], 10);
+            }, { timeout: 10000 });
+        } else { showToast("GPS not supported."); }
+    }
+    
+    function searchLocation(query) {
+      clearTimeout(searchTimeout); const sug = document.getElementById('locationSuggestions');
+      if (!query || query.length < 2) { sug.style.display = 'none'; return; }
+      sug.innerHTML = '<div style="padding: 12px; color: var(--text-muted); font-size:0.85rem;">🔍 Searching...</div>'; sug.style.display = 'block';
+      searchTimeout = setTimeout(() => {
+        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ', Goa, India')}&format=json&limit=5`).then(r => r.json()).then(results => {
+            if (results.length === 0) { sug.innerHTML = '<div style="padding: 12px; font-size:0.85rem;">No locations found.</div>'; return; }
+            sug.innerHTML = results.map(place => {
+              const shortName = place.display_name.split(',')[0];
+              const safeName = shortName.replace(/'/g, "\\'"); 
+              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${safeName}', ${place.lat}, ${place.lon})"><div style="font-weight: 700; font-size: 0.9rem;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
+            }).join('');
+          }).catch(() => { sug.innerHTML = '<div style="padding: 12px; color: var(--danger); font-size:0.85rem;">Error searching.</div>'; });
+      }, 400);
+    }
+    
+    function selectLocation(name, lat, lon) {
+      document.getElementById('place').value = name;
+      selectedLocation = { name: name, lat: lat, lon: lon };
+      document.getElementById('locationSuggestions').style.display = 'none'; 
+      showToast(`📍 Selected: ${name}`);
+    }
 
     // ==========================================================================
     // CRUD: FORM & FEED
@@ -1366,14 +1450,6 @@
       const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Goa Trip Report</title><style>body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f8fafc; } .header { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 30px; border-radius: 16px; text-align: center; margin-bottom: 30px; } table { width: 100%; border-collapse: collapse; background:white; } th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; } th { background: #f1f5f9; font-weight: 700; }</style></head><body><div class="header"><h1>🏖️ Goa Trip Expense Report</h1><p>Total Spent: ₹${total.toLocaleString('en-IN')}</p></div><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead><tbody>${expenses.map(e => `<tr><td>${e.date}</td><td><strong>${e.description}</strong></td><td>${e.category}</td><td style="color:#ef4444;font-weight:bold;">₹${Number(e.amount).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table></body></html>`;
       const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-report.html`; a.click(); showToast('HTML report exported!');
-    }
-    
-    function downloadPlacesList() {
-      const placeStats = {}; expenses.forEach(e => { if (e.place) { if (!placeStats[e.place]) placeStats[e.place] = { count: 0, total: 0, locationData: e.locationData }; placeStats[e.place].count++; placeStats[e.place].total += Number(e.amount); } });
-      if(Object.keys(placeStats).length === 0) return showToast("No places added yet!");
-      const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Goa Places Guide</title><style>body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f0f9ff; } .place-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05);} .btn { background:#0ea5e9; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:10px;}</style></head><body><h1>📍 Goa Places Guide</h1>${Object.entries(placeStats).sort((a,b)=>b[1].total-a[1].total).map(([place, stats]) => { const mUrl = stats.locationData ? `http://maps.google.com/?q=${stats.locationData.lat},${stats.locationData.lon}` : `http://maps.google.com/?q=${encodeURIComponent(place + ', Goa')}`; return `<div class="place-card"><h2>${place}</h2><p>Visits: ${stats.count} | Spent: ₹${stats.total.toLocaleString('en-IN')}</p><a href="${mUrl}" target="_blank" class="btn">Open in Maps</a></div>`; }).join('')}</body></html>`;
-      const blob = new Blob([htmlContent], { type: 'text/html' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `goa-places.html`; a.click(); showToast('Places list downloaded!');
     }
 
     document.addEventListener('click', (e) => { 
