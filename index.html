@@ -131,7 +131,7 @@
     .map-pin-mode, .map-pin-mode * { cursor: crosshair !important; }
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
 
-    /* Gallery */
+    /* Gallery Grid */
     #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
     .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
     @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
@@ -142,8 +142,8 @@
     .gallery-date-header { font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;}
 
     /* Replay Card */
-    .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .replay-card.show { right: 20px; }
+    .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, visibility 0.3s; opacity: 0; visibility: hidden; }
+    .replay-card.show { right: 20px; opacity: 1; visibility: visible; }
     .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .rc-step { background: var(--primary); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; }
     .close-replay-btn { width: 32px; height: 32px; background: rgba(239,68,68,0.1); color: var(--danger); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; border: none; cursor: pointer; transition: 0.2s;}
@@ -166,7 +166,7 @@
     .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
     .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
-    /* PERFECTED AMOUNT BOX */
+    /* PERFECTED AMOUNT BOX: Seamless integration */
     .amt-group { display: flex; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); align-items: stretch; transition: 0.2s; }
     .amt-group:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     .amt-group input { flex: 1; padding: 14px; background: transparent; border: none; color: var(--text-main); outline: none; font-family: 'Inter'; font-size: 0.95rem; min-width: 0; margin: 0; border-radius: 8px 0 0 8px; }
@@ -265,10 +265,11 @@
     .mat-tp-action-btns { display: flex; gap: 16px; }
     .mat-tp-action-btn { color: #ffb59d; font-weight: 600; font-size: 1rem; padding: 8px 12px; background: transparent; border: none; cursor: pointer;}
 
-    /* Lightbox & Toast */
-    #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; }
-    #lightbox img { max-width: 95%; max-height: 90%; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
-    .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;}
+    /* Lightbox & Toast with ZOOM support */
+    #lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 999999; justify-content: center; align-items: center; overflow: hidden; touch-action: none; }
+    #lightbox img { max-width: 95vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); cursor: grab; object-fit: contain; transition: transform 0.1s ease-out; }
+    #lightbox img:active { cursor: grabbing; transition: none; }
+    .close-lb { position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.2); color: white; font-size: 1.8rem; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; z-index: 1000000;}
     .close-lb:hover { background: var(--danger); }
     
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 14px 28px; border-radius: 30px; font-weight: 700; z-index: 999999; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
@@ -316,7 +317,7 @@
 </head>
 <body class="dark-mode">
 
-  <div id="lightbox" onclick="this.style.display='none'"><div class="close-lb">✕</div><img id="lbImg" src=""></div>
+  <div id="lightbox"><div class="close-lb" onclick="closeLightbox()">✕</div><img id="lbImg" src=""></div>
   <div id="toast" class="toast"><span><i class="ph-fill ph-info"></i></span> <span id="toastMsg">Message</span></div>
 
   <div id="timeModal" class="mat-modal-overlay">
@@ -339,7 +340,7 @@
               <div id="tp-dial-numbers"></div>
           </div>
           <div class="mat-tp-actions">
-              <i class="ph-bold ph-keyboard mat-tp-keyboard"></i>
+              <span class="mat-tp-keyboard">⌨</span>
               <div class="mat-tp-action-btns">
                   <button type="button" class="mat-tp-action-btn" onclick="closeTimePicker()">Cancel</button>
                   <button type="button" class="mat-tp-action-btn" onclick="saveTimePicker()">OK</button>
@@ -622,7 +623,6 @@
     let expenses = [];
     let tripBudget = 25000;
     
-    // Strict Alphabetical Names
     const payers = ['Ashok', 'Neha', 'Rupini', 'Tarun', 'Tejas'];
     
     let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear();
@@ -632,6 +632,9 @@
     let isHeatmap = false; let currentPhotos = []; let currentPhotoUploadType = 'memory'; 
     let isFree = false; let replayRoute = []; let currentReplayIndex = 0; let isReplaying = false;
     let currentView = 'map'; let manualPinMode = false;
+
+    // Lightbox Zoom State
+    let lbZoom = 1; let lbTX = 0; let lbTY = 0; let isLbDragging = false; let lbStartX, lbStartY;
 
     if (useFirebase) {
         tripRef.on('value', (snapshot) => {
@@ -673,6 +676,26 @@
 
       initMap(); setupPhotoHandler(); renderAll(); 
       [100, 500, 1000].forEach(t => setTimeout(() => { if(map) { map.invalidateSize(true); updateMap(); } }, t));
+
+      // Lightbox Interactive Zoom & Pan initialization
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+      
+      lbImg.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          lbZoom += e.deltaY < 0 ? 0.15 : -0.15;
+          lbZoom = Math.max(0.5, Math.min(lbZoom, 5));
+          lbImg.style.transform = `translate(${lbTX}px, ${lbTY}px) scale(${lbZoom})`;
+      });
+      
+      lbImg.addEventListener('mousedown', (e) => { e.preventDefault(); isLbDragging = true; lbStartX = e.clientX - lbTX; lbStartY = e.clientY - lbTY; });
+      window.addEventListener('mousemove', (e) => { if(isLbDragging) { lbTX = e.clientX - lbStartX; lbTY = e.clientY - lbStartY; lbImg.style.transform = `translate(${lbTX}px, ${lbTY}px) scale(${lbZoom})`; } });
+      window.addEventListener('mouseup', () => { isLbDragging = false; });
+      
+      lbImg.addEventListener('touchstart', (e) => { if(e.touches.length===1){ isLbDragging = true; lbStartX = e.touches[0].clientX - lbTX; lbStartY = e.touches[0].clientY - lbTY; } });
+      window.addEventListener('touchmove', (e) => { if(isLbDragging && e.touches.length===1){ e.preventDefault(); lbTX = e.touches[0].clientX - lbStartX; lbTY = e.touches[0].clientY - lbStartY; lbImg.style.transform = `translate(${lbTX}px, ${lbTY}px) scale(${lbZoom})`; } }, {passive: false});
+      window.addEventListener('touchend', () => { isLbDragging = false; });
     }
     
     function toggleTheme() {
@@ -697,10 +720,7 @@
     
     function openOverviewModal() {
         document.getElementById('overviewModal').style.display = 'flex';
-        // Delay drawing the chart so the canvas has physical dimensions to render inside
-        setTimeout(() => {
-            try { renderOverview(); } catch(e) { console.error("Overview Modal Error:", e); }
-        }, 100);
+        setTimeout(() => { try { renderOverview(); } catch(e) {} }, 100);
     }
     
     function closeAllSidebars() {
@@ -722,24 +742,13 @@
         const isTransport = cat === '🚗 Transport (Diesel)' || cat === '🚗 Transport';
         
         const descInput = document.getElementById('description');
-        const dtRow = document.getElementById('dtRow');
-        const imgToggleRow = document.getElementById('imgToggleRow');
-        const photoBtnRow = document.getElementById('photoBtnRow');
-        const freeBtn = document.getElementById('btn-free');
-
-        descInput.style.display = 'block';
-        dtRow.style.display = 'flex';
-        imgToggleRow.style.display = 'flex';
-        photoBtnRow.style.display = 'flex';
-        freeBtn.style.display = 'flex';
-        if(currentPhotos.length > 0) document.getElementById('photoPreviewContainer').style.display = 'flex';
 
         if (isAcc) {
             descInput.placeholder = 'Accommodation Name (e.g. Taj Hotel)';
             if (descInput.value === 'Pre-booked Accommodation' || descInput.value === 'Diesel / Transport' || descInput.value === 'Transport Details') descInput.value = '';
             if (isFree) toggleFree(); 
         } else if (isTransport) {
-            descInput.style.display = 'none'; descInput.value = 'Transport Details';
+            descInput.placeholder = 'Title (e.g. Bus, Cab)';
         } else {
             descInput.placeholder = 'Title (e.g. Fish Thali, Surfboard)';
             if (descInput.value === 'Pre-booked Accommodation' || descInput.value === 'Diesel / Transport' || descInput.value === 'Transport Details') descInput.value = '';
@@ -759,7 +768,7 @@
     }
 
     // ==========================================================================
-    // MULTIPLE IMAGE COMPRESSION LOGIC
+    // MULTIPLE IMAGE COMPRESSION LOGIC (MEDIUM QUALITY RESTORED)
     // ==========================================================================
     function setPhotoType(type) {
         currentPhotoUploadType = type;
@@ -776,11 +785,11 @@
                 reader.onload = function(event) {
                     const img = new Image();
                     img.onload = function() {
-                        const canvas = document.createElement('canvas'); const MAX = 400; // Optimal compression
-                        const scale = Math.min(MAX / img.width, MAX / img.height);
+                        const canvas = document.createElement('canvas'); const MAX = 800; // Medium Quality 
+                        const scale = Math.min(1, Math.min(MAX / img.width, MAX / img.height));
                         canvas.width = img.width * scale; canvas.height = img.height * scale;
                         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                        currentPhotos.push({ url: canvas.toDataURL('image/jpeg', 0.6), type: currentPhotoUploadType });
+                        currentPhotos.push({ url: canvas.toDataURL('image/jpeg', 0.75), type: currentPhotoUploadType }); // High res compression
                         renderPhotoPreviews();
                     }
                     img.src = event.target.result;
@@ -804,7 +813,17 @@
     }
 
     function removePhoto(index) { currentPhotos.splice(index, 1); renderPhotoPreviews(); }
-    function viewImage(src) { document.getElementById('lbImg').src = src; document.getElementById('lightbox').style.display = 'flex'; }
+    
+    // Lightbox reset and show
+    function viewImage(src) { 
+        const img = document.getElementById('lbImg');
+        img.src = src; 
+        lbZoom = 1; lbTX = 0; lbTY = 0;
+        img.style.transform = `translate(0px, 0px) scale(1)`;
+        document.getElementById('lightbox').style.display = 'flex'; 
+    }
+    
+    function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
 
     // ==========================================================================
     // MATERIAL CLOCK LOGIC
@@ -842,7 +861,6 @@
         
         document.getElementById('tp-hand').style.transform = `rotate(${angle}deg)`;
         
-        // Text counter-rotation fix
         const handText = document.getElementById('tp-hand-text');
         handText.textContent = tp_mode === 'hour' ? tp_hr : String(tp_min).padStart(2, '0');
         handText.style.transform = `rotate(-${angle}deg)`;
@@ -1020,7 +1038,6 @@
         document.getElementById('ovTopCategory').textContent = topCatName;
         document.getElementById('overviewTableContainer').innerHTML = Object.keys(cStats).length > 0 ? catTableHTML : '<div style="color:var(--text-muted);font-size:0.85rem;">No spending data yet.</div>';
 
-        // Removed the "Visits" column from Top Places
         let placesTableHTML = `<table class="overview-table"><tr><th>Place</th><th>Spent</th></tr>`;
         Object.entries(placeStats).sort((a,b)=>b[1].spent-a[1].spent).slice(0,5).forEach(([p, d]) => {
             placesTableHTML += `<tr><td><strong>${p}</strong></td><td style="color:var(--danger);font-weight:bold;">₹${d.spent.toLocaleString('en-IN')}</td></tr>`;
@@ -1168,7 +1185,7 @@
       if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
       if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
 
-      // FLAWLESS CHRONOLOGICAL SORTING BY DATE + TIME
+      // FLAWLESS CHRONOLOGICAL SORTING BY DATE + TIME + ID
       const placesLoc = filtered.filter(e => e.locationData && typeof e.locationData.lat === 'number').sort((a, b) => {
           let dA = a.date || '1970-01-01'; let dB = b.date || '1970-01-01';
           let tA = a.time ? a.time.padStart(5, '0') : '00:00';
@@ -1241,7 +1258,6 @@
         markersCluster.addLayer(marker);
       });
 
-      // True Continuous Routing (Solid line, NO straight line fallback)
       if (placesLoc.length > 1) {
           document.getElementById('totalDistance').innerHTML = '<span style="font-size:0.7rem; opacity:0.8;">Calculating...</span>';
           const coordsStr = placesLoc.map(p => `${p.locationData.lon},${p.locationData.lat}`).join(';');
@@ -1255,7 +1271,6 @@
                       document.getElementById('totalDistance').textContent = (data.routes[0].distance / 1000).toFixed(1) + ' km';
                   } else throw new Error();
               }).catch(err => {
-                  // Fallback without drawing a line
                   let dist = 0; for(let i=1; i<latlngs.length; i++) dist += map.distance(L.latLng(latlngs[i-1]), L.latLng(latlngs[i]));
                   document.getElementById('totalDistance').textContent = (dist / 1000).toFixed(1) + ' km (Direct)';
               });
@@ -1336,7 +1351,7 @@
     function handleReplayKey(e) { if(!isReplaying) return; if(e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextReplay(); } if(e.key === 'ArrowLeft') { e.preventDefault(); prevReplay(); } if(e.key === 'Escape') { e.preventDefault(); exitReplay(); } }
 
     // ==========================================================================
-    // DIRECT MOUSE CLICK PINNING & GPS (ZERO OFFSET FIX)
+    // DIRECT MOUSE CLICK PINNING & GPS
     // ==========================================================================
     function enableManualPin(e) {
         if(e) { e.preventDefault(); e.stopPropagation(); }
@@ -1357,7 +1372,6 @@
         
         if(tempMarker) map.removeLayer(tempMarker);
         
-        // Exact Zero-Offset Temporary Pin
         const tempIcon = L.divIcon({
             className: 'custom-icon',
             html: `<div style="position: relative; width: 34px; height: 44px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));">
@@ -1482,8 +1496,8 @@
       if (isAcc && amtRaw === '') return showToast('Please fill Amount!'); 
       if (!category) return showToast('Please select a Category!');
       if (!desc && !isAcc && !isTransport) { let cleanCat = category.split(' ').slice(1).join(' '); desc = `${cleanCat}${timeVal ? ` at ${tConvert(timeVal)}` : ''}`; }
-      if (isAcc && !desc) desc = "Accommodation"; 
-      if (isTransport) desc = "Transport Details";
+      if (isAcc) desc = desc || "Accommodation"; 
+      if (isTransport) desc = desc || "Transport Details";
 
       const expData = { 
           date: dateVal, time: timeVal, description: desc, amount: amount, 
@@ -1652,7 +1666,6 @@
         if (e.target !== document.getElementById('place') && e.target !== sug) sug.style.display = 'none'; 
     });
     
-    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
