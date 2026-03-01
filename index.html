@@ -49,7 +49,7 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 10px; }
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    button { cursor: pointer; outline: none; font-family: inherit; }
+    button { font-family: inherit; appearance: none; outline: none; border: none; cursor: pointer; }
 
     /* ==========================================================================
        2. HEADER
@@ -69,10 +69,10 @@
     .burn-bar { width: 100%; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
     .burn-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
     
-    .sidebar-btn { background: var(--ocean); color: white; padding: 10px 18px; border: none; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
+    .sidebar-btn { background: var(--ocean); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);}
     .sidebar-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);}
     
-    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
+    .overview-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); color: white; padding: 10px 18px; border-radius: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans'; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);}
     .overview-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(217, 70, 239, 0.5);}
 
     /* ==========================================================================
@@ -90,13 +90,13 @@
     .sidebar.open { right: 0 !important; }
     .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .sidebar-header h2 { font-size: 1.3rem; margin: 0; display: flex; align-items: center; gap: 8px;}
-    .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+    .close-sidebar { background: rgba(239, 68, 68, 0.1); color: var(--danger); width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
 
     /* ==========================================================================
        4. CALENDAR & BUDGET
        ========================================================================== */
     .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-weight: 800; }
-    .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center;}
+    .calendar-nav button { background: transparent; color: var(--text-main); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;}
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; background: var(--card-bg); padding: 8px; border-radius: 12px; border: 1px solid var(--border);}
     .cal-day-header { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; padding: 4px 0; text-transform: uppercase;}
     .cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; position: relative; transition: 0.2s ease;}
@@ -111,7 +111,7 @@
     .budget-item.active-filter { background: var(--primary); color: white; }
 
     /* ==========================================================================
-       5. MAP & GALLERY
+       5. MAP, PINS & GALLERY
        ========================================================================== */
     .col-center .panel { display: flex; flex-direction: column; position: relative; }
     #map-wrapper { flex: 1 1 auto; position: relative; width: 100%; min-height: 300px; background: var(--card-bg); overflow: hidden; }
@@ -123,7 +123,9 @@
     
     .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;}
 
+    /* Crosshair Mouse Pointer CSS for exact clicking */
     .map-pin-mode, .map-pin-mode * { cursor: crosshair !important; }
+
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
 
     /* Gallery */
@@ -136,28 +138,31 @@
     .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; padding: 24px 12px 12px; font-size: 0.85rem; pointer-events: none;}
     .gallery-date-header { font-family: 'Plus Jakarta Sans'; font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin: 0 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;}
 
-    /* Replay Card */
+    /* Replay Card - Styled to Match Screenshot */
     .replay-card { position: absolute; top: 20px; right: -400px; width: 320px; background: var(--surface); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 1000; display: flex; flex-direction: column; overflow: hidden; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .replay-card.show { right: 20px; }
     .rc-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--card-bg);}
     .rc-step { background: var(--primary); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; font-family: 'Plus Jakarta Sans'; }
     .rc-img-wrapper { width: 100%; height: 160px; background: #0f172a; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;}
-    .rc-img-content { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: 0.3s;}
+    .rc-img-content { width: 100%; height: 100%; object-fit: cover; }
     .rc-body { padding: 16px; }
-    .rc-nav { display: flex; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); align-items: center; gap: 0;}
-    .btn-replay-prev { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border); padding: 8px 16px; font-weight: 600; font-size: 1rem; border-radius: 6px 0 0 6px; flex: 1; cursor: pointer; transition: 0.2s;}
-    .btn-replay-next { background: #10b981; color: white; border: 1px solid #059669; padding: 8px 16px; font-weight: 600; font-size: 1rem; border-radius: 0 6px 6px 0; flex: 1; cursor: pointer; transition: 0.2s;}
+    .rc-nav { display: flex; gap: 12px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); align-items: center;}
+    
+    /* Exact Prev/Next Match */
+    .btn-replay-prev { background: transparent; color: var(--text-main); border: 1px solid var(--text-muted); flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s;}
+    .btn-replay-next { background: #10b981; color: white; border: 1px solid #059669; flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s;}
+    .btn-replay-prev:hover { background: var(--surface); }
 
     /* ==========================================================================
        6. FORM & FEED
        ========================================================================== */
     .form-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
     .input-row { display: flex; gap: 12px; }
-    .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
+    .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
     .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
     /* Exact Amount Box Match from Screenshot */
-    .amt-group { display: flex; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; flex: 1; transition: 0.2s; align-items: stretch;}
+    .amt-group { display: flex; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; flex: 1; transition: 0.2s; align-items: stretch;}
     .amt-group:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     .amt-group input { flex: 1; padding: 14px; background: transparent; border: none; color: var(--text-main); outline: none; font-family: 'Inter'; font-size: 0.95rem; min-width: 0;}
     .amt-group .free-btn { background: #2a373b; color: #10b981; font-weight: 800; padding: 0 20px; border-left: 1px solid var(--border); transition: 0.2s; font-size: 0.95rem; border-right: none; border-top: none; border-bottom: none;}
@@ -165,25 +170,24 @@
 
     /* Exact Photo Toggles Match from Screenshot */
     .img-type-toggle { display: flex; gap: 8px; margin-bottom: 10px; background: transparent;}
-    .img-type-btn { flex: 0 1 auto; padding: 8px 14px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; cursor: pointer; background: var(--card-bg); color: var(--text-main); font-weight: normal; transition: 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 6px;}
-    .img-type-btn.active { background: var(--surface); border-color: var(--text-muted); font-weight: 600; }
+    .img-type-btn { flex: 0 1 auto; padding: 8px 14px; border: 1px solid var(--text-muted); border-radius: 6px; font-size: 0.85rem; cursor: pointer; background: transparent; color: var(--text-main); display: flex; justify-content: center; align-items: center; gap: 6px; transition: 0.3s ease; opacity: 0.7;}
+    .img-type-btn.active { background: rgba(255,255,255,0.08); border-color: var(--text-main); opacity: 1; font-weight: 600; }
 
     .dt-row { display: flex; gap: 10px; width: 100%; }
-    .dt-box { border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; cursor: pointer; transition: 0.2s; align-items: center;}
+    .dt-box { border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); display: flex; padding: 10px 14px; cursor: pointer; transition: 0.2s; align-items: center;}
     .dt-box:hover { border-color: var(--ocean); }
     .dt-date { flex: 1.5; justify-content: space-between; }
     .dt-date input[type="date"] { background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;}
     .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
     .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
     
-    .action-badge { padding: 0 16px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
+    .action-badge { padding: 0 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
     .action-badge:hover { filter: brightness(1.1); transform: translateY(-1px);}
     .btn-gps { background: var(--info); color: white; }
     .btn-pin { background: var(--warning); color: white; }
     
-    .btn-save { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; width: 100%; font-family: 'Plus Jakarta Sans'; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); transition: 0.2s;}
+    .btn-save { background: var(--primary); color: white; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; width: 100%; font-family: 'Plus Jakarta Sans'; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); transition: 0.2s;}
     .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
-    .btn-save:active { transform: scale(0.98); }
 
     #photoPreviewContainer { display: none; gap: 10px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 6px; }
     #photoInput, #ocrInput { display: none; }
@@ -200,12 +204,15 @@
     .locate-btn { background: rgba(14, 165, 233, 0.1); color: var(--ocean); border: 1px solid rgba(14, 165, 233, 0.3); padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;}
     .locate-btn:hover { background: var(--ocean); color: white; }
     .feed-actions { display: flex; gap: 16px; justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 12px;}
-    .action-btn { background: none; border: none; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; opacity: 0.8; transition: 0.2s; color: inherit;}
+    .action-btn { background: none; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 4px; opacity: 0.8; transition: 0.2s; color: inherit; border: none; cursor: pointer;}
     .action-btn:hover { opacity: 1; }
-    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer;}
+    .btn-edit { color: var(--info); }
+    .btn-del { color: var(--danger); }
+    .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer; transition: 0.2s;}
+    .photo-thumb:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
 
     /* ==========================================================================
-       7. CENTERED OVERVIEW MODAL, CLOCK, LIGHTBOX
+       7. CUMULATIVE OVERVIEW MODAL, CLOCK, LIGHTBOX
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(8px);}
     
@@ -236,11 +243,11 @@
     .mat-tp-label { font-size: 0.85rem; color: #d7c2b9; margin-bottom: 16px; margin-left: 4px; font-weight: 500;}
     .mat-tp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 12px;}
     .mat-tp-display { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center;}
-    .mat-tp-box { background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d; transition: 0.2s;}
+    .mat-tp-box { background: #352a26; border-radius: 12px; padding: 14px 0; width: 85px; text-align: center; font-size: 3.5rem; font-weight: 500; cursor: pointer; color: #ffb59d;}
     .mat-tp-box.active { background: #7c3116; color: #ffdbd1; }
     .mat-tp-colon { font-size: 3.5rem; color: #d7c2b9; padding-bottom: 8px;}
     .mat-tp-ampm { display: flex; flex-direction: column; border: 1px solid #4a3e39; border-radius: 12px; overflow: hidden; }
-    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; border: none; padding: 14px 16px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: 0.2s;}
+    .mat-tp-ampm-btn { background: transparent; color: #d7c2b9; padding: 14px 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; border: none;}
     .mat-tp-ampm-btn:first-child { border-bottom: 1px solid #4a3e39; }
     .mat-tp-ampm-btn.active { background: #4a3e39; color: #ffdbd1;}
     .mat-dial-container { position: relative; width: 250px; height: 250px; background: #352a26; border-radius: 50%; margin: 0 auto 30px auto; cursor: crosshair; touch-action: none;}
@@ -278,6 +285,7 @@
       
       .col-left, .col-center, .col-right { height: auto; overflow: visible; width: 100%; }
       .col-center .panel { height: 450px; min-height: 450px; }
+      #map-wrapper { height: 100%; }
       
       .input-row { flex-direction: column; }
       .dt-row { flex-direction: column; }
@@ -444,6 +452,7 @@
         
         <div id="map-wrapper">
             <div id="map"></div>
+            
             <div id="gallery-container"></div>
             
             <div id="replayCard" class="replay-card">
@@ -498,6 +507,10 @@
                     <button type="button" class="scan-btn" id="btn-ocr" onclick="document.getElementById('ocrInput').click()" title="Scan Receipt"><i class="ph-bold ph-scan"></i></button>
                     <input type="file" id="ocrInput" accept="image/*" style="display:none;" onchange="handleOCR(event)">
                 </div>
+              </div>
+
+              <div class="input-row">
+                  <select id="paidBy" class="select" style="flex:1;"></select>
               </div>
 
               <div style="position: relative;">
@@ -568,6 +581,9 @@
     let expenses = [];
     let tripBudget = 25000;
     
+    // Exact Alphabetical Names Requested, No editing option
+    const payers = ['Ashok', 'Neha', 'Rupini', 'Tarun', 'Tejas'];
+    
     let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear();
     let selectedDate = null; let activeCategoryFilter = null;
     let searchTimeout = null; let selectedLocation = null; let editingId = null; 
@@ -582,8 +598,8 @@
             if (data) {
                 expenses = data.expenses || [];
                 tripBudget = data.budget || 25000;
-                renderAll();
-            } else { renderAll(); }
+                renderPayers(); renderAll();
+            } else { renderPayers(); renderAll(); }
         });
     } else {
         try {
@@ -614,7 +630,7 @@
       const offset = now.getTimezoneOffset() * 60000;
       document.getElementById('dateInput').value = (new Date(now.getTime() - offset)).toISOString().split('T')[0];
 
-      initMap(); setupPhotoHandler(); renderAll(); 
+      renderPayers(); initMap(); setupPhotoHandler(); renderAll(); 
       [100, 500, 1000].forEach(t => setTimeout(() => { if(map) { map.invalidateSize(true); updateMap(); } }, t));
     }
     
@@ -657,8 +673,12 @@
     }
 
     // ==========================================================================
-    // FORM LOGIC: CATEGORY, FREE TOGGLE
+    // FORM LOGIC: CATEGORY, FREE TOGGLE, PAYERS
     // ==========================================================================
+    function renderPayers() { 
+        document.getElementById('paidBy').innerHTML = payers.map(p => `<option value="${escapeHtml(p)}">Paid by: ${escapeHtml(p)}</option>`).join(''); 
+    }
+
     function handleCategoryChange() {
         const cat = document.getElementById('category').value;
         const isAcc = cat === '🏨 Accommodation';
@@ -693,13 +713,13 @@
 
     function toggleFree() {
         isFree = !isFree;
-        const amtInput = document.getElementById('amount'); const freeBtn = document.getElementById('btn-free'); 
+        const amtInput = document.getElementById('amount'); const freeBtn = document.getElementById('btn-free'); const paidByRow = document.getElementById('paidByRow');
         if (isFree) {
             amtInput.value = ''; amtInput.disabled = true; amtInput.placeholder = 'Free'; amtInput.style.opacity = '0.5';
-            freeBtn.style.background = 'var(--primary)'; freeBtn.style.color = 'white'; 
+            freeBtn.style.background = 'var(--primary)'; freeBtn.style.color = 'white'; paidByRow.style.display = 'none';
         } else {
             amtInput.disabled = false; amtInput.placeholder = 'Amount (₹)'; amtInput.style.opacity = '1';
-            freeBtn.style.background = '#2a373b'; freeBtn.style.color = '#10b981'; 
+            freeBtn.style.background = '#2a373b'; freeBtn.style.color = '#10b981'; paidByRow.style.display = 'flex';
         }
     }
 
@@ -721,7 +741,7 @@
                 reader.onload = function(event) {
                     const img = new Image();
                     img.onload = function() {
-                        const canvas = document.createElement('canvas'); const MAX = 400; // Optimal compression
+                        const canvas = document.createElement('canvas'); const MAX = 600; 
                         const scale = Math.min(MAX / img.width, MAX / img.height);
                         canvas.width = img.width * scale; canvas.height = img.height * scale;
                         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -774,7 +794,7 @@
     }
 
     // ==========================================================================
-    // MATERIAL CLOCK LOGIC (Retained from d.html)
+    // MATERIAL CLOCK LOGIC (Retained directly from d.html)
     // ==========================================================================
     let tp_hr = 12, tp_min = 0, tp_ampm = 'AM', tp_mode = 'hour';
     
@@ -984,7 +1004,7 @@
         const labels = Object.keys(cStats).map(c => c.split(' ')[1] || c);
         const data = Object.values(cStats);
         
-        // Match Pie Chart colors
+        // Match Pie Chart colors perfectly
         let barColors = Object.keys(cStats).map(cat => {
             if(cat.includes('Accommodation')) return '#8b5cf6';
             if(cat.includes('Food')) return '#f59e0b';
@@ -1021,7 +1041,7 @@
     }
 
     // ==========================================================================
-    // MAP SYSTEM: CIRCLE PINS, CLUSTERS, HEATMAP
+    // MAP SYSTEM: TEARDROP PINS, CONTINUOUS ROUTING
     // ==========================================================================
     function initMap() {
       map = L.map('map', { zoomControl: false }).setView([15.2993, 74.1240], 10);
@@ -1111,6 +1131,7 @@
         
         let isAcc = exp.category === '🏨 Accommodation';
         
+        // Exact Category Color Matching
         let catColors = {
             '🏨 Accommodation': '#8b5cf6', // purple
             '🍔 Food & Drinks': '#f59e0b', // orange
@@ -1128,7 +1149,7 @@
             htmlIcon = `
             <div style="position: relative; width: 34px; height: 46px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));">
                <div style="position: absolute; top: 0; left: 0; width: 34px; height: 34px; background-color: ${color}; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white;"></div>
-               <div style="position: absolute; top: 0; left: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-family:'Plus Jakarta Sans'; font-size: 14px;">${index + 1}</div>
+               <div style="position: absolute; top: 0; left: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-family:'Plus Jakarta Sans'; font-size: 14px; z-index: 2;">${index + 1}</div>
             </div>`;
         }
 
@@ -1155,7 +1176,7 @@
         markersCluster.addLayer(marker);
       });
 
-      // True Continuous Routing (Solid line)
+      // True Continuous Routing (Solid line, No Dashes)
       if (placesLoc.length > 1) {
           const coordsStr = placesLoc.map(p => `${p.locationData.lon},${p.locationData.lat}`).join(';');
           
@@ -1193,6 +1214,13 @@
         closeAllSidebars();
         switchView('map');
         map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); 
+    }
+
+    function exportMap() {
+        showToast("📸 Capturing Map...");
+        html2canvas(document.getElementById("map-wrapper"), {useCORS: true}).then(canvas => {
+            const link = document.createElement('a'); link.download = `Goa-Map-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); showToast("✅ Snapshot Saved!");
+        });
     }
 
     // ==========================================================================
@@ -1241,22 +1269,22 @@
     function handleReplayKey(e) { if(!isReplaying) return; if(e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextReplay(); } if(e.key === 'ArrowLeft') { e.preventDefault(); prevReplay(); } if(e.key === 'Escape') { e.preventDefault(); exitReplay(); } }
 
     // ==========================================================================
-    // MANUAL PINNING & LOCATION (RESTORED TO D.HTML SPECS)
+    // DIRECT MOUSE CLICK PINNING & GPS
     // ==========================================================================
     function enableManualPin(e) {
         if(e) { e.preventDefault(); e.stopPropagation(); }
         manualPinMode = true; 
-        showToast("📍 Click map to pin!");
+        showToast("📍 Click anywhere on the map to pin!");
         switchView('map');
         closeAllSidebars();
         
         if (window.innerWidth <= 1024) {
-            document.getElementById('map-wrapper').scrollIntoView({behavior: 'smooth'});
+            document.getElementById('map-wrapper').scrollIntoView();
         }
         
+        // Turns cursor to Crosshair
         document.getElementById('map').classList.add('map-pin-mode');
         
-        // Prevent instant misfire
         setTimeout(() => {
             map.off('click', handleMapClick); 
             map.once('click', handleMapClick);
@@ -1269,20 +1297,27 @@
         
         if(tempMarker) map.removeLayer(tempMarker);
         
-        // Use standard DivIcon for the temporary pin just like d.html
-        tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned!</b>").openPopup();
+        // Use standard popup for temp pin
+        tempMarker = L.marker([lat, lon]).addTo(map).bindPopup("<b style='font-family:Inter;'>📍 Pinned Location</b>").openPopup();
         map.flyTo([lat, lon], 16);
         
         document.getElementById('place').value = "Fetching address...";
         
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`).then(r => r.json()).then(data => {
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`)
+        .then(r => r.json())
+        .then(data => {
             let shortName = data.display_name ? data.display_name.split(',')[0] : `Map Pin`;
+            document.getElementById('place').value = shortName;
             selectLocation(shortName, lat, lon);
-        }).catch(() => { selectLocation(`Map Pin`, lat, lon); });
+        }).catch(() => { 
+            document.getElementById('place').value = "Map Pin";
+            selectLocation("Map Pin", lat, lon); 
+        });
         
-        manualPinMode = false; document.getElementById('map').classList.remove('map-pin-mode');
+        manualPinMode = false; 
+        document.getElementById('map').classList.remove('map-pin-mode');
         
-        if (window.innerWidth <= 1024) {
+        if (window.innerWidth <= 1024) { 
             setTimeout(() => { document.getElementById('place').scrollIntoView({behavior: 'smooth'}); }, 300);
         }
     }
@@ -1293,7 +1328,7 @@
         switchView('map');
         closeAllSidebars();
         
-        if (window.innerWidth <= 1024) { document.getElementById('map-wrapper').scrollIntoView({behavior: 'smooth'}); }
+        if (window.innerWidth <= 1024) { document.getElementById('map-wrapper').scrollIntoView(); }
 
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(pos => {
@@ -1307,7 +1342,11 @@
                     map.flyTo([lat, lon], 16);
                     if (window.innerWidth <= 1024) { setTimeout(()=> {document.getElementById('place').scrollIntoView({behavior: 'smooth'});}, 300) }
                 }).catch(() => { selectLocation(`Live Pin`, lat, lon); });
-            }, () => showToast("GPS Error: You must click 'Allow'."), { timeout: 10000, enableHighAccuracy: true });
+            }, () => {
+                showToast("GPS Error: Fallback active.");
+                selectLocation(`Goa (Fallback)`, 15.2993, 74.1240);
+                map.flyTo([15.2993, 74.1240], 10);
+            }, { timeout: 10000 });
         } else { showToast("GPS not supported."); }
     }
     
@@ -1352,7 +1391,7 @@
       const timeVal = document.getElementById('timeInput').value;
       const place = document.getElementById('place').value.trim();
       const dateVal = document.getElementById('dateInput').value || new Date().toISOString().split('T')[0];
-      const paidBy = document.getElementById('paidBy') ? document.getElementById('paidBy').value.trim() : 'Me';
+      const paidBy = document.getElementById('paidBy').value.trim();
 
       const isAcc = category === '🏨 Accommodation';
       const isTransport = category === '🚗 Transport (Diesel)';
@@ -1445,6 +1484,7 @@
                  <div class="exp-title">${escapeHtml(e.description)}</div>
                  <div class="exp-meta">
                     <span><i class="ph-bold ph-calendar-blank"></i> ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>
+                    ${(e.paidBy && !e.isFree) ? `<span style="color:var(--ocean);font-weight:700;"><i class="ph-bold ph-wallet"></i> Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}
                  </div>
              </div>
              <div style="text-align:right; flex-shrink:0;">
@@ -1475,8 +1515,8 @@
     function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2500); }
 
     function exportData() {
-      const csv = [['Date', 'Time', 'Description', 'Amount', 'Category', 'Place'],
-        ...expenses.map(e => [e.date, e.time||'', e.description, e.isFree ? 0 : e.amount, e.category, e.place||''])
+      const csv = [['Date', 'Time', 'Description', 'Amount', 'Category', 'Place', 'Paid By'],
+        ...expenses.map(e => [e.date, e.time||'', e.description, e.isFree ? 0 : e.amount, e.category, e.place||'', e.isFree ? 'Free' : (e.paidBy||'')])
       ].map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = `goa-expenses.csv`; a.click(); showToast('CSV exported!');
