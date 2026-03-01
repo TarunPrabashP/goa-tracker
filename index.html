@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏖️ Goa Trip Tracker - Pro Edition</title>
+  <title>🏖️ Goa Trip Tracker - Master Edition</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -94,7 +94,7 @@
     .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; border-top: 1px solid var(--border); background: var(--card-bg); flex-shrink: 0; width: 100%; box-sizing: border-box; }
     .btn-side { width: 100%; background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.2s; box-sizing: border-box; }
     .btn-side:hover { border-color: var(--ocean); transform: translateY(-2px); }
-    .btn-side.danger { grid-column: span 3; color: var(--danger); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); flex-direction: row; padding: 14px;}
+    .btn-side.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); grid-column: span 3; flex-direction: row; justify-content: center; padding: 14px;}
     .btn-side.danger:hover { background: var(--danger); color: white; }
 
     /* ==========================================================================
@@ -128,11 +128,10 @@
     
     .btn-action-map { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;}
 
-    /* Crosshair Mouse Pointer CSS for exact clicking */
     .map-pin-mode, .map-pin-mode * { cursor: crosshair !important; }
     .leaflet-tooltip.custom-tooltip { background: rgba(0,0,0,0.8); color: white; border: none; font-weight: bold; border-radius: 6px; }
 
-    /* Gallery Grid */
+    /* Gallery */
     #gallery-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; background: var(--card-bg); overflow-y: auto; padding: 20px; }
     .gallery-grid { column-count: 2; column-gap: 16px; margin-bottom: 24px;}
     @media (min-width: 1400px) { .gallery-grid { column-count: 3; } }
@@ -155,7 +154,6 @@
     .rc-body { padding: 16px; }
     .rc-nav { display: flex; gap: 8px; padding: 12px 16px; background: var(--card-bg); border-top: 1px solid var(--border); align-items: center;}
     
-    /* Exact Prev/Next Match */
     .btn-replay-prev { background: transparent; color: var(--text-main); border: 1px solid var(--text-muted); flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s;}
     .btn-replay-next { background: #10b981; color: white; border: 1px solid #059669; flex: 1; padding: 10px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s;}
     .btn-replay-prev:hover { background: var(--surface); }
@@ -168,14 +166,13 @@
     .input, .select { padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: 'Inter'; background: var(--card-bg); color: var(--text-main); width: 100%; outline: none; transition: 0.2s;}
     .input:focus, .select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     
-    /* PERFECTED AMOUNT BOX: Seamless integration exactly like screenshot */
+    /* PERFECTED AMOUNT BOX */
     .amt-group { display: flex; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); align-items: stretch; transition: 0.2s; }
     .amt-group:focus-within { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
     .amt-group input { flex: 1; padding: 14px; background: transparent; border: none; color: var(--text-main); outline: none; font-family: 'Inter'; font-size: 0.95rem; min-width: 0; margin: 0; border-radius: 8px 0 0 8px; }
     .amt-group .free-btn { background: rgba(16, 185, 129, 0.1); color: var(--primary); font-weight: 800; padding: 0 24px; border: none; border-left: 1px solid var(--border); transition: 0.2s; font-size: 0.95rem; cursor: pointer; margin: 0; border-radius: 0 8px 8px 0; display: flex; align-items: center; justify-content: center;}
     .amt-group .free-btn:hover { background: var(--primary); color: white; }
 
-    /* Exact Photo Toggles Match from Screenshot */
     .img-type-toggle { display: flex; gap: 12px; margin-bottom: 10px;}
     .img-type-btn { flex: 1; padding: 10px; border: 1px solid #4a4a6a; border-radius: 6px; font-size: 0.9rem; cursor: pointer; background: transparent; color: var(--text-muted); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; transition: 0.3s ease;}
     .img-type-btn.active { border-color: #0ea5e9; color: #0ea5e9; background: rgba(14, 165, 233, 0.05); }
@@ -190,7 +187,6 @@
     .dt-date input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6); }
     .dt-time { flex: 1; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px;}
     
-    /* THICK PIN/GPS BUTTONS */
     .action-badge { padding: 16px 20px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; transition: 0.2s;}
     .action-badge:hover { filter: brightness(1.1); transform: translateY(-1px);}
     .btn-gps { background: var(--info); color: white; }
@@ -221,20 +217,18 @@
     .photo-thumb { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer;}
 
     /* ==========================================================================
-       7. COMPACT OVERVIEW MODAL WITH GRAPHS
+       7. COMPACT OVERVIEW MODAL
        ========================================================================== */
     .mat-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 100000; justify-content: center; align-items: center; backdrop-filter: blur(8px);}
     
     .overview-modal-content { width: 95%; max-width: 900px; height: 90vh; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.7); color: var(--text-main); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     
-    /* Compact Top Stats */
     .stats-grid-top { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
     .stat-box { background: var(--card-bg); border: 1px solid var(--border); padding: 16px; border-radius: 12px; text-align: center; position: relative; overflow: hidden;}
     .stat-box-title { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; z-index: 2; position: relative;}
     .stat-box-val { font-size: 1.5rem; font-weight: 800; font-family: 'JetBrains Mono'; color: var(--text-main); z-index: 2; position: relative;}
     
-    /* Multi-Graph Grid layout */
     .ov-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .chart-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px; height: 220px; width: 100%; position: relative; }
     .ov-section-title { font-size: 1rem; margin: 0 0 10px 0; display: flex; align-items: center; gap: 6px; color: var(--text-main); font-weight: 800;}
@@ -357,64 +351,64 @@
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeAllSidebars()"></div>
   <div id="itinerarySidebar" class="sidebar">
       <div class="sidebar-header">
-          <h2><i class="ph-bold ph-list-dashes" style="color:var(--ocean)"></i> Itinerary Feed</h2>
+          <h2><span style="color:var(--ocean)">☰</span> Itinerary Feed</h2>
           <button type="button" class="close-sidebar" onclick="closeAllSidebars()">✕</button>
       </div>
       <div class="scroll-area" id="expenseList"></div>
       
       <div class="actions-grid">
-          <button type="button" class="btn-side" onclick="exportData()"><i class="ph-bold ph-file-csv" style="font-size:1.4rem; color:var(--primary)"></i> CSV</button>
-          <button type="button" class="btn-side" onclick="exportHTML()"><i class="ph-bold ph-file-html" style="font-size:1.4rem; color:var(--info)"></i> HTML</button>
-          <button type="button" class="btn-side" onclick="exportSync()"><i class="ph-bold ph-export" style="font-size:1.4rem; color:var(--ocean)"></i> Backup</button>
-          <button type="button" class="btn-side danger" onclick="clearAll()"><i class="ph-bold ph-trash" style="font-size:1.4rem;"></i> Delete All Data</button>
+          <button type="button" class="btn-side" onclick="exportData()"><span style="font-size:1.4rem; color:var(--primary)">⤓</span> CSV</button>
+          <button type="button" class="btn-side" onclick="exportHTML()"><span style="font-size:1.4rem; color:var(--info)">📄</span> HTML</button>
+          <button type="button" class="btn-side" onclick="exportSync()"><span style="font-size:1.4rem; color:var(--ocean)">☁</span> Backup</button>
+          <button type="button" class="btn-side danger" onclick="clearAll()"><span style="font-size:1.4rem;">🗑</span> Delete All Data</button>
       </div>
   </div>
 
   <div id="overviewModal" class="mat-modal-overlay">
       <div class="overview-modal-content">
           <div style="padding: 24px; border-bottom: 1px solid var(--border); background: var(--card-bg); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
-              <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:8px;"><i class="ph-fill ph-chart-line-up" style="color:#8b5cf6"></i> Trip Dashboard</h2>
+              <h2 style="margin:0; font-size:1.5rem; display:flex; align-items:center; gap:8px;"><span style="color:#8b5cf6">📈</span> Trip Dashboard</h2>
               <button type="button" style="background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="document.getElementById('overviewModal').style.display='none'">✕</button>
           </div>
           
           <div class="scroll-area" style="padding: 24px;">
               
               <div class="stats-grid-top" id="ovTopStats">
-                  <div class="stat-box"><i class="ph-fill ph-wallet stat-box-icon"></i><div class="stat-box-title">Total Spend</div><div class="stat-box-val" id="ovGrandTotal">₹0</div></div>
-                  <div class="stat-box"><i class="ph-fill ph-calendar stat-box-icon"></i><div class="stat-box-title">Avg / Day</div><div class="stat-box-val" id="ovDailyAvg" style="color:var(--warning)">₹0</div></div>
-                  <div class="stat-box"><i class="ph-fill ph-folder-star stat-box-icon"></i><div class="stat-box-title">Top Category</div><div class="stat-box-val" id="ovTopCategory" style="color:#8b5cf6">-</div></div>
-                  <div class="stat-box"><i class="ph-fill ph-map-pin stat-box-icon"></i><div class="stat-box-title">Locations</div><div class="stat-box-val" id="ovTotalLocs" style="color:var(--ocean)">0</div></div>
+                  <div class="stat-box"><div class="stat-box-title">Total Spend</div><div class="stat-box-val" id="ovGrandTotal">₹0</div></div>
+                  <div class="stat-box"><div class="stat-box-title">Avg / Day</div><div class="stat-box-val" id="ovDailyAvg" style="color:var(--warning)">₹0</div></div>
+                  <div class="stat-box"><div class="stat-box-title">Top Category</div><div class="stat-box-val" id="ovTopCategory" style="color:#8b5cf6">-</div></div>
+                  <div class="stat-box"><div class="stat-box-title">Locations</div><div class="stat-box-val" id="ovTotalLocs" style="color:var(--ocean)">0</div></div>
               </div>
 
               <div class="ov-grid-2">
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-chart-pie-slice"></i> Category Spending</h3>
+                      <h3 class="ov-section-title">📊 Category Spending</h3>
                       <div class="chart-container"><canvas id="overviewCategoryChart"></canvas></div>
                   </div>
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-trend-up"></i> Spending Trend</h3>
+                      <h3 class="ov-section-title">📉 Spending Trend</h3>
                       <div class="chart-container"><canvas id="overviewTrendChart"></canvas></div>
                   </div>
               </div>
 
               <div class="ov-grid-2">
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-list-numbers"></i> Breakdown</h3>
+                      <h3 class="ov-section-title">🧾 Breakdown</h3>
                       <div id="overviewTableContainer"></div>
                   </div>
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-map-pin"></i> Top Places</h3>
+                      <h3 class="ov-section-title">📍 Top Places</h3>
                       <div id="overviewPlacesContainer"></div>
                   </div>
               </div>
 
               <div class="ov-grid-2">
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-receipt"></i> Receipts</h3>
+                      <h3 class="ov-section-title">🧾 Receipts</h3>
                       <div id="receiptCarousel" class="carousel-wrapper"></div>
                   </div>
                   <div>
-                      <h3 class="ov-section-title"><i class="ph-bold ph-image"></i> Memories</h3>
+                      <h3 class="ov-section-title">📷 Memories</h3>
                       <div id="memoryCarousel" class="carousel-wrapper"></div>
                   </div>
               </div>
@@ -424,12 +418,12 @@
 
   <div class="premium-header">
     <div class="ph-left">
-      <h1 class="ph-title"><i class="ph-fill ph-beach-tent" style="color:var(--ocean)"></i> Goa Trip</h1>
-      <button type="button" class="ph-theme-btn" onclick="toggleTheme()" id="themeBtn"><i class="ph-fill ph-sun"></i></button>
+      <h1 class="ph-title"><span style="color:var(--ocean)">🏖️</span> Goa Trip</h1>
+      <button type="button" class="ph-theme-btn" onclick="toggleTheme()" id="themeBtn">☼</button>
     </div>
     <div class="ph-right">
       <div class="ph-stat">
-        <div class="ph-label">Budget Burn <i class="ph-bold ph-pencil-simple" style="cursor:pointer;" onclick="setBudget()"></i></div>
+        <div class="ph-label">Budget Burn <span style="cursor:pointer;" onclick="setBudget()">✎</span></div>
         <div style="font-size:0.8rem; font-weight:800; color:var(--text-main); margin-top:2px;" id="burnText">0%</div>
         <div class="burn-container"><div class="burn-bar"><div class="burn-fill" id="burnBar"></div></div></div>
       </div>
@@ -441,8 +435,8 @@
         <div class="ph-label">Total Spent</div>
         <div class="ph-val total" id="totalSpent">₹0</div>
       </div>
-      <button type="button" class="sidebar-btn" onclick="toggleSidebar('feed')"><i class="ph-bold ph-list-dashes"></i> Feed</button>
-      <button type="button" class="overview-btn" onclick="openOverviewModal()"><i class="ph-bold ph-chart-bar"></i> Overview</button>
+      <button type="button" class="sidebar-btn" onclick="toggleSidebar('feed')">☰ Feed</button>
+      <button type="button" class="overview-btn" onclick="openOverviewModal()">📈 Overview</button>
     </div>
   </div>
 
@@ -451,10 +445,10 @@
     <div class="col-left">
       <div class="panel" style="flex: 0 0 auto;">
         <div class="panel-header">
-            <span><i class="ph-bold ph-calendar-blank"></i> Timeline</span>
+            <span>📅 Timeline</span>
             <div style="display:flex; gap:8px;">
-                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(-1)"><i class="ph-bold ph-caret-left"></i></button>
-                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(1)"><i class="ph-bold ph-caret-right"></i></button>
+                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(-1)">❮</button>
+                <button type="button" style="background:transparent; border:1px solid var(--border); color:var(--text-main); border-radius:8px; padding:4px 8px; cursor:pointer;" onclick="changeMonth(1)">❯</button>
             </div>
         </div>
         <div style="padding:16px;">
@@ -465,8 +459,8 @@
 
       <div class="panel" style="flex: 1;">
         <div class="panel-header">
-            <span><i class="ph-bold ph-chart-pie-slice"></i> Analytics</span>
-            <button type="button" style="font-size:0.75rem; color:var(--text-muted); background:transparent; border:none; cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)"><i class="ph-bold ph-arrows-clockwise"></i> Reset</button>
+            <span>📊 Analytics</span>
+            <button type="button" style="font-size:0.75rem; color:var(--text-muted); background:transparent; border:none; cursor:pointer; display:flex; align-items:center; gap:4px;" onclick="toggleCategoryFilter(null)">⟳ Reset</button>
         </div>
         <div class="scroll-area" style="display: flex; flex-direction: column; gap: 16px;">
             <div style="font-size:0.7rem; text-align:center; color:var(--text-muted);">*Click a slice to filter map*</div>
@@ -481,14 +475,14 @@
     <div class="col-center">
       <div class="panel" style="flex: 1; padding: 0; position: relative;">
         <div class="panel-header">
-            <span style="display:flex; align-items:center; gap:8px;"><i class="ph-bold ph-map-trifold"></i> Live View</span>
+            <span style="display:flex; align-items:center; gap:8px;">🗺️ Live View</span>
             <div style="display:flex; gap: 8px;">
                 <div class="view-toggle">
                     <button type="button" id="btn-view-map" class="active" onclick="switchView('map')">Map</button>
                     <button type="button" id="btn-view-gallery" onclick="switchView('gallery')">Gallery</button>
                 </div>
-                <button type="button" class="btn-action-map" id="btn-heatmap" onclick="toggleHeatmap()"><i class="ph-bold ph-fire"></i> Heatmap</button>
-                <button type="button" class="btn-action-map" style="background:var(--ocean); color:white; border:none;" onclick="startReplay()"><i class="ph-bold ph-play-circle"></i></button>
+                <button type="button" class="btn-action-map" id="btn-heatmap" onclick="toggleHeatmap()">🔥 Heatmap</button>
+                <button type="button" class="btn-action-map" style="background:var(--ocean); color:white; border:none;" onclick="startReplay()">▶</button>
             </div>
         </div>
         
@@ -508,7 +502,7 @@
                         <div id="rc-amt" style="color:var(--danger); font-family:'JetBrains Mono'; font-weight:800; font-size:1.1rem; flex-shrink: 0;">₹0</div>
                     </div>
                     <div style="font-size:0.75rem; color:var(--text-muted); background: rgba(148, 163, 184, 0.1); padding: 8px; border-radius: 8px; margin-bottom: 12px;">
-                        Use <b>Arrow Keys</b> (<i class="ph-bold ph-arrow-left"></i> <i class="ph-bold ph-arrow-right"></i>) to navigate.
+                        Use <b>Arrow Keys</b> (❮ ❯) to navigate.
                     </div>
                     <div id="rc-meta" style="color:var(--text-muted); font-size:0.8rem; display:flex; align-items:center; gap:4px; font-weight: 500;"></div>
                 </div>
@@ -524,7 +518,7 @@
 
     <div class="col-right">
       <div class="panel" style="flex: 1;">
-        <div class="panel-header"><span><i class="ph-bold ph-plus-circle"></i> Add Memory</span></div>
+        <div class="panel-header"><span>⊕ Add Memory</span></div>
         <div class="scroll-area">
             <div class="form-grid">
               
@@ -562,8 +556,8 @@
                 <div class="input-row loc-row">
                   <input type="text" id="place" class="input" placeholder="Search Location..." oninput="searchLocation(this.value)">
                   <div class="loc-btn-wrap">
-                      <button type="button" class="action-badge btn-pin" onclick="enableManualPin(event)"><i class="ph-bold ph-map-pin"></i> Pin</button>
-                      <button type="button" class="action-badge btn-gps" onclick="pinCurrentLocation(event)"><i class="ph-bold ph-crosshair"></i> GPS</button>
+                      <button type="button" class="action-badge btn-pin" onclick="enableManualPin(event)">📍 Pin</button>
+                      <button type="button" class="action-badge btn-gps" onclick="pinCurrentLocation(event)">🎯 GPS</button>
                   </div>
                 </div>
                 <div id="locationSuggestions" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);"></div>
@@ -574,19 +568,19 @@
                       <input type="date" id="dateInput" required style="background: transparent; border: none; color: inherit; outline: none; font-family: 'Inter'; font-size: 0.95rem; width: 100%; cursor: pointer;">
                   </div>
                   <div class="dt-box dt-time" onclick="openTimePicker()" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                      <i class="ph-bold ph-clock" style="font-size:0.9rem; color:var(--text-muted);"></i>
+                      <span style="font-size:0.9rem; color:var(--text-muted);">🕒</span>
                       <div id="displayTimeText" style="display:flex; align-items:baseline; gap:4px;"></div>
                   </div>
                   <input type="hidden" id="timeInput" value="12:00">
               </div>
 
               <div class="img-type-toggle" id="imgToggleRow">
-                  <button type="button" class="img-type-btn active" id="type-memory" onclick="setPhotoType('memory')"><i class="ph-bold ph-camera"></i> Memory Photo</button>
-                  <button type="button" class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')"><i class="ph-bold ph-receipt"></i> Receipt/Bill</button>
+                  <button type="button" class="img-type-btn active" id="type-memory" onclick="setPhotoType('memory')">📷 Memory Photo</button>
+                  <button type="button" class="img-type-btn" id="type-receipt" onclick="setPhotoType('receipt')">🧾 Receipt/Bill</button>
               </div>
 
               <button type="button" id="photoBtnRow" style="width:100%; display:flex; justify-content:center; align-items:center; gap:6px; padding:12px; background:var(--card-bg); border:1px dashed var(--border); color:var(--text-main); border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s;" onclick="document.getElementById('photoInput').click()">
-                  <i class="ph-bold ph-plus"></i> Select Images to Upload
+                  ⊕ Select Images to Upload
               </button>
               <input type="file" id="photoInput" accept="image/*" multiple style="display:none;">
 
@@ -666,7 +660,7 @@
     // INITIALIZATION
     // ==========================================================================
     function init() {
-      if(localStorage.getItem('goaTheme') === 'light') { document.body.classList.replace('dark-mode', 'light-mode'); document.getElementById('themeBtn').innerHTML = '<i class="ph-fill ph-moon"></i>'; }
+      if(localStorage.getItem('goaTheme') === 'light') { document.body.classList.replace('dark-mode', 'light-mode'); document.getElementById('themeBtn').innerHTML = '☾'; }
 
       const now = new Date();
       let h = String(now.getHours()).padStart(2, '0'); let m = String(now.getMinutes()).padStart(2, '0');
@@ -683,9 +677,9 @@
     
     function toggleTheme() {
         if(document.body.classList.contains('dark-mode')) {
-            document.body.classList.replace('dark-mode', 'light-mode'); localStorage.setItem('goaTheme', 'light'); document.getElementById('themeBtn').innerHTML = '<i class="ph-fill ph-moon"></i>';
+            document.body.classList.replace('dark-mode', 'light-mode'); localStorage.setItem('goaTheme', 'light'); document.getElementById('themeBtn').innerHTML = '☾';
         } else {
-            document.body.classList.replace('light-mode', 'dark-mode'); localStorage.setItem('goaTheme', 'dark'); document.getElementById('themeBtn').innerHTML = '<i class="ph-fill ph-sun"></i>';
+            document.body.classList.replace('light-mode', 'dark-mode'); localStorage.setItem('goaTheme', 'dark'); document.getElementById('themeBtn').innerHTML = '☼';
         }
         renderBudgetBreakdown();
         if(document.getElementById('overviewModal').style.display === 'flex') {
@@ -725,7 +719,7 @@
     function handleCategoryChange() {
         const cat = document.getElementById('category').value;
         const isAcc = cat === '🏨 Accommodation';
-        const isTransport = cat === '🚗 Transport (Diesel)';
+        const isTransport = cat === '🚗 Transport (Diesel)' || cat === '🚗 Transport';
         
         const descInput = document.getElementById('description');
         const dtRow = document.getElementById('dtRow');
@@ -741,14 +735,14 @@
         if(currentPhotos.length > 0) document.getElementById('photoPreviewContainer').style.display = 'flex';
 
         if (isAcc) {
-            descInput.style.display = 'none'; descInput.value = 'Pre-booked Accommodation';
-            dtRow.style.display = 'none'; imgToggleRow.style.display = 'none'; photoBtnRow.style.display = 'none'; freeBtn.style.display = 'none';
-            document.getElementById('photoPreviewContainer').style.display = 'none';
+            descInput.placeholder = 'Accommodation Name (e.g. Taj Hotel)';
+            if (descInput.value === 'Pre-booked Accommodation' || descInput.value === 'Diesel / Transport' || descInput.value === 'Transport Details') descInput.value = '';
             if (isFree) toggleFree(); 
         } else if (isTransport) {
-            descInput.style.display = 'none'; descInput.value = 'Diesel / Transport';
+            descInput.style.display = 'none'; descInput.value = 'Transport Details';
         } else {
-            if (descInput.value === 'Pre-booked Accommodation' || descInput.value === 'Diesel / Transport') descInput.value = '';
+            descInput.placeholder = 'Title (e.g. Fish Thali, Surfboard)';
+            if (descInput.value === 'Pre-booked Accommodation' || descInput.value === 'Diesel / Transport' || descInput.value === 'Transport Details') descInput.value = '';
         }
     }
 
@@ -1145,7 +1139,7 @@
 
         let html = '';
         sortedDates.forEach(date => {
-            html += `<div class="gallery-date-header"><i class="ph-bold ph-calendar-blank" style="color:var(--ocean)"></i> ${date}</div><div class="gallery-grid">`;
+            html += `<div class="gallery-date-header"><span style="color:var(--ocean)">📅</span> ${date}</div><div class="gallery-grid">`;
             grouped[date].forEach(exp => {
                 let photosArray = Array.isArray(exp.photo) ? exp.photo : [{url: exp.photo}];
                 photosArray.forEach(p => {
@@ -1154,7 +1148,7 @@
                         <img src="${p.url}" class="gallery-img">
                         <div class="gallery-overlay">
                             <div style="font-weight:800; font-family:'Plus Jakarta Sans'; margin-bottom:2px;">${escapeHtml(exp.description)}</div>
-                            <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(exp.place || 'Unknown Location')}</div>
+                            <div style="font-size:0.75rem; opacity:0.9; display:flex; align-items:center; gap:4px;"><span style="color:var(--ocean)">📍</span> ${escapeHtml(exp.place || 'Unknown Location')}</div>
                         </div>
                     </div>`;
                 });
@@ -1174,7 +1168,7 @@
       if(activeCategoryFilter) filtered = filtered.filter(e => e.category === activeCategoryFilter);
       if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
 
-      // STRICT CHRONOLOGICAL SORTING BY DATE + TIME
+      // FLAWLESS CHRONOLOGICAL SORTING BY DATE + TIME
       const placesLoc = filtered.filter(e => e.locationData && typeof e.locationData.lat === 'number').sort((a, b) => {
           let dA = a.date || '1970-01-01'; let dB = b.date || '1970-01-01';
           let tA = a.time ? a.time.padStart(5, '0') : '00:00';
@@ -1319,7 +1313,7 @@
         document.getElementById('rc-step').textContent = `Stop ${currentReplayIndex + 1} of ${replayRoute.length}`;
         document.getElementById('rc-title').innerHTML = escapeHtml(exp.description);
         document.getElementById('rc-amt').innerHTML = (exp.isFree || exp.amount === 0) ? '<span style="color:var(--primary); font-size:1.3rem;">FREE</span>' : `₹${Number(exp.amount).toLocaleString('en-IN')}`;
-        document.getElementById('rc-meta').innerHTML = `<span style="background:var(--primary); color:white; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:4px;">${(exp.category||'').split(' ')[0]}</span> <i class="ph-bold ph-calendar-blank"></i> ${formatDate(exp.date)} ${exp.time ? `• ${tConvert(exp.time)}` : ''}`;
+        document.getElementById('rc-meta').innerHTML = `<span style="background:var(--primary); color:white; padding:2px 6px; border-radius:4px; font-weight:700; margin-right:4px;">${(exp.category||'').split(' ')[0]}</span> 📅 ${formatDate(exp.date)} ${exp.time ? `• ${tConvert(exp.time)}` : ''}`;
         
         let imgContainer = document.getElementById('rc-img-container');
         if(exp.photo && (Array.isArray(exp.photo) ? exp.photo.length > 0 : true)) {
@@ -1329,7 +1323,7 @@
                     photosArray.map(p => `<img src="${p.url}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0; scroll-snap-align: start;" onclick="viewImage('${p.url}')">`).join('') + `</div>`;
             } else { imgContainer.innerHTML = `<img src="${photosArray[0].url}" style="width:100%; height:100%; object-fit:cover;" onclick="viewImage('${photosArray[0].url}')">`; }
         } else {
-            imgContainer.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; color:var(--text-muted); opacity:0.5;"><i class="ph-bold ph-image" style="font-size:3.5rem; margin-bottom:8px;"></i> No photo</div>`;
+            imgContainer.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; color:var(--text-muted); opacity:0.5;"><span style="font-size:3.5rem; margin-bottom:8px;">📷</span> No photo</div>`;
         }
 
         document.getElementById('rc-prev').style.opacity = currentReplayIndex === 0 ? '0.5' : '1';
@@ -1448,7 +1442,7 @@
             sug.innerHTML = results.map(place => {
               const shortName = place.display_name.split(',')[0];
               const safeName = shortName.replace(/'/g, "\\'"); 
-              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${safeName}', ${place.lat}, ${place.lon})"><div style="font-weight: 700; font-size: 0.9rem;"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
+              return `<div style="padding: 12px; cursor: pointer; border-bottom: 1px solid var(--border);" onmouseover="this.style.background='var(--ocean)'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='inherit';" onclick="selectLocation('${safeName}', ${place.lat}, ${place.lon})"><div style="font-weight: 700; font-size: 0.9rem;"><span style="color:var(--ocean)">📍</span> ${escapeHtml(shortName)}</div><div style="font-size: 0.75rem; opacity:0.8; margin-top:4px;">${escapeHtml(place.display_name)}</div></div>`;
             }).join('');
           }).catch(() => { sug.innerHTML = '<div style="padding: 12px; color: var(--danger); font-size:0.85rem;">Error searching.</div>'; });
       }, 400);
@@ -1488,7 +1482,7 @@
       if (isAcc && amtRaw === '') return showToast('Please fill Amount!'); 
       if (!category) return showToast('Please select a Category!');
       if (!desc && !isAcc && !isTransport) { let cleanCat = category.split(' ').slice(1).join(' '); desc = `${cleanCat}${timeVal ? ` at ${tConvert(timeVal)}` : ''}`; }
-      if (isAcc) desc = "Pre-booked Accommodation"; 
+      if (isAcc && !desc) desc = "Accommodation"; 
       if (isTransport) desc = "Transport Details";
 
       const expData = { 
@@ -1552,7 +1546,7 @@
       if(selectedDate) filtered = filtered.filter(e => e.date === selectedDate);
 
       const html = filtered.map(e => {
-        let locHTML = (e.locationData && e.locationData.lat) ? `<button type="button" onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn"><i class="ph-bold ph-map-pin"></i> Locate Map</button>` : `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="ph-bold ph-map-pin"></i> ${escapeHtml(e.place)}</span>`; 
+        let locHTML = (e.locationData && e.locationData.lat) ? `<button type="button" onclick="flyToMap(${e.locationData.lat}, ${e.locationData.lon})" class="locate-btn">📍 Locate Map</button>` : `<span style="font-size:0.75rem;color:var(--text-muted);">📍 ${escapeHtml(e.place)}</span>`; 
         
         let photoHTML = '';
         if (e.photo) {
@@ -1570,8 +1564,8 @@
                  ${photoHTML}
                  <div class="exp-title">${escapeHtml(e.description)}</div>
                  <div class="exp-meta">
-                    <span><i class="ph-bold ph-calendar-blank"></i> ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>
-                    ${(e.paidBy && !e.isFree) ? `<span style="color:var(--ocean);font-weight:700;"><i class="ph-bold ph-wallet"></i> Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}
+                    <span>📅 ${formatDate(e.date)} ${e.time ? `• 🕒 ${tConvert(e.time)}` : ''}</span>
+                    ${(e.paidBy && !e.isFree) ? `<span style="color:var(--ocean);font-weight:700;">👤 Paid by: ${escapeHtml(e.paidBy)}</span>` : ''}
                  </div>
              </div>
              <div style="text-align:right; flex-shrink:0;">
@@ -1579,7 +1573,7 @@
                  <div><div class="exp-cat">${(e.category||'').split(' ')[0]}</div></div>
              </div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button type="button" class="action-btn btn-edit" onclick="triggerEdit(${e.id})"><i class="ph-bold ph-pencil-simple"></i> Edit</button><button type="button" class="action-btn btn-del" onclick="deleteExpense(${e.id})"><i class="ph-bold ph-trash"></i></button></div></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px; margin-top:4px;"><div>${locHTML}</div><div class="feed-actions"><button type="button" class="action-btn btn-edit" onclick="triggerEdit(${e.id})">✎ Edit</button><button type="button" class="action-btn btn-del" onclick="deleteExpense(${e.id})">🗑</button></div></div>
         </div>`;
       }).join('');
       document.getElementById('expenseList').innerHTML = html || '<p style="text-align:center;color:var(--text-muted);padding:40px;font-size:0.9rem;">No memories logged yet.</p>';
